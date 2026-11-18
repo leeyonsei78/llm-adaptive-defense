@@ -1,0 +1,95 @@
+{
+  "model": "qwen2.5-coder:14b",
+  "temperature": 0.7,
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "n": 5,
+  "llm_errors": 0,
+  "summary": {
+    "benign": {
+      "per_seed": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mean": 0,
+      "min": 0,
+      "max": 0,
+      "n": 5
+    },
+    "bola": {
+      "per_seed": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "mean": 5,
+      "min": 5,
+      "max": 5,
+      "n": 5
+    },
+    "scraping_bola": {
+      "per_seed": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "mean": 5,
+      "min": 5,
+      "max": 5,
+      "n": 5
+    },
+    "mass_assignment": {
+      "per_seed": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "mean": 5,
+      "min": 5,
+      "max": 5,
+      "n": 5
+    },
+    "bfla": {
+      "per_seed": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "mean": 5,
+      "min": 5,
+      "max": 5,
+      "n": 5
+    },
+    "transfer_abuse": {
+      "per_seed": [
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "mean": 5,
+      "min": 5,
+      "max": 5,
+      "n": 5
+    }
+  },
+  "run_dir": "C:\\codex_qwen_pentest\\research\\fin_api_runs\\robust-20261118T030315",
+  "note": "LLM context-mode detections per seed; benign=false positives; rules are deterministic"
+}

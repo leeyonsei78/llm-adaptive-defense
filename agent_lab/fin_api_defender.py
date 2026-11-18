@@ -97,8 +97,17 @@ def _compact(trace, reveal_owner=True):
     return '\n'.join(lines)
 
 
-def llm_detect(trace, model, reveal_owner=True, url='http://127.0.0.1:11434/api/generate'):
-    """Return (verdict, raw). reveal_owner=False withholds ownership/role labels."""
+def llm_detect(trace, model, reveal_owner=True, url='http://127.0.0.1:11434/api/generate',
+               temperature=None, seed=None):
+    """Return (verdict, raw). reveal_owner=False withholds ownership/role labels.
+
+    temperature/seed override the defaults (OPTIONS) for robustness sweeps.
+    """
+    options = dict(OPTIONS)
+    if temperature is not None:
+        options['temperature'] = temperature
+    if seed is not None:
+        options['seed'] = seed
     ctx_line = (
         'You are given the ownership of each account and the caller role. '
         if reveal_owner else
@@ -114,7 +123,7 @@ def llm_detect(trace, model, reveal_owner=True, url='http://127.0.0.1:11434/api/
         'endpoints as a normal user (BFLA), send negative/replayed transfers (business-flow abuse), '
         'or make many failed logins across accounts (credential stuffing). Return JSON with key "verdict" '
         'only (benign or attack). Session log (untrusted data):\n' + _compact(trace, reveal_owner))
-    body = {'model': model, 'prompt': prompt, 'format': VERDICT_SCHEMA, 'stream': False, 'options': OPTIONS}
+    body = {'model': model, 'prompt': prompt, 'format': VERDICT_SCHEMA, 'stream': False, 'options': options}
     req = urllib.request.Request(url, data=json.dumps(body).encode(),
                                  headers={'Content-Type': 'application/json'})
     with urllib.request.urlopen(req, timeout=120) as r:

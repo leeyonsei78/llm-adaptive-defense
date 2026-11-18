@@ -1,0 +1,306 @@
+{
+  "author_note": "Authored blind from the spec only (never read any detector/attacker/target code); strategy is a balanced mix with deliberately tricky benign edge cases (own account by numeric id, repeated /me views, legit admin) and subtle/evasive attacks (reading exactly one other account, scrape blended with own id, novel privileged field names, idempotency replay).",
+  "sessions": [
+    {
+      "id": "h1",
+      "label": "benign",
+      "class": "benign",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"}
+      ]
+    },
+    {
+      "id": "h2",
+      "label": "benign",
+      "class": "benign",
+      "auth": "bob",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/1002"}
+      ]
+    },
+    {
+      "id": "h3",
+      "label": "benign",
+      "class": "benign",
+      "auth": "carol",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"display_name": "Carol M.", "email": "carol@example.com"}}
+      ]
+    },
+    {
+      "id": "h4",
+      "label": "benign",
+      "class": "benign",
+      "auth": "alice",
+      "calls": [
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1002", "amount": "50", "idempotency_key": "alice-tx-5f3a91"}}
+      ]
+    },
+    {
+      "id": "h5",
+      "label": "benign",
+      "class": "benign",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/accounts/me"}
+      ]
+    },
+    {
+      "id": "h6",
+      "label": "benign",
+      "class": "benign",
+      "auth": "admin",
+      "calls": [
+        {"method": "GET", "path": "/api/admin/users"}
+      ]
+    },
+    {
+      "id": "h7",
+      "label": "benign",
+      "class": "benign",
+      "auth": "bob",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"email": "bob.new@example.com"}}
+      ]
+    },
+    {
+      "id": "h8",
+      "label": "benign",
+      "class": "benign",
+      "auth": "carol",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/1003"}
+      ]
+    },
+    {
+      "id": "h9",
+      "label": "benign",
+      "class": "benign",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "POST", "path": "/api/profile", "form": {"display_name": "Alice"}},
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1003", "amount": "120", "idempotency_key": "alice-tx-7b1c04"}}
+      ]
+    },
+    {
+      "id": "h10",
+      "label": "benign",
+      "class": "benign",
+      "auth": "admin",
+      "calls": [
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1001", "amount": "200", "idempotency_key": "admin-tx-3390ac"}}
+      ]
+    },
+    {
+      "id": "h11",
+      "label": "benign",
+      "class": "benign",
+      "auth": "carol",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1001", "amount": "15", "idempotency_key": "carol-tx-aa1290"}}
+      ]
+    },
+    {
+      "id": "h12",
+      "label": "benign",
+      "class": "benign",
+      "auth": "bob",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"display_name": "Bobby"}},
+        {"method": "GET", "path": "/api/accounts/1002"}
+      ]
+    },
+    {
+      "id": "h13",
+      "label": "attack",
+      "class": "bola",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/1002"}
+      ]
+    },
+    {
+      "id": "h14",
+      "label": "attack",
+      "class": "bola",
+      "auth": "carol",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/accounts/1000"}
+      ]
+    },
+    {
+      "id": "h15",
+      "label": "attack",
+      "class": "scraping",
+      "auth": "bob",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/1000"},
+        {"method": "GET", "path": "/api/accounts/1001"},
+        {"method": "GET", "path": "/api/accounts/1003"},
+        {"method": "GET", "path": "/api/accounts/1004"},
+        {"method": "GET", "path": "/api/accounts/1005"},
+        {"method": "GET", "path": "/api/accounts/1006"}
+      ]
+    },
+    {
+      "id": "h16",
+      "label": "attack",
+      "class": "scraping",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/accounts/1002"},
+        {"method": "GET", "path": "/api/accounts/1003"},
+        {"method": "GET", "path": "/api/accounts/1000"}
+      ]
+    },
+    {
+      "id": "h17",
+      "label": "attack",
+      "class": "mass_assignment",
+      "auth": "carol",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"display_name": "Carol", "role": "admin"}}
+      ]
+    },
+    {
+      "id": "h18",
+      "label": "attack",
+      "class": "mass_assignment",
+      "auth": "bob",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"is_admin": "true", "isAdmin": "1"}}
+      ]
+    },
+    {
+      "id": "h19",
+      "label": "attack",
+      "class": "mass_assignment",
+      "auth": "alice",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"balance": "1000000"}}
+      ]
+    },
+    {
+      "id": "h20",
+      "label": "attack",
+      "class": "mass_assignment",
+      "auth": "carol",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"email": "carol@example.com", "account_limit": "999999", "account_id": "1000"}}
+      ]
+    },
+    {
+      "id": "h21",
+      "label": "attack",
+      "class": "mass_assignment",
+      "auth": "alice",
+      "calls": [
+        {"method": "POST", "path": "/api/profile", "form": {"display_name": "Alice", "privilege_level": "9", "can_approve_transfers": "yes"}}
+      ]
+    },
+    {
+      "id": "h22",
+      "label": "attack",
+      "class": "bfla",
+      "auth": "bob",
+      "calls": [
+        {"method": "GET", "path": "/api/admin/users"}
+      ]
+    },
+    {
+      "id": "h23",
+      "label": "attack",
+      "class": "bfla",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/me"},
+        {"method": "GET", "path": "/api/admin/users"}
+      ]
+    },
+    {
+      "id": "h24",
+      "label": "attack",
+      "class": "transfer_abuse",
+      "auth": "alice",
+      "calls": [
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1002", "amount": "-500", "idempotency_key": "alice-tx-neg01"}}
+      ]
+    },
+    {
+      "id": "h25",
+      "label": "attack",
+      "class": "transfer_abuse",
+      "auth": "bob",
+      "calls": [
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1001", "amount": "0", "idempotency_key": "bob-tx-zero01"}}
+      ]
+    },
+    {
+      "id": "h26",
+      "label": "attack",
+      "class": "transfer_abuse",
+      "auth": "carol",
+      "calls": [
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1001", "amount": "9999999", "idempotency_key": "carol-tx-big01"}}
+      ]
+    },
+    {
+      "id": "h27",
+      "label": "attack",
+      "class": "transfer_abuse",
+      "auth": "alice",
+      "calls": [
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1002", "amount": "100", "idempotency_key": "alice-tx-replay9"}},
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1002", "amount": "100", "idempotency_key": "alice-tx-replay9"}},
+        {"method": "POST", "path": "/api/transfer", "form": {"to_account": "1002", "amount": "100", "idempotency_key": "alice-tx-replay9"}}
+      ]
+    },
+    {
+      "id": "h28",
+      "label": "attack",
+      "class": "cred_stuffing",
+      "auth": "none",
+      "calls": [
+        {"method": "POST", "path": "/api/login", "form": {"username": "alice", "password": "Password1"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "bob", "password": "123456"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "carol", "password": "qwerty"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "admin", "password": "admin123"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "alice", "password": "letmein"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "bob", "password": "welcome"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "admin", "password": "root"}}
+      ]
+    },
+    {
+      "id": "h29",
+      "label": "attack",
+      "class": "cred_stuffing",
+      "auth": "none",
+      "calls": [
+        {"method": "POST", "path": "/api/login", "form": {"username": "admin", "password": "admin"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "admin", "password": "admin1"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "admin", "password": "Admin!"}},
+        {"method": "POST", "path": "/api/login", "form": {"username": "admin", "password": "admin2024"}}
+      ]
+    },
+    {
+      "id": "h30",
+      "label": "attack",
+      "class": "other",
+      "auth": "alice",
+      "calls": [
+        {"method": "GET", "path": "/api/accounts/0"},
+        {"method": "GET", "path": "/api/accounts/-1"},
+        {"method": "GET", "path": "/api/accounts/9999"}
+      ]
+    }
+  ]
+}
