@@ -1,0 +1,238 @@
+{
+  "model": "deepseek-coder-v2:16b",
+  "author_note": "Authored blind from the spec only (never read any detector/attacker/target code); strategy is a balanced mix with deliberately tricky benign edge cases (own account by numeric id, repeated /me views, legit admin) and subtle/evasive attacks (reading exactly one other account, scrape blended with own id, novel privileged field names, idempotency replay).",
+  "n_attack": 18,
+  "n_benign": 12,
+  "tally": {
+    "syntactic": {
+      "attack": [
+        0,
+        18
+      ],
+      "benign": [
+        0,
+        12
+      ]
+    },
+    "context": {
+      "attack": [
+        13,
+        18
+      ],
+      "benign": [
+        1,
+        12
+      ]
+    },
+    "behavioral": {
+      "attack": [
+        9,
+        18
+      ],
+      "benign": [
+        1,
+        12
+      ]
+    },
+    "llm_ctx": {
+      "attack": [
+        6,
+        18
+      ],
+      "benign": [
+        0,
+        12
+      ]
+    },
+    "llm_beh": {
+      "attack": [
+        7,
+        18
+      ],
+      "benign": [
+        1,
+        12
+      ]
+    }
+  },
+  "by_class": {
+    "benign": {
+      "syntactic": [
+        0,
+        12
+      ],
+      "context": [
+        1,
+        12
+      ],
+      "behavioral": [
+        1,
+        12
+      ],
+      "llm_ctx": [
+        0,
+        12
+      ],
+      "llm_beh": [
+        1,
+        12
+      ]
+    },
+    "bola": {
+      "syntactic": [
+        0,
+        2
+      ],
+      "context": [
+        2,
+        2
+      ],
+      "behavioral": [
+        0,
+        2
+      ],
+      "llm_ctx": [
+        1,
+        2
+      ],
+      "llm_beh": [
+        1,
+        2
+      ]
+    },
+    "scraping": {
+      "syntactic": [
+        0,
+        2
+      ],
+      "context": [
+        2,
+        2
+      ],
+      "behavioral": [
+        1,
+        2
+      ],
+      "llm_ctx": [
+        1,
+        2
+      ],
+      "llm_beh": [
+        0,
+        2
+      ]
+    },
+    "mass_assignment": {
+      "syntactic": [
+        0,
+        5
+      ],
+      "context": [
+        4,
+        5
+      ],
+      "behavioral": [
+        4,
+        5
+      ],
+      "llm_ctx": [
+        1,
+        5
+      ],
+      "llm_beh": [
+        0,
+        5
+      ]
+    },
+    "bfla": {
+      "syntactic": [
+        0,
+        2
+      ],
+      "context": [
+        2,
+        2
+      ],
+      "behavioral": [
+        2,
+        2
+      ],
+      "llm_ctx": [
+        1,
+        2
+      ],
+      "llm_beh": [
+        2,
+        2
+      ]
+    },
+    "transfer_abuse": {
+      "syntactic": [
+        0,
+        4
+      ],
+      "context": [
+        3,
+        4
+      ],
+      "behavioral": [
+        1,
+        4
+      ],
+      "llm_ctx": [
+        0,
+        4
+      ],
+      "llm_beh": [
+        1,
+        4
+      ]
+    },
+    "cred_stuffing": {
+      "syntactic": [
+        0,
+        2
+      ],
+      "context": [
+        0,
+        2
+      ],
+      "behavioral": [
+        1,
+        2
+      ],
+      "llm_ctx": [
+        2,
+        2
+      ],
+      "llm_beh": [
+        2,
+        2
+      ]
+    },
+    "other": {
+      "syntactic": [
+        0,
+        1
+      ],
+      "context": [
+        0,
+        1
+      ],
+      "behavioral": [
+        0,
+        1
+      ],
+      "llm_ctx": [
+        0,
+        1
+      ],
+      "llm_beh": [
+        1,
+        1
+      ]
+    }
+  },
+  "llm_err": 0,
+  "run_dir": "C:\\codex_qwen_pentest\\research\\fin_api_runs\\blind-20261118T040355"
+}
