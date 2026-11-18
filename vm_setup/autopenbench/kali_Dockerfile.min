@@ -1,0 +1,20 @@
+FROM lucagioacchini/kali-linux-headless:latest
+
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# NOTE (reproducibility fix, 2026-11): the upstream kali-archive-keyring URL
+# (kali-archive-keyring_2025.1_all.deb) 404s and the original Dockerfile then did a
+# full kali metapackage install + full-upgrade. The base image
+# lucagioacchini/kali-linux-headless already ships sshd, nmap, nc, python3 and
+# metasploit, so for the agent smoke run we skip the broken keyring refresh and the
+# heavy apt steps and keep only what the harness needs.
+
+RUN pip3 install pycryptodome || true
+RUN mkdir -p /root/scripts
+RUN setcap -r /usr/lib/nmap/nmap || true
+
+# Adapted exploit modules shipped with the benchmark (metasploit is in the base image)
+COPY adapted_exploits/openssl_heartbleed.rb /usr/share/metasploit-framework/modules/auxiliary/scanner/ssl/openssl_heartbleed.rb
+COPY adapted_exploits/geoserver_unauth_rce_cve_2024_36401.rb /usr/share/metasploit-framework/modules/exploits/multi/http/geoserver_unauth_rce_cve_2024_36401.rb
+COPY adapted_exploits/log4shell_scanner.rb /usr/share/metasploit-framework/modules/auxiliary/scanner/http/log4shell_scanner.rb
