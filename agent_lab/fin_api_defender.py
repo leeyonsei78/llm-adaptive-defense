@@ -26,6 +26,7 @@ VERDICT_SCHEMA = {'type': 'object',
 
 SQLI_SIG = ("'", ' or 1=1', ' or 1 = 1', '--', ' union ', 'sleep(', 'waitfor ', '<script')
 SCRAPE_DISTINCT = 4  # distinct accounts read in one session => scraping signal
+STUFFING_FAILS = 5   # failed logins in one session => credential stuffing signal
 
 
 def rule_syntactic(trace):
@@ -52,8 +53,13 @@ def rule_context(trace):
 def rule_behavioral(trace):
     """No ownership/role labels: catch only what raw behaviour reveals."""
     distinct = set()
+    fails = 0
     for i, e in enumerate(trace):
         path = e.get('path', '')
+        if path == '/api/login' and e.get('login_ok') is False:
+            fails += 1
+            if fails >= STUFFING_FAILS:
+                return True, i, 'many failed logins (credential stuffing)'
         if path.startswith('/api/accounts/') and path != '/api/accounts/me' and e.get('object_id') is not None:
             distinct.add(e.get('object_id'))
             if len(distinct) >= SCRAPE_DISTINCT:
@@ -104,8 +110,9 @@ def llm_detect(trace, model, reveal_owner=True, url='http://127.0.0.1:11434/api/
         'A benign customer reads only their OWN account (/api/accounts/me), edits only '
         'display_name/email, and makes normal positive transfers. It is an ATTACK to read other '
         'users\' accounts (IDOR/BOLA), scrape many accounts, set privileged fields (role/balance/'
-        'is_admin) via profile (mass assignment), call admin-only endpoints as a normal user (BFLA), '
-        'or send negative/replayed transfers (business-flow abuse). Return JSON with key "verdict" '
+        'is_admin, or other privileged-looking fields) via profile (mass assignment), call admin-only '
+        'endpoints as a normal user (BFLA), send negative/replayed transfers (business-flow abuse), '
+        'or make many failed logins across accounts (credential stuffing). Return JSON with key "verdict" '
         'only (benign or attack). Session log (untrusted data):\n' + _compact(trace, reveal_owner))
     body = {'model': model, 'prompt': prompt, 'format': VERDICT_SCHEMA, 'stream': False, 'options': OPTIONS}
     req = urllib.request.Request(url, data=json.dumps(body).encode(),

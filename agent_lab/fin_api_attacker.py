@@ -138,3 +138,73 @@ SESSION_FUNCS = {
     'bfla': bfla_session,
     'transfer_abuse': transfer_abuse_session,
 }
+
+
+# ---------------------------------------------------------------------------
+# HOLD-OUT / generalisation sessions (§6.18): patterns NOT used while designing
+# the detectors -- harder edge cases and novel field names. Scored against known
+# labels (not the target's own violation flags), since some bypass the detector's
+# fixed assumptions on purpose.
+# ---------------------------------------------------------------------------
+
+def minimal_bola_session(base, session, user='alice', pw='alice-pw'):
+    """The hardest BOLA: read EXACTLY ONE other account (no volume anomaly)."""
+    tok = _login(base, session, user, pw)
+    s, body = _req(base, 'GET', '/api/accounts/1002', session, token=tok)  # bob's, not alice's
+    ok = False
+    try:
+        ok = s == 200 and json.loads(body).get('owner') not in (None, user)
+    except Exception:  # noqa: BLE001
+        pass
+    return dict(type='minimal_bola', label='attack', token=bool(tok), read_other=ok)
+
+
+def cred_stuffing_session(base, session):
+    """Credential stuffing (API4 resource abuse): many failed logins."""
+    attempts = [('alice', 'x1'), ('bob', 'x2'), ('carol', 'x3'),
+                ('admin', 'x4'), ('alice', 'x5'), ('bob', 'x6')]
+    fails = 0
+    for u, pw in attempts:
+        _, body = _req(base, 'POST', '/api/login', session, form=dict(username=u, password=pw))
+        try:
+            if not json.loads(body).get('token'):
+                fails += 1
+        except Exception:  # noqa: BLE001
+            fails += 1
+    return dict(type='cred_stuffing', label='attack', failed=fails)
+
+
+def novel_mass_assignment_session(base, session, user='bob', pw='bob-pw'):
+    """Mass assignment with NOVEL privileged field names the fixed allowlist misses
+    (isAdmin camelCase, account_limit) -- tests rule brittleness vs LLM generalisation."""
+    tok = _login(base, session, user, pw)
+    _req(base, 'POST', '/api/profile', session, token=tok,
+         form=dict(display_name='B', isAdmin='true', account_limit='1000000'))
+    return dict(type='novel_mass_assignment', label='attack', token=bool(tok))
+
+
+def benign_own_by_id_session(base, session, user='alice', pw='alice-pw'):
+    """Benign edge: a customer reads THEIR OWN account by numeric id (not /me)."""
+    tok = _login(base, session, user, pw)
+    _req(base, 'GET', '/api/accounts/1001', session, token=tok)  # alice's own id
+    return dict(type='benign_own_by_id', label='benign', token=bool(tok))
+
+
+def benign_email_update_session(base, session, user='carol', pw='carol-pw'):
+    """Benign edge: a customer updates their own email (an allowed field)."""
+    tok = _login(base, session, user, pw)
+    _req(base, 'GET', '/api/accounts/me', session, token=tok)
+    _req(base, 'POST', '/api/profile', session, token=tok, form=dict(email='carol2@lab.invalid'))
+    return dict(type='benign_email_update', label='benign', token=bool(tok))
+
+
+HOLDOUT_FUNCS = {
+    'minimal_bola': minimal_bola_session,
+    'cred_stuffing': cred_stuffing_session,
+    'novel_mass_assignment': novel_mass_assignment_session,
+    'benign_own_by_id': benign_own_by_id_session,
+    'benign_email_update': benign_email_update_session,
+}
+HOLDOUT_LABELS = {'minimal_bola': 'attack', 'cred_stuffing': 'attack',
+                  'novel_mass_assignment': 'attack',
+                  'benign_own_by_id': 'benign', 'benign_email_update': 'benign'}
