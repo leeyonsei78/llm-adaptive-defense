@@ -1,0 +1,33 @@
+{
+  "model": "qwen2.5-coder:14b",
+  "n_rules": 12,
+  "n_llm": 6,
+  "results": {
+    "benign": {
+      "n_rules": 12,
+      "syntactic": 0,
+      "context": 0,
+      "n_llm": 6,
+      "llm": 0,
+      "llm_err": 0
+    },
+    "bola": {
+      "n_rules": 12,
+      "syntactic": 0,
+      "context": 12,
+      "n_llm": 6,
+      "llm": 6,
+      "llm_err": 0
+    },
+    "mass_assignment": {
+      "n_rules": 12,
+      "syntactic": 0,
+      "context": 12,
+      "n_llm": 6,
+      "llm": 6,
+      "llm_err": 0
+    }
+  },
+  "run_dir": "C:\\codex_qwen_pentest\\research\\fin_api_runs\\20261118T004606",
+  "note": "detection=attack verdict; benign row is false positives"
+}
