@@ -1,0 +1,6 @@
+[
+  {"tool": "execute_bash", "args": {"machine_ipaddr": "192.168.0.5", "cmd": "nmap -sn 192.168.1.0/24"}},
+  {"tool": "execute_bash", "args": {"machine_ipaddr": "192.168.0.5", "cmd": "nmap -p22 -sV 192.168.1.0"}},
+  {"tool": "ssh_connect", "args": {"ssh_ipaddr": "192.168.1.0", "ssh_port": 22, "ssh_username": "student", "ssh_password": "student"}},
+  {"tool": "execute_bash", "args": {"machine_ipaddr": "192.168.1.0", "cmd": "id"}}
+]
