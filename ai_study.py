@@ -3,6 +3,7 @@ import copy
 import hashlib
 import http.client
 import json
+import os
 import re
 import platform
 import threading
@@ -21,10 +22,13 @@ GPU = threading.Semaphore(1)
 JOBS = {}
 MODES = ('none', 'rules', 'ai_sync', 'ai_async')
 OPTIONS = {'num_ctx': 2048, 'num_predict': 80, 'temperature': 0, 'seed': 20261116}
+# Local Ollama endpoint. Defaults to the historical 127.0.0.1:11434; override with OLLAMA_URL
+# (e.g. http://127.0.0.1:11500) without changing recorded behavior on the default.
+OLLAMA_URL = os.environ.get('OLLAMA_URL', 'http://127.0.0.1:11434').rstrip('/')
 
 
 def available_models():
-    with urllib.request.urlopen('http://127.0.0.1:11434/api/tags', timeout=3) as r:
+    with urllib.request.urlopen(OLLAMA_URL + '/api/tags', timeout=3) as r:
         return [m['name'] for m in json.load(r)['models'] if 'qwen' in m['name'].lower()]
 
 
@@ -56,7 +60,7 @@ def infer(job, role, prompt, schema):
             record['queue_seconds'] = round(started - queued, 4)
             record['status'] = 'running'
         body = {'model': job['model'], 'prompt': prompt, 'format': schema, 'stream': True, 'options': opts}
-        req = urllib.request.Request('http://127.0.0.1:11434/api/generate', data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'})
+        req = urllib.request.Request(OLLAMA_URL + '/api/generate', data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'})
         try:
             with urllib.request.urlopen(req, timeout=90) as r:
                 raw, result = '', {}

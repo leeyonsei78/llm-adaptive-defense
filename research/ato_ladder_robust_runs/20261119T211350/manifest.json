@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-11-19T21:13:50.951538+00:00",
+  "args": {
+    "attacker_model": "qwen2.5-coder:14b",
+    "defender_model": "qwen2.5-coder:14b",
+    "rounds": 8,
+    "seeds": 1,
+    "defender_temp": 0.7,
+    "modes": [
+      "llm_sync"
+    ],
+    "levels": [
+      "L2_informed"
+    ]
+  },
+  "ollama_url": "http://127.0.0.1:11500",
+  "scope": "robustness re-run: STOCHASTIC defender (temp>0, independent seed per repeat) over key ladder cells; synthetic; same model family; development setup",
+  "attacker_options": "temperature 0.7, seed 1000+repeat, num_predict 120",
+  "defender_options": "temperature 0.7, seed 7000+repeat, otherwise ai_study.OPTIONS",
+  "victim": {
+    "home_geo": "KR",
+    "usual_hours": [
+      8,
+      23
+    ],
+    "known_devices": 1
+  },
+  "defender_variant": "summary (information parity with rules)",
+  "source_sha256": {
+    "experiments/run_ato_adaptive_robust.py": "c6734df2f0924a8cf06f4ed325d10ad58a9a981f6090df73167e507d7779c38f",
+    "experiments/run_ato_adaptive.py": "70d5e50b96d32d386cbc1e63a5c91156b378a4a0287d8a5497a7d86ae7deca6b",
+    "ato_adaptive.py": "46ef2226b947bab00824e66d37c8248aaff755e00ea89bc601cfc0ac20fa5364",
+    "ato_study.py": "9f60a5c2a8bcba8ebc307397cb5a5bb46fdc778b17d70ec09445d7db77aa1ee3",
+    "ato_fixtures.py": "2c80634dbc406d50902ae68b11aa87c9395de284cb1caf107741b6a7e7f501bc",
+    "ai_study.py": "c514085c3f986791dbc0b18726af5c1bf8b99bd03f02a13aef27bb4b48cf3749"
+  }
+}

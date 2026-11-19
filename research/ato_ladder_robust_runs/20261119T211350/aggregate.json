@@ -1,0 +1,12 @@
+{
+  "llm_sync-L2_informed": {
+    "mode": "llm_sync",
+    "level": "L2_informed",
+    "takeovers": 1,
+    "n": 1,
+    "rate": 1.0,
+    "ci_low": 0.2065,
+    "ci_high": 1.0,
+    "failed": 0
+  }
+}
