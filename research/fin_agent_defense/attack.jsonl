@@ -1,0 +1,7 @@
+{"method": "POST", "status": 200, "login_ok": true, "path": "/api/login", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:12.207555+00:00"}
+{"method": "GET", "status": 404, "token_user": "alice", "path": "/api/accounts/None", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:14.315899+00:00"}
+{"method": "GET", "status": 200, "token_user": "alice", "object_id": 1000, "object_owner": "admin", "bola_violation": true, "path": "/api/accounts/1000", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:15.634853+00:00"}
+{"method": "GET", "status": 200, "token_user": "alice", "object_id": 1002, "object_owner": "bob", "bola_violation": true, "path": "/api/accounts/1002", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:16.968874+00:00"}
+{"method": "GET", "status": 200, "token_user": "alice", "object_id": 1002, "object_owner": "bob", "bola_violation": true, "path": "/api/accounts/1002", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:18.356157+00:00"}
+{"method": "GET", "status": 404, "token_user": "alice", "path": "/api/accounts/None", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:20.140347+00:00"}
+{"method": "POST", "status": 200, "token_user": "alice", "fields_set": ["role"], "privileged_fields": ["role"], "mass_assignment": true, "privilege_escalation": true, "path": "/api/profile", "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:55:21.716088+00:00"}
