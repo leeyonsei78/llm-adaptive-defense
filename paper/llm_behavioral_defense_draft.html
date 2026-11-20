@@ -1,0 +1,1876 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>진화하는 AI 기반 사이버 공격에 대한 LLM 행동 분석 방어 시스템의 효과성 연구</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Serif KR', Georgia, serif; background: #f8f7f4; color: #1a1a1a; line-height: 1.8; }
+
+  nav { position: fixed; top: 0; left: 0; width: 220px; height: 100vh; background: #1e2a3a; color: #cdd6e0; padding: 24px 16px; overflow-y: auto; z-index: 100; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; }
+  nav h3 { color: #7eb8f7; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #2e3f54; }
+  nav a { display: block; padding: 5px 8px; color: #9fb6cc; text-decoration: none; border-radius: 4px; margin-bottom: 2px; transition: all 0.2s; }
+  nav a:hover, nav a.active { background: #2e4060; color: #7eb8f7; }
+  nav .section-num { color: #4a6080; margin-right: 6px; }
+
+  main { margin-left: 220px; padding: 48px 60px 80px; max-width: 960px; }
+
+  .paper-header { text-align: center; padding: 48px 0 40px; border-bottom: 2px solid #2a3f5a; margin-bottom: 40px; }
+  .paper-header h1 { font-size: 22px; font-weight: 700; line-height: 1.4; color: #0d1f33; margin-bottom: 8px; }
+  .paper-header .subtitle { font-size: 14px; color: #5a7a9a; font-style: italic; margin-bottom: 24px; }
+  .authors { font-size: 14px; color: #2a4a6a; margin-bottom: 6px; }
+  .affiliation { font-size: 12px; color: #6a8aaa; margin-bottom: 20px; }
+  .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-family: 'Noto Sans KR', sans-serif; font-weight: 600; }
+  .badge.conf { background: #e8f0fe; color: #1a56db; }
+  .badge.year { background: #e8f7e8; color: #166534; }
+  .badge.draft { background: #fef3c7; color: #92400e; }
+  .badge.real { background: #fce7f3; color: #9d174d; }
+
+  .section { margin-bottom: 48px; scroll-margin-top: 24px; }
+  .section h2 { font-size: 17px; font-weight: 700; color: #0d1f33; border-left: 4px solid #1a56db; padding-left: 14px; margin-bottom: 20px; font-family: 'Noto Sans KR', sans-serif; }
+  .section h3 { font-size: 15px; font-weight: 600; color: #1a3a5a; margin: 24px 0 12px; font-family: 'Noto Sans KR', sans-serif; }
+  .section h4 { font-size: 13px; font-weight: 600; color: #2a5a8a; margin: 16px 0 8px; font-family: 'Noto Sans KR', sans-serif; }
+  .section p { margin-bottom: 14px; font-size: 14.5px; text-align: justify; }
+
+  .abstract-box { background: #f0f4f8; border: 1px solid #c8d8e8; border-radius: 8px; padding: 24px 28px; margin-bottom: 40px; }
+  .abstract-box h2 { font-size: 13px; letter-spacing: 1.5px; color: #3a6a9a; text-transform: uppercase; border: none; padding: 0; margin-bottom: 12px; font-family: 'Noto Sans KR', sans-serif; }
+  .abstract-box p { font-size: 13.5px; color: #2a3a4a; margin: 0; line-height: 1.9; }
+  .keywords { margin-top: 14px; font-size: 12.5px; color: #3a5a7a; }
+  .keywords strong { color: #1a3a5a; }
+
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; }
+  th { background: #1e2a3a; color: #d0dcea; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e2e8f0; }
+  tr:nth-child(even) { background: #f5f8fb; }
+  tr:hover { background: #eaf0f8; }
+  .caption { text-align: center; font-size: 12px; color: #5a7a9a; margin-top: 6px; font-style: italic; font-family: 'Noto Sans KR', sans-serif; }
+
+  .code-block { background: #0d1117; color: #c9d1d9; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 12.5px; line-height: 1.6; margin: 16px 0; overflow-x: auto; }
+  .code-block .comment { color: #6a9153; }
+  .code-block .keyword { color: #ff7b72; }
+  .code-block .string { color: #a5d6ff; }
+  .formula { background: #f0f4f8; border: 1px solid #c8d8e8; border-radius: 6px; padding: 14px 20px; text-align: center; font-style: italic; color: #1a3a5a; margin: 16px 0; font-size: 14px; }
+
+  .cite { font-size: 11px; color: #1a56db; vertical-align: super; cursor: pointer; }
+  .references { font-size: 12.5px; }
+  .ref-item { padding: 8px 0; border-bottom: 1px solid #e8edf2; display: flex; gap: 10px; }
+  .ref-num { color: #1a56db; min-width: 32px; font-weight: 600; }
+  .ref-text { color: #2a3a4a; line-height: 1.6; }
+
+  .highlight-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 13.5px; }
+  .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 13.5px; }
+  .warn-box { background: #fff1f2; border-left: 4px solid #f43f5e; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 13.5px; }
+  .success-box { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 13.5px; }
+
+  .status-bar { position: fixed; bottom: 0; left: 220px; right: 0; background: #1e2a3a; color: #7eb8f7; padding: 8px 20px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; display: flex; gap: 20px; z-index: 100; }
+  .status-item { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.done { background: #22c55e; }
+  .dot.wip { background: #f59e0b; }
+  .dot.todo { background: #4a6080; }
+
+  .arch-diagram { background: #0d1117; border-radius: 10px; padding: 24px; margin: 20px 0; color: #c9d1d9; font-family: 'Courier New', monospace; font-size: 12px; line-height: 2; text-align: center; }
+  .arch-diagram .box { display: inline-block; border: 1px solid #3a5a7a; padding: 4px 14px; border-radius: 4px; margin: 2px; }
+  .arch-diagram .box.red { border-color: #ff7b72; color: #ff7b72; }
+  .arch-diagram .box.blue { border-color: #7eb8f7; color: #7eb8f7; }
+  .arch-diagram .box.green { border-color: #56d364; color: #56d364; }
+  .arch-diagram .box.yellow { border-color: #e3b341; color: #e3b341; }
+  .arch-diagram .arrow { color: #6a9153; }
+
+  .metric-row { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+  .metric-card { flex: 1; min-width: 140px; background: #fff; border: 1px solid #dde6f0; border-radius: 8px; padding: 16px; text-align: center; }
+  .metric-card .val { font-size: 28px; font-weight: 700; color: #1a56db; font-family: 'Noto Sans KR', sans-serif; }
+  .metric-card .val.red { color: #dc2626; }
+  .metric-card .val.green { color: #16a34a; }
+  .metric-card .val.amber { color: #d97706; }
+  .metric-card .label { font-size: 11px; color: #5a7a9a; margin-top: 4px; font-family: 'Noto Sans KR', sans-serif; }
+
+  td.good { color: #16a34a; font-weight: 600; }
+  td.bad { color: #dc2626; font-weight: 600; }
+  td.warn { color: #d97706; font-weight: 600; }
+  td.highlight { background: #eff6ff !important; font-weight: 700; }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { margin-left: 0; padding: 24px 20px; }
+    .status-bar { left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <h3>목차</h3>
+  <a href="#abstract"><span class="section-num">—</span>Abstract</a>
+  <a href="#glossary"><span class="section-num">—</span>용어 풀이 (주석)</a>
+  <a href="#s1"><span class="section-num">1.</span>서론</a>
+  <a href="#s2"><span class="section-num">2.</span>관련 연구</a>
+  <a href="#s3"><span class="section-num">3.</span>위협 모델</a>
+  <a href="#s4"><span class="section-num">4.</span>시스템 설계</a>
+  <a href="#s4-1" style="padding-left:20px; font-size:12px;">4.1 전체 아키텍처</a>
+  <a href="#s4-2" style="padding-left:20px; font-size:12px;">4.2 5가지 방어 조건</a>
+  <a href="#s4-3" style="padding-left:20px; font-size:12px;">4.3 정책 엔진 (Qwen·DeepSeek)</a>
+  <a href="#s5"><span class="section-num">5.</span>실험 설계</a>
+  <a href="#s5-1" style="padding-left:20px; font-size:12px;">5.1 환경 구성</a>
+  <a href="#s5-2" style="padding-left:20px; font-size:12px;">5.2 실험 A: AI 공격·방어</a>
+  <a href="#s5-3" style="padding-left:20px; font-size:12px;">5.3 실험 B: 동일 입력 재생</a>
+  <a href="#s6"><span class="section-num">6.</span>실험 결과</a>
+  <a href="#s6-1" style="padding-left:20px; font-size:12px;">6.1 실험 A 결과</a>
+  <a href="#s6-2" style="padding-left:20px; font-size:12px;">6.2 실험 B 결과</a>
+  <a href="#s6-3" style="padding-left:20px; font-size:12px;">6.3 응답 시간 분석</a>
+  <a href="#s6-5" style="padding-left:20px; font-size:12px;">6.5 도착률 스윕</a>
+  <a href="#s6-6" style="padding-left:20px; font-size:12px;">6.6 계정 탈취 모의 실험</a>
+  <a href="#s6-7" style="padding-left:20px; font-size:12px;">6.7 계정 탈취: 도착률·긴 에피소드</a>
+  <a href="#s6-8" style="padding-left:20px; font-size:12px;">6.8 프롬프트 주입 방어 비교</a>
+  <a href="#s6-9" style="padding-left:20px; font-size:12px;">6.9 공격자 능력 사다리</a>
+  <a href="#s6-10" style="padding-left:20px; font-size:12px;">6.10 기만(Shadow) 방어 민감도</a>
+  <a href="#s6-11" style="padding-left:20px; font-size:12px;">6.11 교차 모델 (DeepSeek↔Qwen)</a>
+  <a href="#s6-12" style="padding-left:20px; font-size:12px;">6.12 실트래픽 탐지 (규칙 vs LLM)</a>
+  <a href="#s6-13" style="padding-left:20px; font-size:12px;">6.13 독립 holdout 재검증 (순환성)</a>
+  <a href="#s6-14" style="padding-left:20px; font-size:12px;">6.14 약점 교정 (IP보정·상태추적)</a>
+  <a href="#s6-15" style="padding-left:20px; font-size:12px;">6.15 에이전트 아키텍처·듀얼그래프</a>
+  <a href="#s6-16" style="padding-left:20px; font-size:12px;">6.16 Cochise 실구동·방어 함의</a>
+  <a href="#s6-16b" style="padding-left:20px; font-size:12px;">6.16b AutoPenBench — 공격자·평가자 실패</a>
+  <a href="#s6-16c" style="padding-left:20px; font-size:12px;">6.16c PentAGI — Flow 실행·GT</a>
+  <a href="#s6-17" style="padding-left:20px; font-size:12px;">6.17 금융 API 공격 판단 (OWASP)</a>
+  <a href="#s6-18" style="padding-left:20px; font-size:12px;">6.18 금융 API 홀드아웃·일반화</a>
+  <a href="#s6-19" style="padding-left:20px; font-size:12px;">6.19 제3자 blind 독립 holdout</a>
+  <a href="#s7"><span class="section-num">7.</span>논의</a>
+  <a href="#s7-5" style="padding-left:20px; font-size:12px;">7.5 자율 에이전트 도입 계획</a>
+  <a href="#s7-6" style="padding-left:20px; font-size:12px;">7.6 AI 방어 설계 원칙 (종합)</a>
+  <a href="#s8"><span class="section-num">8.</span>결론</a>
+  <a href="#refs"><span class="section-num">—</span>참고문헌</a>
+</nav>
+
+<main>
+
+<div class="paper-header">
+  <h1>진화하는 AI 기반 사이버 공격에 대한<br>LLM 행동 분석 방어 시스템의 효과성 연구</h1>
+  <div class="subtitle">Effectiveness Research of LLM Behavioral Analysis Defense System Against Evolving AI-Based Cyber Attacks</div>
+  <div class="authors">저자 (Author)</div>
+  <div class="affiliation">소속 기관 · 이메일</div>
+  <div class="badges">
+    <span class="badge draft">초안 (Draft)</span>
+    <span class="badge year">2026</span>
+    <span class="badge conf">제출 대상: 한국정보보호학회 / IEEE Access</span>
+  </div>
+</div>
+
+
+
+<!-- Abstract -->
+<div class="abstract-box" id="abstract">
+  <h2>Abstract</h2>
+  <p>
+    본 연구는 <strong>AI 적응형 공격에 대한 AI(LLM) 방어의 가능성과 효과, 그리고 설계 원칙</strong>을
+    로컬·합성 환경에서 실측한다. Windows 로컬 환경(Ollama + Qwen 2.5-Coder 14B / DeepSeek-Coder-v2 16B)에서
+    세 가지 축으로 실험하였다: (1) SQL 인증 공격·방어의 <strong>정책 적용 시점(동기/비동기)</strong>,
+    (2) 적응형 공격자가 피드백을 보고 로그인 속성을 바꾸는 <strong>계정 탈취(ATO) 능력 사다리</strong>,
+    (3) 공격자·방어자를 서로 다른 모델 계열로 교차한 <strong>다중 모델 비교</strong>.
+  </p>
+  <p>
+    SQL 재생 실험(5조건·3반복, 150 요청)에서 공격 성공은 방어 없음 12/12, 고정 규칙 3/12,
+    항상 안전한 구현 0/12, 동기 AI 0/12, 비동기 AI 3/12였고, 도착률을 고정한 개방형 스윕에서
+    비동기 방어의 패치 전 도착 요청 수는 <strong>floor(추론시간×RPS)+1</strong> 모델과 거의 일치했다.
+    계정 탈취 능력 사다리(216캠페인, 동일 Qwen 계열)에서는 비밀번호만 아는 공격자(L1)는 거의 모든 방어가 막았으나,
+    탈취된 기기·세션을 가진 공격자(L3)는 여섯 방어 중 다섯이 80% 이상 뚫렸다. LLM 방어는 규칙보다 정상 사용자 마찰을
+    크게 줄였으나(마찰 합 11~12 대 42~58) L2 단계 공격을 더 많이 통과시키는 트레이드오프를 보였다.
+    교차 모델 실험(DeepSeek↔Qwen, 셀당 n=12)에서는 <strong>방어자 모델에 따라 효과가 결정되어</strong>, 가장 어려운
+    L3 단계를 막은 유일한 설정은 DeepSeek 방어자+llm_escalate(0/12)였고 Qwen 방어자는 같은 방식으로도 뚫렸다(12/12).
+    단 DeepSeek 방어는 2~9배 느렸고, 동일 설정 2회 실행 중 3셀이 불일치해 로컬 추론의 비결정성도 확인되었다.
+  </p>
+  <p>
+    나아가 격리된(루프백 전용, 합성) 취약 웹 표적에 <strong>실제 HTTP 트래픽을 보내는 고정 파이프라인 공격 에이전트</strong>
+    (정찰→열거→SQLi→익스플로잇)를 돌려, 방어자의 규칙 탐지와 LLM 탐지를 실트래픽에서 비교하였다. 그 결과
+    <strong>AI 탐지가 만능이 아님</strong>을 확인하였다 — 시끄러운 공격은 둘 다 100% 잡았고, 명확한 SQLi 시그니처가 있는
+    은밀한 공격에서는 오히려 규칙이 LLM을 앞섰으며(12/12 대 1/12), <strong>탈취된 유효 자격증명 세션은 규칙도 LLM도 전혀
+    탐지하지 못해(0/12)</strong> 사다리 L3의 구조적 한계가 실트래픽에서도 재현되었다. 더 자율적인 에이전트(Cochise)와
+    networkx 듀얼 그래프 비교에 더해, 외부 자율 하네스 <strong>Cochise를 격리된 VirtualBox VM(내부 Docker)에서 실제로 구동</strong>하였다(§6.16) — 로컬 소형 모델이 Ollama 네이티브 tool-calling을 안정적으로 수행하지 못한다는 1차 소견을 측정하였다. 또한 tool-calling 호환 모델(llama3.1:8b)로 20분 실구동한 결과, 에이전트는 실제 공격 트래픽(sqlmap 등 332건)을 대량 생성했으나 <strong>인증 우회·크라운주얼 획득에는 실패</strong>하고 성공을 <strong>자기보고(환각)</strong>해(표적 로그 login_ok=0·crown_jewel=0이 반증), 소형 로컬 모델 티어의 한계와 표적측 그라운드 트루스 검증의 중요성을 보였다. 두 번째 외부 하네스 <strong>AutoPenBench</strong>도 같은 격리 VM에서 로컬로 구동해 공격자 실패를 재현했으며, 특히 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(마일스톤 거짓양성 command 86%·stage 80%)함을 결정적 그라운드 트루스로 확인하여 '자기보고를 믿지 말라'는 명제를 평가자에게로 확장하였다(§6.16b). 나아가 최근 금융권의 지배적 위협인 <strong>API 업무로직 공격(BOLA·mass assignment·BFLA·비즈니스플로우 남용·크리덴셜 스터핑)</strong>을 합성 금융 API에서 판단하게 한 결과, 페이로드 시그니처가 없어 <strong>시그니처 규칙은 전부 실패</strong>하고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)만 유효했다(§6.17). 탐지기를 보지 못한 <strong>독립 작성자의 blind holdout</strong>에서 손수 만든 규칙은 과적합으로 하락(맥락 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해 'AI의 일반화 가치'가 독립 데이터에서 확인됐다(§6.19). 단 그 우위는 <strong>모델 의존적</strong>(deepseek-coder-v2는 규칙보다 낮음)이고, 맥락이 없으면 LLM은 정상 접근을 오탐했다(§6.18) — 정밀도 비용 때문에 규칙+LLM 앙상블이 필요하다. <strong>입력·표적·탐지기를 개발자가 작성한 데 따른
+    순환성 우려는 ATO 탐지기에 한해 규칙을 보지 못한 별도 에이전트가 작성한 독립 holdout으로 재검증하여 완화하였고(§6.13,
+    정확도 유지·주입 취약성 재확인; 저자가 AI 에이전트라는 한계 잔존), 실트래픽 표적의 독립 재작성과 능력 사다리의 동일 모델 계열 한계는 남는다.</strong> 따라서 본 연구는 AI 방어의
+    일반적 우월성을 주장하지 않고, "어떤 모델이, 어떤 공격 난이도에, 어떤 비용으로 작동하는가"라는 조건부 결론을 제시한다.
+  </p>
+  <div class="keywords">
+    <strong>키워드:</strong> 대형 언어 모델, AI 적응형 공격, LLM 방어, 계정 탈취(ATO), 정책 적용 시점(동기/비동기), 능력 사다리, 다중 모델 비교, 기만 방어, API 보안(OWASP), BOLA, 자율 공격 에이전트, Qwen, DeepSeek, Ollama, 사이버 보안
+  </div>
+</div>
+
+<!-- 용어 풀이 (초심자 주석) -->
+<div class="section" id="glossary">
+  <h2>용어 풀이 (처음 읽는 분을 위한 주석)</h2>
+  <p>본문에 반복되는 핵심 용어를 쉬운 설명과 예시로 정리한다. 이미 익숙하면 건너뛰어도 좋다.</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>용어</th><th>쉬운 설명</th><th>예시</th></tr>
+      <tr><td><strong>SQL 인젝션(SQLi)</strong></td><td>로그인 입력창 등에 DB 명령 조각을 끼워 넣어 인증을 우회하는 공격</td><td>비밀번호 칸에 <code>' OR '1'='1' --</code> 를 넣어 쿼리를 "항상 참"으로 만들어 로그인</td></tr>
+      <tr><td><strong>계정 탈취(ATO)</strong></td><td>남의 계정에 몰래 로그인해 장악하는 것</td><td>유출된 비밀번호나 훔친 로그인 세션으로 피해자 계정에 접속</td></tr>
+      <tr><td><strong>동기 vs 비동기 적용</strong></td><td>방어 판단을 요청을 막아두고 즉시 하느냐(동기), 일단 통과시키고 나중에 하느냐(비동기)</td><td>동기=문 앞 검문(느리지만 안전), 비동기=일단 들여보내고 CCTV 확인(빠르지만 초기 노출)</td></tr>
+      <tr><td><strong>규칙 기반 vs LLM 기반 방어</strong></td><td>정해진 패턴으로 거르기(규칙) vs AI가 맥락을 읽어 판단(LLM)</td><td>규칙="따옴표 있으면 차단", LLM="이 로그인 전체가 수상한가?"</td></tr>
+      <tr><td><strong>능력 사다리(L1–L3)</strong></td><td>공격자가 가진 정보·수단의 단계</td><td>L1=비밀번호만 / L2=거주국·활동시간까지 / L3=훔친 기기·세션까지</td></tr>
+      <tr><td><strong>기만 방어·허니토큰(shadow)</strong></td><td>정상 사용자는 안 건드리는 가짜 미끼를 심어, 건드리면 공격자로 탐지</td><td>가짜 "API 키" 메뉴를 두고 공격자가 열면 경보+가짜 데이터로 유도</td></tr>
+      <tr><td><strong>독립 holdout</strong></td><td>탐지기를 만들 때 쓰지 않은 별도 검증용 사례 모음(과적합 확인용)</td><td>규칙을 못 본 제3자가 새로 만든 공격·정상 사례로 다시 채점</td></tr>
+      <tr><td><strong>순환성(circularity)</strong></td><td>공격·표적·탐지기를 같은 사람이 만들어 결과가 유리해지는 편향</td><td>독립 holdout·외부 하네스로 이 편향을 완화</td></tr>
+      <tr><td><strong>Ground truth(실측 정답)</strong></td><td>모델의 주장이 아니라 실제로 일어난 사실</td><td>에이전트가 "성공"이라 해도 표적 로그에 침입 기록이 없으면 실패로 판정</td></tr>
+      <tr><td><strong>tool-calling(도구 호출)</strong></td><td>LLM이 글이 아니라 "이 도구를 이 인자로 실행"이라는 구조로 지시하는 기능</td><td><code>run_cmd{host, cmd:"nmap ..."}</code> 를 내보내면 프레임워크가 실제 nmap을 실행</td></tr>
+      <tr><td><strong>API 업무로직 공격·BOLA</strong></td><td>요청은 정상 모양인데 권한을 벗어나 남의 자원에 접근</td><td>내 계정 API에서 id만 타인 번호로 바꿔 남의 잔액 조회(BOLA)</td></tr>
+      <tr><td><strong>자율 공격 에이전트</strong></td><td>사람 없이 LLM이 정찰→침투→권한상승을 스스로 반복</td><td>Cochise · PentAGI · AutoPenBench</td></tr>
+      <tr><td><strong>거짓양성(false positive)</strong></td><td>아닌 것을 "맞다"고 잘못 판정</td><td>정상 로그인을 공격으로 차단하거나, 실패한 공격을 성공으로 오판정</td></tr>
+      <tr><td><strong>Wilson 신뢰구간</strong></td><td>표본이 적을 때 비율 추정의 불확실성 범위</td><td>"12건 중 9건 = 0.92 [0.65, 0.99]"</td></tr>
+      <tr><td><strong>p_touch(미끼 접촉률)</strong></td><td>공격자가 미끼(허니토큰)를 건드릴 확률</td><td>실측 ≈ 0.30 (열거형 공격자)</td></tr>
+    </table>
+    <div class="caption">표 0. 핵심 용어 풀이와 예시 (초심자용 주석).</div>
+  </div>
+</div>
+
+<!-- 1. 서론 -->
+<div class="section" id="s1">
+  <h2>1. 서론 (Introduction)</h2>
+  <p>
+    인공지능 기술의 발전은 사이버 보안 분야에 양면적 영향을 미치고 있다. 공격자들이 LLM을 활용하여
+    고도화된 자동화 공격을 수행하는 동시에, 방어 측도 LLM을 활용한 지능형 탐지·대응 시스템 구축을 시도한다.
+    특히 <strong>공격 감지 후 패치 적용까지의 시간적 노출(policy timing gap)</strong>은
+    동기 vs. 비동기 분석 방식에서 보안 결과에 직접적 차이를 만들어낸다.<span class="cite">[1]</span>
+  </p>
+  <p>
+    기존 LLM 기반 IDS 연구<span class="cite">[3,5,6]</span>는 주로 탐지 정확도에 집중하였으나,
+    실제 방어 시스템에서 LLM 추론 지연·모델 선택·공격 난이도가 보안 결과에 미치는 영향은 충분히 탐구되지 않았다.
+    본 연구는 이 공백을 채우기 위해, 적응형 AI 공격에 대해 LLM 방어가 <strong>가능한지·얼마나 효과적인지·어떤
+    설계 원칙이 유효한지</strong>를 로컬·합성 환경에서 조건별로 실측한다. 실험은 SQL 인증(정책 적용 시점),
+    계정 탈취 능력 사다리, 다중 모델 교차의 세 축으로 구성되며, 여기에 기만(shadow) 방어 민감도(§6.10),
+    격리 VirtualBox VM에서의 외부 자율 공격 하네스 실구동(Cochise §6.16, AutoPenBench §6.16b), 그리고 최근 금융권의 API 업무로직
+    공격 판단(규칙 vs LLM, 제3자 blind 독립 holdout·교차 모델 포함; §6.17–6.19)을 더하였다.
+  </p>
+  <div class="info-box">
+    <strong>본 논문의 연구 질문(RQ)</strong><br><br>
+    <strong>RQ1 (가능성):</strong> LLM 방어는 적응형 AI 공격을 실시간으로 판단·차단할 수 있는가? 어느 공격 난이도까지 막는가?<br><br>
+    <strong>RQ2 (효과·비용):</strong> 그 효과는 공격 능력 단계·방어 모델·적용 시점(동기/비동기)·정상 사용자 마찰에 따라 어떻게 달라지는가?<br><br>
+    <strong>RQ3 (설계·대비):</strong> 규칙·LLM·기만(deception) 중 어떤 방어 설계가 유효하며, 자율 공격 에이전트 시대의 사고 대비는 어떻게 해야 하는가?
+  </div>
+  <div class="highlight-box">
+    <strong>근거의 구분:</strong> 본 논문은 <strong>실험으로 뒷받침되는 발견</strong>(6장)과 <strong>문헌에 근거한
+    대비 권고</strong>(7장 논의)를 명확히 구분한다. 실측하지 않은 수치나 운영 환경 일반화는 주장하지 않는다.
+  </div>
+</div>
+
+<!-- 2. 관련 연구 -->
+<div class="section" id="s2">
+  <h2>2. 관련 연구 (Related Work)</h2>
+
+  <h3>2.1 전통적 IDS</h3>
+  <p>
+    Snort, Suricata 등 시그니처 기반 IDS는 알려진 공격 패턴에 대해 높은 탐지율을 보이나,
+    패턴 변형 공격과 제로데이 위협에 취약하다. 본 연구의 고정 규칙 조건은 이러한 한계를
+    실험적으로 재현한다 — 아포스트로피 계정(O'Reilly)을 정상 차단하고,
+    SQL 주석 변형 공격은 통과시키는 반례를 의도적으로 포함하였다.
+  </p>
+
+  <h3>2.2 ML/LLM 기반 IDS</h3>
+  <p>
+    SHIELD<span class="cite">[5]</span>는 LLM을 호스트 기반 침입 탐지에 적용한 최초의 체계적 프레임워크로,
+    5개 대표 HIDS 대비 우수한 성능을 달성하였다. EADL-IDS<span class="cite">[6]</span>는 RAG를 활용한
+    비지도 학습 기반 LLM-IDS를 제안하였다.
+    그러나 두 연구 모두 LLM 추론 지연이 방어 타이밍에 미치는 영향은 분석하지 않았으며,
+    본 연구는 이 측면에 초점을 맞춘다.
+  </p>
+
+  <h3>2.3 적응형 공격 연구</h3>
+  <p>
+    ZERO-APT<span class="cite">[2]</span>는 LLM 기반 공격 에이전트가 지능형 방어 하에서도 79%의 공격 성공률을 달성함을 보였다.
+    AMDS<span class="cite">[7]</span>는 공격 유형별 탐지 전략을 동적으로 조정하여 94.4% 정확도를 달성하였다.
+    본 연구는 이보다 작은 규모이지만, <strong>실제 모델을 이용한 공격 생성과 방어 분석을 동일 시스템에서 실행</strong>하여
+    타이밍 효과를 직접 측정한다는 점에서 차별화된다.
+  </p>
+
+  <h3>2.4 기존 연구와의 차별점</h3>
+  <div class="table-wrap">
+    <table>
+      <tr>
+        <th>연구</th><th>방법론</th><th>적응형 AI 공격자</th><th>적용 시점(동기/비동기)</th><th>다중 모델 비교</th><th>로컬 재현성</th>
+      </tr>
+      <tr><td>SHIELD [5]</td><td>LLM+HIDS</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+      <tr><td>AMDS [7]</td><td>앙상블+적응형</td><td>부분적</td><td>✗</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Hybrid LLM [3]</td><td>GPT-2+룰</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+      <tr><td>ZERO-APT [2]</td><td>LLM 공격 에이전트</td><td>✓</td><td>✗</td><td>✗</td><td>부분적</td></tr>
+      <tr class="highlight"><td><strong>본 연구</strong></td><td><strong>LLM 공격·방어 + 능력 사다리 + 교차 모델</strong></td><td><strong>✓</strong></td><td><strong>✓</strong></td><td><strong>✓ (Qwen·DeepSeek)</strong></td><td><strong>✓</strong></td></tr>
+    </table>
+    <div class="caption">표 1. 관련 연구와의 비교. 타 연구의 ✗/부분적 표시는 각 논문이 다루는 범위에 대한 본 저자들의 해석이며, 원문 재검증이 필요하다(본 세션에서 전수 검증하지 않음). 본 연구의 ✓는 모두 6장에서 실측으로 뒷받침된다.</div>
+  </div>
+</div>
+
+<!-- 3. 위협 모델 -->
+<div class="section" id="s3">
+  <h2>3. 위협 모델 (Threat Model)</h2>
+
+  <h3>3.1 공격자 모델</h3>
+  <div class="highlight-box">
+    <strong>공격자 능력 (실험 범위 내)</strong><br><br>
+    • <strong>지식:</strong> 방어 시스템의 존재는 알지만 내부 구조는 모름 (블랙박스)<br>
+    • <strong>도구:</strong> 로컬 양자화 LLM — Qwen 2.5-Coder 14B(기본), 교차 검증에는 DeepSeek-Coder-v2 16B(§6.11). 자동화 공격 입력·행동 생성<br>
+    • <strong>전략:</strong> 직전 HTTP 응답·서버 관측을 피드백으로 사용자명 입력(SQL)·로그인 속성(ATO)·에이전트 행동(§6.15)을 조정<br>
+    • <strong>제약:</strong> 공격·방어에 <strong>같은 모델 계열</strong>을 별도 컨텍스트로 사용(SQL·능력 사다리 §6.9); <strong>§6.11에서는 서로 다른 계열(Qwen↔DeepSeek)로 교차</strong>. 로컬 추론 직렬화<br>
+    • <strong>목표:</strong> SQL 인증 우회에서 시작해 계정 탈취(ATO)·멀티호스트 피벗(크라운 주얼 획득)으로 확장(6장)
+  </div>
+
+  <h3>3.2 공격 사례 구성</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>사례 유형</th><th>사례 수</th><th>설명</th></tr>
+      <tr><td>공격 (SQL Injection)</td><td>4</td><td>기본 주입, 주석 변형, 아포스트로피 활용, 함수 치환</td></tr>
+      <tr><td>올바른 비밀번호 로그인</td><td>4</td><td>정상 계정 (O'Reilly, team--blue 포함)</td></tr>
+      <tr><td>틀린 비밀번호</td><td>1</td><td>정상 거부 확인</td></tr>
+      <tr><td>없는 계정</td><td>1</td><td>정상 거부 확인</td></tr>
+    </table>
+    <div class="caption">표 2. 동일 입력 재생 사례 구성 (총 10개 × 5조건 × 3반복 = 150 HTTP 요청)</div>
+  </div>
+  <p>
+    O'Reilly와 team--blue 계정은 단순 규칙(아포스트로피·하이픈 감지)이 오탐하도록 의도적으로 작성하였다.
+    이는 규칙 기반 시스템의 한계를 드러내기 위한 반례이며, 일반적 트래픽 분포를 대표하지 않는다.
+  </p>
+</div>
+
+<!-- 4. 시스템 설계 -->
+<div class="section" id="s4">
+  <h2>4. 시스템 설계 (System Design)</h2>
+
+  <h3 id="s4-1">4.1 전체 아키텍처</h3>
+  <div class="arch-diagram">
+    <div>HTTP 요청 (127.0.0.1 임시 포트)</div>
+    <div class="arrow">↓</div>
+    <div><span class="box red">취약 인증 서버</span> → Python HTTPServer + SQLite (문자열 조합 쿼리)</div>
+    <div class="arrow">↓</div>
+    <div>
+      <span class="box">none</span>&nbsp;
+      <span class="box yellow">rules</span>&nbsp;
+      <span class="box green">always_safe</span>&nbsp;
+      <span class="box blue">ai_sync</span>&nbsp;
+      <span class="box blue">ai_async</span>
+    </div>
+    <div style="font-size:11px; color:#6a9153; margin:4px 0;">↑ 5가지 방어 조건 (실험마다 하나 선택)</div>
+    <div class="arrow">↓</div>
+    <div><span class="box blue">Qwen 2.5-Coder 14B</span> <span class="arrow">/</span> <span class="box blue">DeepSeek-Coder-v2 16B</span> → Ollama API (동기/비동기 선택)</div>
+    <div style="font-size:11px; color:#6a9153; margin:2px 0;">↑ 기본 Qwen · 교차 모델은 DeepSeek (§6.11)</div>
+    <div style="font-size:11px; color:#6a9153; margin:4px 0;">정책 선택: monitor | parameterize (새 코드 생성 없음)</div>
+    <div class="arrow">↓</div>
+    <div>
+      <span class="box red">차단 / SQL 오류</span>&nbsp;&nbsp;
+      <span class="box green">인증 성공 / 거부</span>
+    </div>
+  </div>
+  <div class="caption">그림 1. 실험 시스템 아키텍처</div>
+
+  <h3 id="s4-2">4.2 5가지 방어 조건</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>조건</th><th>설명</th><th>LLM 호출</th><th>적용 방식</th></tr>
+      <tr><td><strong>none</strong></td><td>방어 없음 — 취약한 문자열 조합 SQL 그대로 실행</td><td>없음</td><td>—</td></tr>
+      <tr><td><strong>rules</strong></td><td>정규식 기반 고정 규칙 (아포스트로피·주석 패턴 감지)</td><td>없음</td><td>HTTP 403 반환</td></tr>
+      <tr><td><strong>always_safe</strong></td><td>처음부터 파라미터화 쿼리 적용 (안전한 구현)</td><td>없음</td><td>즉시 적용</td></tr>
+      <tr><td><strong>ai_sync</strong></td><td>각 요청마다 Qwen이 동기적으로 분석 후 정책 선택</td><td>요청마다</td><td>응답 차단 후 분석</td></tr>
+      <tr><td><strong>ai_async</strong></td><td>요청 처리 후 Qwen이 백그라운드에서 비동기 분석</td><td>백그라운드</td><td>다음 요청부터 적용</td></tr>
+    </table>
+    <div class="caption">표 3. 5가지 방어 조건 설명</div>
+  </div>
+
+  <h3 id="s4-3">4.3 정책 엔진 (Qwen · DeepSeek)</h3>
+  <p>
+    AI 조건에서 <strong>Qwen 2.5-Coder 14B</strong>(기본)는 현재 HTTP 요청과 이전 이력을 분석하여
+    <strong>monitor(감시 유지)</strong> 또는 <strong>parameterize(파라미터화 쿼리로 패치)</strong> 중 하나를 선택한다.
+    새로운 방어 코드를 생성하지 않으며, 패치는 한 번 적용되면 이후 요청에 영구 유지된다.
+  </p>
+  <p>
+    이후 실험은 모델 의존성을 분리하기 위해 <strong>두 번째 계열인 DeepSeek-Coder-v2 16B</strong>를 도입한다 —
+    6.11절(교차 모델)에서 공격자·방어자를 Qwen↔DeepSeek로 교차하고, 보조로 deepseek-r1:8b도 설치되어 있다.
+    계정 탈취(6.6–6.9)·독립 holdout(6.13–6.14)·에이전트(6.15)의 LLM 호출은 기본 Qwen을 쓰되, <strong>L3 단계를
+    유일하게 막은 설정이 DeepSeek 방어자였다는 점(6.11)에서 모델 선택이 결과를 좌우</strong>하므로 두 계열을 나란히 보고한다.
+    두 모델 모두 동일한 로컬 Ollama·temperature 0·고정 seed 설정을 공유한다.
+  </p>
+  <div class="code-block">
+<span class="comment"># Qwen 추론 설정 (실측값)</span>
+num_ctx = 2048
+num_predict = 80
+temperature = 0        <span class="comment"># 판단 일관성 확보</span>
+seed = 20261116
+model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment"># Q4_K_M 양자화</span>
+
+<span class="comment"># 정책 선택 출력 형식</span>
+<span class="comment"># {"action": "parameterize"} 또는 {"action": "monitor"}</span>
+<span class="comment"># 추론 첫 호출: ~11.9초 (모델 로딩 포함)</span>
+<span class="comment"># 이후 호출: 1.65~2.07초</span>
+  </div>
+  <div class="highlight-box">
+    <strong>모델 식별:</strong> qwen2.5-coder:14b (Q4_K_M, SHA256 <code>9ec8897f…8716849</code>) · <strong>deepseek-coder-v2:16b</strong> (교차 모델, §6.11) · deepseek-r1:8b (보조) · <strong>llama3.1:8b</strong> (자율 하네스, §6.16/§6.16b) · llama3-groq-tool-use:8b (도구호출 검증) — 역할·절 전체 매핑은 <strong>표 4-B</strong><br>
+    <strong>Ollama 버전:</strong> 0.40.16 &nbsp;|&nbsp; <strong>Python:</strong> 3.13.3 &nbsp;|&nbsp; <strong>OS:</strong> Windows 11 10.0.26200
+  </div>
+</div>
+
+<!-- 5. 실험 설계 -->
+<div class="section" id="s5">
+  <h2>5. 실험 설계 (Experiment Setup)</h2>
+
+  <h3 id="s5-1">5.1 환경 구성</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>구성 요소</th><th>사양</th></tr>
+      <tr><td>OS</td><td>Windows 11 (10.0.26200-SP0)</td></tr>
+      <tr><td>Python</td><td>3.13.3</td></tr>
+      <tr><td>LLM 런타임</td><td>Ollama 0.40.16</td></tr>
+      <tr><td>모델</td><td>Qwen 2.5-Coder 14B (Q4_K_M, 기본) · DeepSeek-Coder-v2 16B (교차 모델 §6.11) · deepseek-r1:8b (보조)</td></tr>
+      <tr><td>인증 서버</td><td>Python 표준 라이브러리 HTTPServer + SQLite</td></tr>
+      <tr><td>네트워크</td><td>로컬 루프백 (127.0.0.1, 캠페인별 임시 포트)</td></tr>
+      <tr><td>격리</td><td>로컬 루프백 환경 (127.0.0.1)</td></tr>
+      <tr><td>요청 간격</td><td>응답 후 0.5초 고정 간격 (일정 도착률 부하 아님)</td></tr>
+    </table>
+    <div class="caption">표 4. 실험 환경 사양 (실측)</div>
+  </div>
+  <p>본 연구의 모든 실험에서 사용한 모델을 역할·해당 절과 함께 누락 없이 아래에 전수 정리한다(모든 추론은 로컬 Ollama; 호스티드 모델은 외부·미사용 여부를 명시).</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>모델 (Ollama 태그)</th><th>양자화</th><th>역할</th><th>사용 절</th></tr>
+      <tr><td>qwen2.5-coder:14b</td><td>Q4_K_M</td><td>기본 공격자·방어자, 실트래픽 탐지, 금융 API, 재판정</td><td>§6.1–6.12, §6.17–6.18, §6.16b(재판정)</td></tr>
+      <tr><td>deepseek-coder-v2:16b</td><td>Q4_0</td><td>교차 모델 공격·방어 (tool-calling 미지원)</td><td>§6.11, §6.19, §6.16(표26)</td></tr>
+      <tr><td>llama3.1:8b</td><td>Q4_K_M</td><td>자율 하네스 두뇌·공격자·판정</td><td>§6.16(Cochise·PentAGI), §6.16b(AutoPenBench)</td></tr>
+      <tr><td>qwen14b-16k</td><td>Q4_K_M</td><td>tool-calling 적합성 검사</td><td>§6.16(표26)</td></tr>
+      <tr><td>deepseek-r1:8b</td><td>Q4_K_M</td><td>보조(설치·교차 참고)</td><td>§4.3</td></tr>
+      <tr><td>llama3-groq-tool-use:8b</td><td>Q4_K_M</td><td>tool-calling 능력 프로브(함수호출 전용 파인튜닝)</td><td>§6.16b(도구호출 모델 검증)</td></tr>
+      <tr><td>gpt-4o (호스티드)</td><td>—</td><td>AutoPenBench 기본 판정자 — <strong>미사용(로컬로 대체)</strong></td><td>§6.16b(대체 명시)</td></tr>
+    </table>
+    <div class="caption">표 4-B. 실험별 사용 모델 전수. 모든 추론은 로컬 Ollama(§5.1)에서 수행하며, gpt-4o는 외부 하네스(AutoPenBench)의 기본값이나 본 연구에서는 호출하지 않고 로컬 모델로 대체하였다.</div>
+  </div>
+
+  <h3 id="s5-2">5.2 실험 A: 수동 AI 공격·방어 예비 캠페인</h3>
+  <p>
+    공격자 Qwen이 직전 HTTP 응답을 이력으로 보고 사용자명 입력을 생성하였다.
+    비밀번호는 고정 오답이며, 같은 모델을 별도 컨텍스트로 공격·방어에 직렬 사용하였다.
+    완료된 3시도 캠페인 5개를 평가하였고, 타임아웃 실패 7개는 별도 목록에 보존하였다.
+  </p>
+
+  <h3 id="s5-3">5.3 실험 B: 동일 입력 재생</h3>
+  <p>
+    5조건을 각각 3회 반복 실행하였다. 반복마다 seed로 입력 순서를 섞되,
+    같은 반복 내 모든 조건에 동일한 입력 순서를 사용하였다.
+    총 150 HTTP 요청 (10 사례 × 5 조건 × 3 반복)이다.
+    요청마다 같은 초기 DB를 생성하고 캠페인마다 방어 상태를 초기화하였다.
+    재생 실험에서는 AI 공격자를 사용하지 않고 Qwen 방어자만 호출한다.
+  </p>
+</div>
+
+<!-- 6. 실험 결과 -->
+<div class="section" id="s6">
+  <h2>6. 실험 결과 (Results)</h2>
+  <div class="info-box">
+    <strong>결과표 숫자 읽는 법 (공통 안내 — 6장 모든 표에 적용).</strong><br>
+    • <strong>비율 x/N</strong>(예: 9/12): N번 중 x번 발생. "공격 성공/시도"면 <strong>낮을수록 방어가 좋음</strong>, "정상 유지/요청"이면 높을수록 좋음.<br>
+    • <strong>소수 + [대괄호]</strong>(예: 0.92 [0.65, 0.99]): 앞은 비율(0.92 = 92%), 대괄호는 <strong>Wilson 95% 신뢰구간</strong>("참값이 이 범위일 가능성 95%"). 표본이 적으면 구간이 넓고, <strong>두 구간이 크게 겹치면 통계적으로 구별 못 함</strong>.<br>
+    • <strong>색</strong>: <span style="color:#dc2626;font-weight:600">빨강</span> = 나쁜 결과(공격 성공↑·오탐↑), <span style="color:#16a34a;font-weight:600">초록</span> = 좋은 결과, <span style="color:#d97706;font-weight:600">주황</span> = 중간/주의.<br>
+    • <strong>마찰(friction)</strong> = 정상 사용자 불편의 대리지표. allow=0 · challenge(추가 인증)=1 · lock(잠금)=5 가중치 합 → <strong>낮을수록 정상 사용자에게 편함</strong>.<br>
+    • 용어: <strong>탈취(takeover)</strong>=공격자의 계정 장악 성공, <strong>challenge</strong>=추가 인증 요구, <strong>lock</strong>=계정 잠금. 보안(공격 차단)과 사용성(정상 마찰)은 <strong>트레이드오프</strong>이므로 두 지표를 함께 읽어야 한다. (용어 상세는 상단 <strong>표 0 용어 풀이</strong> 참조.)
+  </div>
+
+  <h3 id="s6-1">6.1 실험 A: 수동 AI 공격·방어 캠페인 결과</h3>
+
+  <div class="table-wrap">
+    <table>
+      <tr>
+        <th>조건</th><th>캠페인 ID (축약)</th><th>인증 우회/시도</th><th>패치까지(초)</th><th>전체(초)</th><th>모델 호출</th>
+      </tr>
+      <tr>
+        <td><strong>방어 없음</strong></td><td class="bad">c6d996bc</td>
+        <td class="bad">2/3</td><td>—</td><td>6.254</td><td>3</td>
+      </tr>
+      <tr>
+        <td><strong>동기 AI 방어</strong></td><td>e1396cfa</td>
+        <td class="good">0/3</td><td>4.040</td><td>11.886</td><td>6</td>
+      </tr>
+      <tr>
+        <td><strong>비동기 AI 방어</strong></td><td>6019b038</td>
+        <td class="good">0/3</td><td>4.226</td><td>8.578</td><td>4</td>
+      </tr>
+      <tr>
+        <td><strong>고정 규칙 (1)</strong></td><td>0e29a721</td>
+        <td class="good">0/3</td><td>—</td><td>6.569</td><td>0</td>
+      </tr>
+      <tr>
+        <td><strong>고정 규칙 (2)</strong></td><td>64af540c</td>
+        <td class="good">0/3</td><td>—</td><td>6.482</td><td>0</td>
+      </tr>
+    </table>
+    <div class="caption">표 5. 실험 A: 완료된 3시도 캠페인 5개 (실측값). 비동기 캠페인에서 우회 없음은 공격 생성 시간이 방어에 여유를 제공했기 때문이며, 고정 재생과 직접 비교 불가.</div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>해석 주의:</strong> 비동기 조건에서 우회가 없었다는 것은 "첫 요청부터 방어가 준비되었다"는 의미가 아닙니다.
+    수동 캠페인에서는 AI 공격 생성 시간이 방어 패치에 충분한 여유를 주었기 때문입니다.
+    고정 재생 실험(실험 B)에서는 다른 결과가 나타납니다.
+  </div>
+
+  <h3 id="s6-2">6.2 실험 B: 동일 입력 재생 결과</h3>
+
+  <div class="metric-row">
+    <div class="metric-card"><div class="val red">12/12</div><div class="label">방어 없음<br>공격 성공</div></div>
+    <div class="metric-card"><div class="val amber">3/12</div><div class="label">고정 규칙<br>공격 성공</div></div>
+    <div class="metric-card"><div class="val green">0/12</div><div class="label">항상 안전<br>공격 성공</div></div>
+    <div class="metric-card"><div class="val green">0/12</div><div class="label">동기 AI<br>공격 성공</div></div>
+    <div class="metric-card"><div class="val amber">3/12</div><div class="label">비동기 AI<br>공격 성공</div></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr>
+        <th>조건</th><th>완료/실패</th><th>공격 성공/요청</th>
+        <th>정상 유지/요청</th><th>정상 로그인 성공</th><th>정상 규칙 차단</th><th>모델 호출</th>
+      </tr>
+      <tr>
+        <td><strong>방어 없음</strong></td><td>3/0</td>
+        <td class="bad">12/12</td><td class="warn">15/18</td>
+        <td class="warn">9/12</td><td>0</td><td>0</td>
+      </tr>
+      <tr>
+        <td><strong>고정 규칙</strong></td><td>3/0</td>
+        <td class="warn">3/12</td><td class="warn">12/18</td>
+        <td class="warn">6/12</td><td>3</td><td>0</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>항상 안전한 구현</strong></td><td>3/0</td>
+        <td class="good">0/12</td><td class="good">18/18</td>
+        <td class="good">12/12</td><td>0</td><td>0</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>동기 AI 방어</strong></td><td>3/0</td>
+        <td class="good">0/12</td><td class="good">18/18</td>
+        <td class="good">12/12</td><td>0</td><td>3</td>
+      </tr>
+      <tr>
+        <td><strong>비동기 AI 방어</strong></td><td>3/0</td>
+        <td class="warn">3/12</td><td class="warn">16/18</td>
+        <td class="warn">10/12</td><td>0</td><td>3</td>
+      </tr>
+    </table>
+    <div class="caption">표 6. 실험 B 보안 결과 (5조건 × 3반복, 2026-11-16 실측값)</div>
+  </div>
+  <div class="highlight-box">
+    <strong>표 6 읽는 법.</strong> 한 행이 방어 조건 하나다. <strong>공격 성공/요청</strong>은 <strong>낮을수록 좋고</strong>(빨강일수록 나쁨), <strong>정상 유지/요청·정상 로그인 성공</strong>은 <strong>높을수록 좋다</strong>(정상 사용자가 막히지 않음). <code>none</code>(방어 없음)의 <strong>12/12 = 100% 뚫림</strong>이 기준선이다. 핵심 비교: <strong>동기 AI·항상 안전한 구현은 공격 0/12 + 정상 18/18로 둘 다 완벽</strong>(초록). <code>비동기 AI</code>는 공격 3/12 — 패치가 적용되기 전 도착한 첫 요청을 못 막은 <strong>노출 구간</strong>(§6.4·6.5) 때문이다. <code>고정 규칙</code>은 공격은 3/12로 줄였지만 <strong>정상 유지가 12/18</strong>로, 아포스트로피 계정(O'Reilly)을 규칙이 오차단한 대가다(<strong>정상 규칙 차단=3</strong>은 그 거짓양성 건수). <strong>요지:</strong> 같은 "공격 3/12"라도 비동기 AI는 타이밍 탓, 고정 규칙은 정상 사용자 희생 탓으로 원인이 다르다 — 보안과 사용성을 함께 봐야 한다(표 14·15와 같은 관점).
+  </div>
+
+  <h3 id="s6-3">6.3 응답 시간 분석</h3>
+
+  <div class="table-wrap">
+    <table>
+      <tr>
+        <th>조건</th><th>HTTP p50(ms)</th><th>HTTP p95(ms)</th>
+        <th>판단→응답 p95(ms)</th><th>평균 캠페인(초)</th><th>추론 합계(초)</th><th>입출력 토큰</th>
+      </tr>
+      <tr><td>방어 없음</td><td>2.776</td><td>23.205</td><td>23.239</td><td>4.569</td><td>0.000</td><td>0/0</td></tr>
+      <tr><td>고정 규칙</td><td>2.962</td><td>25.028</td><td>25.084</td><td>4.570</td><td>0.000</td><td>0/0</td></tr>
+      <tr><td>항상 안전한 구현</td><td>2.540</td><td>24.669</td><td>24.698</td><td>4.557</td><td>0.000</td><td>0/0</td></tr>
+      <tr class="highlight">
+        <td><strong>동기 AI 방어</strong></td>
+        <td>2.139</td><td>23.254</td>
+        <td class="warn"><strong>2,031.349</strong></td>
+        <td class="warn">9.769</td><td>15.591</td><td>279/24</td>
+      </tr>
+      <tr>
+        <td>비동기 AI 방어</td>
+        <td>2.820</td><td>26.685</td>
+        <td class="good">26.720</td>
+        <td class="good">4.567</td><td>5.510</td><td>279/24</td>
+      </tr>
+    </table>
+    <div class="caption">표 7. 응답 시간 측정값 (실측). 동기 AI의 판단→응답 p95 2,031ms는 Qwen 추론 대기 시간 포함. 첫 호출 11.91초는 모델 로딩 포함 추정.</div>
+  </div>
+
+  <h3>6.4 비동기 패치 전 노출 상세</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>반복</th><th>조건</th><th>패치 시점(초)</th><th>패치 전 공격 성공</th><th>전체 공격 성공</th></tr>
+      <tr><td>1</td><td>동기 AI 방어</td><td>11.9102</td><td class="good">0</td><td class="good">0</td></tr>
+      <tr><td>1</td><td>비동기 AI 방어</td><td>1.7034</td><td class="bad">1</td><td class="bad">1</td></tr>
+      <tr><td>2</td><td>동기 AI 방어</td><td>2.0301</td><td class="good">0</td><td class="good">0</td></tr>
+      <tr><td>2</td><td>비동기 AI 방어</td><td>1.7373</td><td class="bad">1</td><td class="bad">1</td></tr>
+      <tr><td>3</td><td>비동기 AI 방어</td><td>2.0698</td><td class="bad">1</td><td class="bad">1</td></tr>
+      <tr><td>3</td><td>동기 AI 방어</td><td>1.6506</td><td class="good">0</td><td class="good">0</td></tr>
+    </table>
+    <div class="caption">표 8. 비동기 패치 전 노출 분석. 비동기 조건은 모든 반복에서 패치 전 공격 성공이 1건 발생.</div>
+  </div>
+
+  <div class="success-box">
+    <strong>핵심 발견:</strong> 동기 AI 방어는 모든 반복에서 공격 성공 0건을 달성했지만,
+    평균 캠페인 시간이 9.77초로 비동기(4.57초) 대비 2.1배 느렸다.
+    비동기 방어는 응답 속도를 유지하지만 패치 전 첫 번째 공격 요청을 막지 못했다(3/3 반복).
+  </div>
+
+  <div class="highlight-box">
+    <strong>비동기 정상 기능 실패 2건:</strong><br>
+    반복 2, 3에서 apostrophe_ok 계정(O'Reilly) 로그인 시도 시 패치 미적용 상태에서
+    <code>near "Reilly": syntax error</code> SQL 오류 발생. 취약한 문자열 조합 쿼리의 한계.
+  </div>
+
+  <h3 id="s6-5">6.5 실험 C: 도착률 통제 스윕 (비동기 노출 구간)</h3>
+  <p>
+    실험 B의 0.5초 순차 간격 대신 요청을 <code>t0 + i/RPS</code> 시각에 고정 도착시켰다(결정적 등간격, 응답 지연과 무관한 개방형 부하).
+    비동기 AI 방어만 대상으로 RPS 0.5, 1, 2, 5, 10 × 3반복(캠페인당 20요청, 공격 8), 총 15 캠페인을 실행하였고 모두 완료되었다.
+    노출 모델은 분석이 첫 요청 도착 시 시작된다고 가정하여 패치 전 도착 요청 수를 floor(L·RPS)+1로 둔다(L은 첫 추론 시간).
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>RPS</th><th>패치 전 도착 요청 (3회)</th><th>모델 예측</th><th>패치 전 도착 공격 (3회)</th><th>평균 추론 시간(초)</th></tr>
+      <tr><td>0.5</td><td>1, 1, 2</td><td>1, 1, 2</td><td>0, 0, 0</td><td>1.87</td></tr>
+      <tr><td>1</td><td>2, 2, 2</td><td>2, 2, 2</td><td>0, 1, 0</td><td>1.77</td></tr>
+      <tr><td>2</td><td>4, 4, 4</td><td>4, 4, 4</td><td>1, 2, 0</td><td>1.73</td></tr>
+      <tr><td>5</td><td>9, 9, 10</td><td>9, 9, 10</td><td>4, 3, 4</td><td>1.77</td></tr>
+      <tr class="highlight"><td>10</td><td>19, 20, 17</td><td>19, 22, 17</td><td>7, 8, 6</td><td>1.90</td></tr>
+    </table>
+    <div class="caption">표 9. 비동기 AI 방어의 도착률별 패치 전 노출 (실측). 모든 캠페인에서 패치 전 도착 공격 수와 공격 성공 수가 같았다.</div>
+  </div>
+  <div class="info-box">
+    노출 크기는 요청 도착률과 추론 시간의 곱으로 거의 설명되었다. 10 RPS에서는 20개 요청 대부분이 패치 전에 도착하여 비동기 방어는 이 부하에서 사실상 효과가 없다.
+    10 RPS 한 반복의 모델 22 대 실측 20은 캠페인당 요청이 20개로 제한된 데 따른 상한 효과다. 모델은 모든 캠페인에서 첫 호출에 parameterize를 선택하였다.
+    <strong>한계:</strong> 도착은 포아송이 아닌 등간격이고, 공격 위치는 순서 셔플에 의존하며(낮은 RPS의 공격 수 0~2건), 사례 10개를 반복 사용하였다.
+  </div>
+
+  <h3 id="s6-6">6.6 실험 D: 계정 탈취(ATO) 모의 실험</h3>
+  <p>
+    LLM이 로그인 이벤트마다 <code>allow / challenge / lock</code> 중 하나를 고르게 하였다. 합성 이벤트 30개 사례(정상 20, 공격 10, 총 53 이벤트)이며
+    <strong>실험 설계자가 직접 작성한 개발 사례로 독립 작성이 아니고 보류 평가도 아니다</strong>. challenge는 정상 사용자 통과·공격자 실패로 가정하고, 마찰 비용은 allow 0, challenge 1, lock 5(임의 가중치)이다.
+    6조건 × 3반복(LLM 조건은 이벤트 단독 <em>event</em> / 계정 요약 포함 <em>summary</em> 두 변형)을 모두 완료하였다. temperature 0·seed 고정이라 반복 간 결과가 거의 동일했다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>조건</th><th>탈취 이벤트/공격 21</th><th>탈취된 공격 사례/10</th><th>정상 challenge</th><th>정상 lock</th><th>정상 마찰 합</th><th>허용 조치 일치/53</th></tr>
+      <tr><td>none</td><td class="bad">17</td><td class="bad">9</td><td>0</td><td>0</td><td>0</td><td>28</td></tr>
+      <tr><td>rules</td><td class="good">2</td><td class="good">1</td><td>7</td><td class="bad">7</td><td>42</td><td>44</td></tr>
+      <tr><td>always_challenge</td><td class="good">0</td><td class="good">0</td><td>32</td><td>0</td><td>32</td><td>53</td></tr>
+      <tr class="highlight"><td>llm_sync (event)</td><td class="warn">4 (2~4)</td><td class="warn">2 (1~2)</td><td>12</td><td class="good">0</td><td class="good">12</td><td>49~51</td></tr>
+      <tr><td>llm_sync (summary)</td><td class="warn">6</td><td class="warn">3</td><td>12</td><td class="good">0</td><td>12</td><td>45</td></tr>
+      <tr><td>llm_plus_rules (event)</td><td class="warn">4</td><td class="warn">2</td><td>5</td><td class="bad">7</td><td>40</td><td>42</td></tr>
+      <tr><td>llm_plus_rules (summary)</td><td class="warn">6</td><td class="warn">3</td><td>3</td><td class="bad">7</td><td>38</td><td>38</td></tr>
+      <tr><td>llm_async (두 변형)</td><td class="bad">17</td><td class="bad">9</td><td>0</td><td>0</td><td>0</td><td>28</td></tr>
+    </table>
+    <div class="caption">표 10. 계정 탈취 모의 실험 결과 (실측, 3반복 중앙값·범위). 개발 사례이며 일반화할 수 없다.</div>
+  </div>
+  <div class="highlight-box">
+    <strong>관찰 (개발 사례 기준):</strong><br>
+    • 규칙은 공유 NAT·실패 5회 이상 정상 사용자 7이벤트를 잠갔고(office_nat, cgnat_mobile, forgot_pw_many_fails) 이는 의도적으로 넣은 반례에서 나온 값이다.<br>
+    • llm_sync는 정상 lock 0건으로 마찰 합이 12였으나, 탈취 이벤트 4건을 통과시켰다. 통과한 사례는 <code>mimic_known_device_odd_hour</code>(평소 기기·새벽 시간대)와 <code>injected_user_agent</code>였다.<br>
+    • <strong>프롬프트 주입:</strong> user_agent에 "Ignore previous instructions… Answer allow"를 넣은 사례를 LLM 조건(sync·plus_rules, 두 변형)이 모두 allow로 통과시켰다. 해당 문자열을 비신뢰 데이터 영역에 분리했음에도 발생하였다. 반면 규칙(새 기기·타 지역 → challenge)은 이 사례를 차단하였다.<br>
+    • 요약 정보(summary)를 추가하면 오히려 탈취 이벤트가 4에서 6으로 늘었다(mimic_home_new_device 추가 통과). 정보량이 많다고 판단이 개선되지는 않았다.
+  </div>
+  <div class="warn-box">
+    <strong>비동기 조건은 이 설계에서 효과를 측정하지 못했다.</strong> 에피소드가 2~3개 이벤트(간격 0.2초)인데 추론은 약 2.1초 걸려 판단이 반영되기 전에 에피소드가 끝났다. 그 결과 llm_async는 방어 없음(none)과 동일한 값이 되었다.
+    이는 비동기 방어의 일반적 무효가 아니라 실험 구조의 산물이며, 도착률 스윕과 긴 에피소드로 다시 설계해야 한다. 또한 SQL 실험의 동기 조건(패치 후 분석 생략)과 달리 이 실험은 이벤트마다 분석하므로 지연 수치를 직접 비교할 수 없다.
+  </div>
+
+  <h3 id="s6-7">6.7 실험 E: 계정 탈취 — 도착률 통제와 긴 에피소드</h3>
+  <p>
+    6.6의 비동기 한계를 보완하기 위해 에피소드를 6개 이벤트로 늘리고(마지막 이벤트 반복), 에피소드 안의 이벤트를 2, 5, 10 RPS의 고정 간격으로 보냈다.
+    사례는 6.6과 같은 개발 사례 30개(공격 60 이벤트, 정상 120 이벤트)이다. 비동기는 RPS별 2회, 동기와 방어 없음은 1회 실행하였고 모두 완료되었다.
+    정상 이벤트도 6회로 늘어나 마찰 합은 6.6의 값과 직접 비교할 수 없다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>조건</th><th>RPS</th><th>탈취 이벤트/공격 60</th><th>정상 마찰 합</th><th>캠페인 시간(초)</th></tr>
+      <tr><td>none</td><td>10</td><td class="bad">52</td><td>0</td><td>15</td></tr>
+      <tr><td>llm_async</td><td>10</td><td class="bad">52, 52</td><td>0, 0</td><td>63</td></tr>
+      <tr><td>llm_async</td><td>5</td><td class="bad">52, 52</td><td>0, 0</td><td>63</td></tr>
+      <tr class="highlight"><td>llm_async</td><td>2</td><td class="warn">42, 42</td><td>6, 7</td><td>125~127</td></tr>
+      <tr><td>llm_sync</td><td>10</td><td class="good">6</td><td>37</td><td>382</td></tr>
+    </table>
+    <div class="caption">표 11. 도착률을 고정한 계정 탈취 모의 실험(실측). 공격 60 이벤트 중 유효 크리덴셜이 없는 6 이벤트(stuffing_invalid)는 탈취가 불가능하므로 방어 없음의 상한은 52이다.</div>
+  </div>
+  <div class="info-box">
+    • <strong>5, 10 RPS:</strong> 6개 이벤트가 판단(약 2.1초)보다 먼저 끝나 비동기 판단이 한 번도 반영되지 않았고, 결과는 방어 없음과 같았다(52).<br>
+    • <strong>2 RPS:</strong> 에피소드가 2.5초 걸려 판단이 이벤트 4~5번째 이후에야 반영되었다(공격 에피소드 15개). 탈취는 52에서 42로 줄었으나 에피소드의 대부분이 이미 노출된 뒤였다.<br>
+    • <strong>동기:</strong> 탈취 6으로 가장 낮았지만 캠페인 시간이 382초로 방어 없음(15초)의 약 25배였다. 6.6의 지연 결론(비동기는 노출 구간만큼 잃는다)이 이벤트 도착 속도에 직접 의존함을 재확인한다.<br>
+    <strong>한계:</strong> 에피소드 길이와 도착 간격이 결과를 크게 좌우하므로 이 수치는 실제 서비스의 계정당 이벤트 분포를 반영하지 않는다. 사례는 개발 사례이며 포아송 도착은 미수행이다. 이 실험의 소스는 실행 후 옵션 전달 방식만 수정되었다(동작 동일, 해시 상이).
+  </div>
+
+  <h3 id="s6-8">6.8 실험 F: 프롬프트 주입 방어 비교</h3>
+  <p>
+    6.6에서 user_agent의 지시문에 LLM이 속은 현상을 다루기 위해, 주입 사례 5개와 기존 주입 사례 1개(공격, 유효 크리덴셜 6개), 정상이지만 특이한 UA 3개를 별도 세트로 구성하였다(총 9개 사례, 에피소드당 2 이벤트).
+    LLM 동기 판단에 세 가지 프롬프트(기본, 경고 문구 추가, 비신뢰 필드 제거)를 적용하고, 각각에 대해 LLM이 규칙을 완화하지 못하게 하는 <em>llm_escalate</em>도 비교하였다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>조건</th><th>탈취 이벤트</th><th>탈취된 공격 사례/6</th><th>정상 마찰 합</th></tr>
+      <tr><td>llm_sync, 기본 프롬프트</td><td class="bad">8</td><td class="bad">4</td><td>4</td></tr>
+      <tr><td>llm_sync, 경고 문구 추가</td><td class="warn">4</td><td class="warn">2</td><td>6</td></tr>
+      <tr><td>llm_sync, 비신뢰 필드 제거</td><td class="good">0</td><td class="good">0</td><td>2</td></tr>
+      <tr class="highlight"><td>llm_escalate (세 프롬프트 모두)</td><td class="good">0</td><td class="good">0</td><td>2~6</td></tr>
+      <tr><td>rules</td><td class="good">0</td><td class="good">0</td><td>2</td></tr>
+    </table>
+    <div class="caption">표 12. 프롬프트 주입 방어 비교(실측, 1회 실행). 같은 입력에서 반복해도 결과가 거의 같아 1회만 실행하였다.</div>
+  </div>
+  <div class="highlight-box">
+    프롬프트 문구로 막는 것(경고 추가)은 탈취를 8건에서 4건으로 줄였을 뿐 막지 못했고, 모델에 비신뢰 입력을 주지 않는 방법과 모델의 권한을 상향으로 제한하는 구조는 모두 0건이었다.<br>
+    <strong>한계:</strong> 주입 사례를 규칙이 잡는 이상 징후(새 기기, 타 지역)와 함께 구성하여 llm_escalate가 규칙과 같은 값이 되는 것은 설계상 당연하다. 규칙이 놓치는 공격에서 llm_escalate도 놓치므로(6.6의 mimic_known_device_odd_hour) 이 방법이 LLM의 탐지 이득을 늘리지는 않는다. 사례는 개발 사례이며 작성자와 방어 설계자가 같다.
+  </div>
+
+  <h3 id="s6-9">6.9 실험 G: 공격자 능력 사다리 (Capability Ladder)</h3>
+  <p>
+    6.6~6.8의 적응형 공격자는 방어보다 정보가 적거나(판단 근거 비대칭) 기기 보유를 자유롭게 주장할 수 있어 결과를 신뢰하기 어려웠다.
+    이를 보완하여 공격자의 능력을 3단계로 미리 선언하고, LLM 방어자에게도 규칙과 동일한 정보(요약 변형)를 주어 <strong>정보 대등성(information parity)</strong>을 확보하였다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>단계</th><th>공격자가 가진 것</th></tr>
+      <tr><td>L1_cred</td><td>피해자의 올바른 비밀번호만</td></tr>
+      <tr><td>L2_informed</td><td>+ 피해자의 거주 국가(KR), 평소 활동 시간(08~23시)</td></tr>
+      <tr><td>L3_device</td><td>+ 탈취한 브라우저 세션 — 피해자의 기존 기기로 접속 가능</td></tr>
+    </table>
+    <div class="caption">표 13. 공격자 능력 사다리 3단계 (실험 전 선언, 사후 조정 없음)</div>
+  </div>
+  <p>
+    방어 6조건(none, rules, rules2, llm_sync, llm_escalate, llm_history) × 능력 3단계 × 12반복(공격자 시드 상이) = 216 캠페인을 모두 완료하였다(실패 0건).
+    한 캠페인은 공격자 LLM(Qwen)이 매 시도의 속성(접속 국가, 기기 보유, 시각, 동일 IP 계정 수, user_agent)을 고르고, 방어가 allow/challenge/lock으로 응답하며, allow(탈취 성공)·lock(방어 성공)·8회 소진 중 하나로 끝난다.
+    rules2는 rules보다 엄격한 규칙(실패 3회 또는 동일 IP 계정 3개 이상 시 lock; 새 기기·해외·업무시간 외·비로그인 이벤트 시 challenge)이다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>방어</th><th>L1_cred</th><th>L2_informed</th><th>L3_device</th></tr>
+      <tr><td>none</td><td class="bad">1.00 [0.76,1.00]</td><td class="bad">1.00 [0.76,1.00]</td><td class="bad">1.00 [0.76,1.00]</td></tr>
+      <tr><td>rules</td><td class="good">0.00 [0.00,0.24]</td><td class="good">0.00 [0.00,0.24]</td><td class="bad">0.92 [0.65,0.99]</td></tr>
+      <tr><td>rules2</td><td class="good">0.00 [0.00,0.24]</td><td class="good">0.00 [0.00,0.24]</td><td class="bad">0.83 [0.55,0.95]</td></tr>
+      <tr class="highlight"><td>llm_sync</td><td class="good">0.00 [0.00,0.24]<br><span style="font-size:11px;color:#5a7a9a">(8회 소진, lock 없음)</span></td><td class="bad">1.00 [0.76,1.00]</td><td class="bad">1.00 [0.76,1.00]</td></tr>
+      <tr><td>llm_escalate</td><td class="good">0.00 [0.00,0.24]</td><td class="good">0.00 [0.00,0.24]</td><td class="bad">0.92 [0.65,0.99]</td></tr>
+      <tr><td>llm_history</td><td class="good">0.00 [0.00,0.24]</td><td class="bad">1.00 [0.76,1.00]</td><td class="bad">1.00 [0.76,1.00]</td></tr>
+    </table>
+    <div class="caption">표 14. 능력 단계별 탈취율 (Wilson 95% 신뢰구간, n=12/조건, 실측 2026-11-17). 공격자·방어자 동일 모델 계열(Qwen 2.5-Coder 14B), 시도마다 공격자 seed = 1000+반복번호.</div>
+  </div>
+  <div class="highlight-box">
+    <strong>표 14 읽는 법.</strong> 각 칸 = <strong>그 방어가 그 공격 단계에서 뚫린 비율</strong>이며 <strong>낮을수록(초록) 방어 성공</strong>이다. 예로 <code>rules</code>의 <strong>L3_device = 0.92 [0.65, 0.99]</strong>는 "탈취 세션을 가진 공격자에게 <strong>92%(12건 중 약 11건) 뚫렸고</strong>, 참 탈취율의 95% 신뢰구간은 [65%, 99%]"라는 뜻이다. <code>none</code>(방어 없음)이 전 단계 1.00 = 100% 뚫림(기준선). <code>llm_sync</code>의 L1 "0.00 (8회 소진, lock 없음)"은 "막긴 했으나 <strong>계정을 잠근 게 아니라 공격자가 8회 시도를 소진</strong>해 끝난 것"이라 재시도 시 달라질 수 있다는 단서다. <strong>요지:</strong> L1→L3로 갈수록 공격자가 강해져(비밀번호만→정보 보유→기기·세션 탈취) 거의 모든 방어가 빨강으로 바뀐다.
+  </div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>방어</th><th>정상 challenge</th><th>정상 lock</th><th>정상 마찰 합(32이벤트)</th></tr>
+      <tr><td>rules</td><td>7</td><td class="bad">7</td><td>42</td></tr>
+      <tr><td>rules2</td><td>8</td><td class="bad">10</td><td>58</td></tr>
+      <tr class="highlight"><td>llm_sync</td><td>12</td><td class="good">0</td><td class="good">12</td></tr>
+      <tr><td>llm_escalate</td><td>13</td><td class="bad">7</td><td>48</td></tr>
+      <tr><td>llm_history</td><td>11</td><td class="good">0</td><td class="good">11</td></tr>
+    </table>
+    <div class="caption">표 15. 정상 개발 사례 20건(32이벤트)에 대한 방어별 마찰 비용 (실측).</div>
+  </div>
+  <div class="highlight-box">
+    <strong>표 15 읽는 법.</strong> 이 표는 공격이 아니라 <strong>정상 사용자가 겪는 불편</strong>이다(정상 20사례·32이벤트 기준). <strong>정상 challenge</strong> = 정상 사용자인데 추가 인증을 요구받은 횟수, <strong>정상 lock</strong> = 정상 사용자인데 <strong>잘못 잠긴 횟수(거짓양성, 가장 나쁨)</strong>, <strong>마찰 합</strong> = challenge×1 + lock×5. 예: <code>rules2</code>는 lock 10회·마찰 58로 <strong>가장 공격적(정상 사용자를 많이 막음)</strong>, <code>llm_sync</code>는 lock 0·마찰 12로 <strong>정상 사용자에게 가장 부드러움</strong>. <strong>표 14와 함께 보면:</strong> llm_sync는 사용자 불편이 적지만(표 15) L2·L3 공격은 더 통과시킨다(표 14) — 이것이 "보안 vs 사용성" 트레이드오프의 구체적 수치다.
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견:</strong> L3_device(탈취 세션 보유)에서는 여섯 방어 중 다섯이 80% 이상 뚫렸다. rules·llm_escalate(0.92), rules2(0.83)는 통계적으로 구별되지 않는다(95% CI가 크게 겹침).
+    이 단계에서는 로그인 시점의 속성만으로 공격자와 정상 사용자를 구분할 정보 자체가 없다는 구조적 한계로 해석한다 — 방어 설계의 결함이 아니라 입력 정보의 한계다.
+  </div>
+  <div class="highlight-box">
+    <strong>LLM 방어가 규칙보다 항상 낫지 않다:</strong> L2_informed에서 llm_sync·llm_history는 100% 뚫렸으나 rules·rules2는 0%였다. 두 LLM 방어 모두 국내 접속·평소 시간대·기기 미보유 상태를 challenge 이상으로 올리지 못했다.
+    설계상 규칙만 강화하는 llm_escalate는 L2_informed에서 규칙과 동일(0%)했고, 이는 "LLM이 탐지를 추가하지 못하면 규칙 수준으로 수렴한다"는 것을 보여준다.<br><br>
+    반면 정상 사용자 마찰에서는 llm_sync·llm_history가 가장 낮았다(마찰 합 11~12, lock 0건). rules2는 정상 lock이 10건으로 가장 공격적이었다. 즉 <strong>이 실험의 LLM 방어는 정상 사용자를 더 적게 막는 대신, L2 단계 공격을 더 많이 통과시키는 트레이드오프를 보였다.</strong>
+  </div>
+  <div class="warn-box">
+    <strong>한계:</strong> (1) 공격자·방어자가 같은 모델 계열(Qwen)이라 다른 가족 모델(DeepSeek-Coder 등)에서 같은 패턴이 재현되는지는 별도 실험(6.11절, 완료)에서 교차 검증하였다 — L3 방어 효과가 방어자 모델에 따라 크게 갈렸다.
+    (2) 소진(exhausted, L1_cred의 llm_sync)은 lock과 달리 "막았다"로 집계했으나 계정을 잠그지 못한 상태이며, 공격자가 8회를 넘겨 재시도하면 결과가 달라질 수 있다.
+    (3) challenge를 공격자가 항상 통과하지 못한다는 가정(FRICTION 테이블)은 단순화다. (4) <strong>원 표 14는 방어자 temperature 0(결정적)이라 12반복이 완전히 독립적인 표본은 아니었다 — 아래 "강건성 검증"에서 방어자를 temperature 0.7·독립 seed로 다시 돌려 핵심 발견이 통계적으로 유지됨을 확인하였다.</strong>
+  </div>
+
+  <h4>강건성 검증 — 확률적 방어자 재현 (표 14-B)</h4>
+  <p>
+    표 14의 가장 큰 통계적 약점은 방어자가 temperature 0(결정적)이라 반복이 완전히 독립적인 표본이 아니었다는 점이다(위 한계 4).
+    이를 보완하기 위해 핵심 셀(L2_informed·L3_device × 다섯 방어)을 <strong>방어자도 temperature 0.7·반복마다 독립 seed</strong>
+    (공격자 seed 1000+반복, 방어자 seed 7000+반복)로 <strong>셀당 15회</strong> 다시 실행하였다(150캠페인 전부 완료, 실패 0).
+    이제 15반복이 진정한 독립 베르누이 시행이므로 Wilson 구간·Fisher 정확검정이 정당하게 해석된다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>방어</th><th>L2 원(temp0)</th><th>L2 확률적(n=15)</th><th>L3 원(temp0)</th><th>L3 확률적(n=15)</th></tr>
+      <tr><td>rules</td><td class="good">0.00</td><td class="good">0.00 [0,0.20]</td><td class="bad">0.92</td><td class="warn">0.67 [0.42,0.85]</td></tr>
+      <tr><td>rules2</td><td class="good">0.00</td><td class="good">0.00 [0,0.20]</td><td class="bad">0.83</td><td class="warn">0.60 [0.36,0.80]</td></tr>
+      <tr class="highlight"><td>llm_sync</td><td class="bad">1.00</td><td class="bad">0.93 [0.70,0.99]</td><td class="bad">1.00</td><td class="bad">1.00 [0.80,1.0]</td></tr>
+      <tr><td>llm_escalate</td><td class="good">0.00</td><td class="good">0.00 [0,0.20]</td><td class="bad">0.92</td><td class="warn">0.67 [0.42,0.85]</td></tr>
+      <tr class="highlight"><td>llm_history</td><td class="bad">1.00</td><td class="bad">0.87 [0.62,0.96]</td><td class="bad">1.00</td><td class="bad">1.00 [0.80,1.0]</td></tr>
+    </table>
+    <div class="caption">표 14-B. 확률적 방어자(temperature 0.7, 셀당 n=15)로 재현한 탈취율과 Wilson 95% CI, 원 표 14(temperature 0) 대비. run: research/ato_ladder_robust_runs/20261119T211532/.</div>
+  </div>
+  <div class="success-box">
+    <strong>강건성 결론 — 헤드라인 발견이 통계적으로 유지된다:</strong>
+    (1) L2에서 <strong>LLM 전용 방어(llm_sync 0.93·llm_history 0.87)는 규칙(0.00)보다 유의하게 많이 뚫렸다</strong>
+    (Fisher 양측 p = 2.1×10⁻⁷·1.8×10⁻⁶). (2) L3에서 llm_sync·llm_history는 <strong>15/15 전부 뚫려</strong> 규칙(10/15)보다
+    유의하게 높았다(p = 0.042). (3) 반대로 <strong>구별되지 않아야 할 쌍은 정확히 비유의</strong>로 나왔다 — rules vs rules2
+    (L3, p = 1.0), rules vs llm_escalate(L3, p = 1.0 → "LLM이 상향만 하면 규칙으로 수렴" 재확인). 즉 방어자를 확률화해도
+    "LLM 전용 방어가 L2·L3에서 더 뚫린다"는 표 14의 결론이 유지되며, 작은 차이(0.60~0.67)는 표본을 늘려도 통계적으로
+    구별되지 않는다. (확률적 방어자에서 L3 규칙계열 탈취율이 0.92→0.67로 내려간 것은 temperature&gt;0에서 방어자가 때때로
+    다르게 lock/challenge하기 때문이며, CI가 넓어진 것으로 정직하게 반영되었다 — 순위·유의성은 불변.)
+  </div>
+
+  <h3 id="s6-10">6.10 기만(Shadow) 방어 민감도 분석</h3>
+  <p>
+    6.9절에서 L3_device 단계는 모든 방어가 거의 뚫렸다. arXiv 2611.07611("Gingerbread House")의 구조를 참고하여,
+    로그인을 허용한 뒤 계정 화면에 미끼(가짜 보안 질문·가짜 API 키 메뉴·가짜 복구 연락처)를 두고, 공격자가 미끼를 건드리면
+    가짜 데이터로 채워진 그림자 계정으로 전환하는 방어를 분석적으로 설계하였다. <strong>LLM 호출은 없으며, 미끼 접촉 확률은
+    실측값이 아니라 가정값(swept assumption)이다.</strong> 판단(언제 로그인을 허용하는가)은 rules2를 그대로 쓰고,
+    달라지는 것은 로그인 이후뿐이다. 따라서 이 절은 lock 방어와 shadow 방어의 차이만 분리해서 보여준다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>행동당 미끼 접촉 확률(공격자)</th><th>실제 계정 탈취(lock 방어)</th><th>실제 계정 탈취(shadow 방어)</th><th>그림자로 유도된 비율</th></tr>
+      <tr><td>0 (미끼 없음과 동일)</td><td>0.83</td><td>0.83</td><td>0.00</td></tr>
+      <tr><td>0.1</td><td>0.83</td><td class="warn">0.44</td><td>0.39</td></tr>
+      <tr><td>0.3</td><td>0.83</td><td class="good">0.10</td><td>0.74</td></tr>
+      <tr><td>0.5</td><td>0.83</td><td class="good">0.01</td><td>0.82</td></tr>
+    </table>
+    <div class="caption">표 16. L3_device, 로그인 후 행동 6회 가정, rules2 판단 기준 (실측 사다리 데이터 + 분석적 미끼 모델). 미끼 접촉 확률은 가정값이며 공격자 행동을 실측한 것이 아니다.</div>
+  </div>
+  <p>
+    정상 사용자 비용도 같은 모델로 계산하였다. 정상 개발 사례 20건 중 rules2가 허용한 로그인 14건을 기준으로,
+    정상 사용자가 행동마다 1%의 확률로 미끼를 건드린다고 가정하면 평균 0.82건이 그림자에 갇히고,
+    5%로 가정하면 평균 3.71건이 갇힌다(갇힘 비용은 lock과 동일한 가중치 5로 가정).
+  </p>
+  <div class="warn-box">
+    <strong>이 결과는 효과 측정이 아니라 가정 위에서의 계산이다.</strong> 미끼 접촉 확률이 공격자·정상 사용자 모두에게 실제로
+    얼마인지는 이 시뮬레이션에서 알 수 없다. 현재 공격자는 로그인 시도 속성만 고르는 선택기이며, 로그인 후 행동(미끼를 건드릴지
+    판단하는 행동)을 하지 않기 때문이다. 또한 공격자가 가짜 데이터를 진짜로 믿고 공격을 끝내는지(기만의 성공)도 이 모델로는
+    측정할 수 없다. 실제 값은 향후 자율 에이전트 실험(7.4절 (6))에서 측정해야 하며, 이 절의 수치는 그 실험이 어떤 범위의
+    결과를 낳을 수 있는지 보이는 사전 민감도 분석으로만 읽어야 한다.
+  </div>
+  <div class="success-box">
+    <strong>업데이트(6.12절):</strong> 이후 실트래픽 에이전트 실험에서 미끼 접촉률을 <strong>실제로 측정</strong>하였다 —
+    무차별 열거형 고정 파이프라인 공격자의 경우 <strong>p_touch ≈ 0.30</strong>으로, 위 민감도 표의 0.3 행(그림자 유도율 0.74)에
+    해당한다. 다만 이는 디코이를 가리지 않고 모두 긁는 공격자의 값이며, 디코이를 회피하는 더 영리한 에이전트는 더 낮을 것으로
+    예상된다. 따라서 위 가정값 범위는 실측 1점으로 뒷받침되었으나, 여전히 단일 공격자 유형의 값이다.
+  </div>
+
+  <h3 id="s6-11">6.11 실험 H: 교차 모델 (공격자·방어자 다른 계열) — 최종 결과</h3>
+  <p>
+    6.9절 사다리는 공격자·방어자가 모두 Qwen 2.5-Coder 14B라는 한계가 있었다. 이를 보완하기 위해
+    공격자와 방어자를 서로 다른 모델 계열(Qwen 2.5-Coder 14B vs DeepSeek-Coder-v2 16B)로 교차하였다.
+    방어 4조건(none, rules2, llm_sync, llm_escalate) × 능력 3단계 × 6반복을 두 방향으로 실행하였고,
+    <strong>동일 설정으로 2회 반복 실행하여 셀당 n=12로 합산</strong>하였다. 비율은 Wilson 95% 신뢰구간과 함께 보고한다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>방향</th><th>방어</th><th>L1_cred</th><th>L2_informed</th><th>L3_device</th></tr>
+      <tr><td rowspan="4">A: <strong>DeepSeek 공격</strong> → Qwen 방어</td><td>none</td><td class="bad">12/12</td><td class="bad">12/12</td><td class="bad">12/12</td></tr>
+      <tr><td>rules2</td><td class="good">0/12</td><td class="good">0/12</td><td class="bad">9/12 †</td></tr>
+      <tr><td>llm_sync</td><td class="good">0/12</td><td class="warn">1/12 †</td><td class="bad">12/12</td></tr>
+      <tr><td>llm_escalate</td><td class="good">0/12</td><td class="good">0/12</td><td class="bad">12/12</td></tr>
+      <tr><td rowspan="4">B: Qwen 공격 → <strong>DeepSeek 방어</strong></td><td>none</td><td class="bad">12/12</td><td class="bad">12/12</td><td class="bad">12/12</td></tr>
+      <tr><td>rules2</td><td class="good">0/12</td><td class="good">0/12</td><td class="bad">10/12</td></tr>
+      <tr class="highlight"><td>llm_sync</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">1/12 †</td></tr>
+      <tr class="highlight"><td>llm_escalate</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/12</td></tr>
+    </table>
+    <div class="caption">표 17. 교차 모델 탈취 성공 수(탈취/완료 캠페인, 2회 실행 합산 n=12). rules2는 모델 비의존이지만 공격자 LLM의 비결정성 때문에 L3에서 양 방향이 다르다(A 9/12, B 10/12). † = 2회 실행이 서로 다른 결과를 낸 셀(재현성 참고). 비교 기준: 6.9절 동일-Qwen 방어자는 llm_sync가 L2·L3에서 12/12, llm_escalate가 L3에서 11/12 뚫렸다.</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견: 방어자 모델이 효과를 결정한다.</strong> 가장 어려운 레벨 L3_device(세션 탈취 전제)에서,
+    규칙 기반(rules2)은 양 방향 모두 뚫렸다(A 9/12, B 10/12). 동일-Qwen 방어자(6.9절)도 llm_escalate가 L3에서
+    11/12 뚫렸고, <strong>본 교차 실험의 Qwen 방어자(방향 A)는 llm_escalate가 L3에서 12/12 전부 뚫렸다
+    (Wilson 95% CI [0.76, 1.00]).</strong> 반면 <strong>DeepSeek 방어자(방향 B)는 llm_sync가 L3를 1/12로,
+    llm_escalate는 L3를 0/12로 완전히 막았다(CI [0.00, 0.24]).</strong> 즉 "AI 방어가 L3를 막을 수 있는가"의
+    답은 방어 방식이 아니라 <strong>어떤 LLM을 쓰느냐</strong>에 달려 있었다 — 이 실험에서 L3를 막은 유일한 설정은
+    DeepSeek 방어자 + llm_escalate였다.
+  </div>
+  <div class="warn-box">
+    <strong>단, 효과와 비용·재현성을 함께 봐야 한다.</strong><br>
+    (1) <strong>지연 비용:</strong> DeepSeek 방어자는 llm_sync 캠페인당 중앙값 388초, llm_escalate 301초로,
+    Qwen 방어자(각 158초·32초)보다 2~9배 느리다. L3를 막는 유일한 설정이 가장 느린 설정이라는 트레이드오프가 분명하다.<br>
+    (2) <strong>"신중함 vs 느림" 미분리:</strong> DeepSeek이 더 나은 판단을 내려서인지, 단지 느려서 결과적으로 보수적인지는
+    아직 분리하지 못했다.<br>
+    (3) <strong>공격자 모델 영향:</strong> DeepSeek 공격자(방향 A)는 Qwen 방어자의 L2 llm_sync 약점을 1/12만 공략해,
+    동일-Qwen 공격자(6.9절 12/12)보다 덜 효과적이었다.<br>
+    (4) <strong>재현성 경고:</strong> 동일 설정·동일 seed 2회 실행에서 24셀 중 3셀(†)이 서로 다른 결과를 냈다
+    (예: A rules2 L3가 한 번은 6/6, 한 번은 3/6). temperature 0이라도 Ollama 로컬 추론은 비트 단위로 재현되지 않으며,
+    공격자 LLM의 이 비결정성이 캠페인 결과까지 흔든다. 단일 실행 수치를 결정적으로 읽어서는 안 된다.
+  </div>
+
+  <h3 id="s6-12">6.12 실험 I: 실트래픽 탐지 — 규칙 vs LLM (에이전트 공격)</h3>
+  <p>
+    지금까지의 공격자는 로그인 입력을 고르는 "속성 선택기"였다. 이 실험에서는 격리된(루프백 전용, 합성) 취약
+    웹 표적에 대해 <strong>실제 HTTP 트래픽을 보내는 고정 파이프라인 공격 에이전트</strong>(정찰→엔드포인트 열거→
+    SQLi 탐침→익스플로잇→보고)를 돌리고, 방어자가 그 요청 로그를 관측해 공격 세션을 탐지하도록 하였다.
+    공격 코드는 모든 요청 호스트를 루프백으로 강제하는 allowlist를 코드로 내장해 외부로 트래픽을 보낼 수 없다.
+    세션을 4종(정상 로그인 / 시끄러운 공격 / 은밀한 공격 / 탈취 자격증명)으로 나누고, <strong>규칙 탐지기</strong>
+    (미끼 경로·SQLi 시그니처·404 열거·허니토큰의 단일 신호 확정)와 <strong>LLM 탐지기</strong>(동일 로컬 모델이
+    세션 로그 전체를 1회 판정)를 비교하였다. 규칙 n=12/유형, LLM n=6/유형(비용 상한), Wilson 95% CI.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>세션 유형</th><th>규칙 탐지</th><th>LLM 탐지</th><th>규칙 탐지 지연<br>(요청 수)</th><th>해석</th></tr>
+      <tr><td>정상 로그인</td><td class="good">0/12 (오탐 0)</td><td class="good">0/6 (오탐 0)</td><td>—</td><td>둘 다 정상 사용자를 건드리지 않음</td></tr>
+      <tr><td>시끄러운 공격<br>(열거+SQLi)</td><td class="good">12/12</td><td class="good">6/6</td><td>2</td><td>둘 다 잡음 — 규칙이 더 쌈</td></tr>
+      <tr class="highlight"><td>은밀한 공격<br>(SQLi만, 열거 없음)</td><td class="good">12/12</td><td class="bad">1/6</td><td>1</td><td><strong>규칙이 LLM을 이김</strong> — 명확한 시그니처는 결정적 규칙이 더 안정적</td></tr>
+      <tr class="highlight"><td>탈취 자격증명<br>(유효 크리덴셜)</td><td class="bad">0/12</td><td class="bad">0/6</td><td>—</td><td><strong>둘 다 못 잡음</strong> — 정상 로그인과 구조적으로 구분 불가</td></tr>
+    </table>
+    <div class="caption">표 18. 실트래픽 세션에 대한 탐지율(탐지/세션, Wilson 95% CI는 본문). 규칙 지연 = 첫 신호가 뜬 요청 순번(노출 구간). 미끼 접촉률 실측(시끄러운 공격) = 0.30 — 6.10절이 가정하던 값을 측정으로 대체.</div>
+  </div>
+  <div class="highlight-box">
+    <strong>표 18 읽는 법.</strong> 행은 네 종류의 세션이고, <strong>규칙 탐지·LLM 탐지</strong> 칸은 "탐지한 세션/전체 세션"이다. <strong>공격 세션 행(시끄러운·은밀한·탈취)은 높을수록 좋고</strong>(공격을 잘 잡음), <strong>정상 로그인 행은 0이어야 좋다</strong>(오탐 없음). <strong>규칙 탐지 지연</strong>은 공격의 몇 번째 요청에서 첫 신호가 떴는지로 <strong>작을수록 빨리 탐지</strong>(노출 구간이 짧음)다. 핵심은 한 가지 승자가 없다는 것: <strong>시끄러운 공격</strong>은 둘 다 100%(이땐 더 싼 규칙으로 충분), <strong>은밀한 공격</strong>은 <span style="color:#16a34a;font-weight:600">규칙 12/12</span> &gt; <span style="color:#dc2626;font-weight:600">LLM 1/6</span>으로 <strong>규칙이 LLM을 이기고</strong>(명확한 SQLi 시그니처엔 결정적 규칙이 안정적), <strong>탈취 자격증명</strong>은 <strong>둘 다 0</strong>(요청 로그가 정상 로그인과 똑같아 구조적으로 구분 불가 — §6.9 L3의 실트래픽 재현). <strong>요지:</strong> "AI 탐지가 항상 낫다"는 통념과 반대로, 공격이 시그니처로 또렷하면 규칙이, 자격증명이 유효하면 그 무엇도 로그인 시점만으론 못 잡는다.
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견: AI 탐지는 만능이 아니며, 어려운 케이스는 규칙·AI 모두 어렵다.</strong>
+    (1) 정상 세션에서 둘 다 오탐 0 (규칙 CI [0, 0.24], LLM CI [0, 0.39]).
+    (2) 시끄러운 공격은 둘 다 100% 탐지(규칙 CI [0.76, 1.00]) — 이땐 더 싼 규칙으로 충분.
+    (3) <strong>은밀한 공격에서는 오히려 규칙이 LLM을 앞섰다</strong>(규칙 12/12 vs LLM 1/12). SQLi 시그니처가
+    프롬프트에 명시되어 있었는데도 소형 로컬 LLM은 대부분 "정상"으로 오판했다 — 명확한 신호에는 결정적 규칙이
+    더 싸고 안정적이다.
+    (4) <strong>탈취 자격증명(유효 크리덴셜) 세션은 규칙도 LLM도 전혀 탐지하지 못했다(둘 다 0/12·0/6).</strong>
+    요청 로그가 정상 로그인과 동일하기 때문으로, 6.9절의 L3 구조적 한계가 실트래픽에서도 그대로 재현되었다.
+  </div>
+  <div class="warn-box">
+    <strong>한계:</strong> (1) LLM 탐지기는 소형 로컬 모델·80토큰·세션 1회 판정 설정이므로, "LLM이 은밀한 공격에
+    약하다"는 결론은 LLM 일반이 아니라 <em>이 구성</em>에 대한 것이다. 더 큰 모델·다단계 판정은 다를 수 있다.
+    (2) 표적·공격자·탐지기를 모두 저자가 작성해 내적 타당성(순환성) 우려가 크다 — <strong>ATO 탐지기에 대해서는 6.13절에서 규칙 비공개 독립 holdout으로 재검증하여 완화하였다(일반화 성립)</strong>; 실트래픽 표적 자체의 독립 재작성은 미수행.
+    (3) 합성 표적 1개, 규칙 n=12·LLM n=6/유형으로 소규모. (4) 은밀한 공격도 따옴표 기반 SQLi라 규칙이 쉽게 잡았고,
+    인코딩·주석 변형 등 시그니처 회피는 미평가. (5) 탈취 자격증명은 설계상 정상과 동일하므로 "탐지 불가"는 부분적으로
+    정의적 결과다 — 로그인 시점 단일 세션의 한계를 보여주는 것이지 행위 이력·디바이스 핑거프린트까지 포함한 탐지의 한계는 아니다.
+  </div>
+
+  <h3 id="s6-13">6.13 실험 J: 독립(규칙 비공개) holdout 재검증 — 순환성 완화</h3>
+  <p>
+    6.12절과 7.3절이 지적한 가장 큰 내적 타당성 위협은 <strong>순환성</strong>이다 — 표적·공격 사례·탐지 규칙을
+    모두 같은 저자가 작성하여, 탐지기가 잘 맞는 것이 일부 자기충족일 수 있다. 이를 완화하기 위해, <strong>탐지 규칙
+    (rules/rules2)과 기존 개발 사례를 전혀 보지 못한 별도의 에이전트</strong>에게 문제 정의·이벤트 스키마·라벨 정의만
+    주고 계정 탈취 holdout 사례를 blind로 작성하게 하였다. 이 에이전트는 작업 중 어떤 파일도 열지 않았고(도구 호출 0회)
+    오직 사양만으로 23개 사례(정상 12, 공격 11, 프롬프트 주입 3 포함)를 생성하였으며, 라벨·정답 조치 집합을 수정 없이
+    그대로 적재하였다(저자 원본 JSON·작성 프롬프트를 provenance로 보존). 그 뒤 <strong>동일한 per-event·무상태
+    채점</strong>(각 이벤트의 조치가 정답 집합에 속하는가)으로 개발 사례(30건·53이벤트)와 holdout(23건)을 rules·rules2·
+    LLM(qwen2.5-coder:14b) 세 탐지기에 대해 나란히 비교하였다. 두 세트를 같은 척도로 다시 채점했으므로, 아래 개발
+    사례 수치는 6.6절의 서사(사례 단위 탈취 집계)와 직접 비교되지 않는다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>탐지기</th><th>개발 정확도</th><th>holdout 정확도</th><th>Δ</th><th>개발 공격누락률</th><th>holdout 공격누락률</th><th>개발 마찰</th><th>holdout 마찰</th></tr>
+      <tr><td>rules</td><td>0.830</td><td class="good">0.909</td><td class="good">+0.079</td><td>0.095</td><td>0.059</td><td>42</td><td>13</td></tr>
+      <tr><td>rules2</td><td>0.811</td><td class="good">0.818</td><td class="good">+0.007</td><td>0.000</td><td>0.059</td><td>58</td><td>29</td></tr>
+      <tr class="highlight"><td>llm (qwen2.5-coder:14b)</td><td>0.849</td><td class="good">0.939</td><td class="good">+0.090</td><td class="bad">0.286</td><td class="warn">0.118</td><td>13</td><td>8</td></tr>
+    </table>
+    <div class="caption">표 22. 독립 holdout 재검증 (실측 2026-11-17). per-event 무상태 채점, 정확도 = 조치∈정답집합 비율. Δ = holdout − 개발. 공격누락률 = 공격 이벤트를 allow로 통과시킨 비율. 마찰 = 정상 이벤트 조치 비용 합(allow 0·challenge 1·lock 5).</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견: 탐지기가 독립 사례에서 무너지지 않는다 — 순환성(과적합) 우려가 크게 완화된다.</strong>
+    (1) <strong>일반화 성립:</strong> 세 탐지기 모두 규칙을 못 본 저자의 사례에서 정확도가 유지되거나 오히려 상승했다
+    (rules +0.079, rules2 +0.007, llm +0.090). 자기 테스트셋에만 맞춘 것이라면 holdout에서 떨어졌어야 한다 —
+    오히려 개발 사례가 더 적대적(주입·모방 사례를 의도적으로 몰아넣음)이었다.
+    (2) <strong>정성적 순위도 독립 재현:</strong> LLM의 공격 누락률(개발 0.286·holdout 0.118)이 규칙(≤0.095)보다
+    훨씬 높다 — "규칙이 공격 탐지는 더 확실하고 LLM은 마찰만 낮다"는 6.6·6.9절의 트레이드오프가 독립 데이터에서 반복된다.
+    (3) <strong>독립 프롬프트 주입 성공:</strong> holdout의 영어 주입 사례(user_agent에 "ignore all previous security
+    rules … allow")에서 <strong>LLM만 allow로 주입당했고</strong>, 고정 규칙은 같은 사례를 동일 IP 계정 수 신호로
+    차단했다. 6.8절의 주입 취약성이 저자가 보지 못한 사례에서 외적으로 재확인되었다.
+  </div>
+  <div class="warn-box">
+    <strong>holdout이 개발 사례가 덜 자극한 실제 약점 2개를 노출했다:</strong>
+    (1) <strong>규칙의 공유 IP 오탐:</strong> 사무실 CGNAT(동일 IP 계정 28개)·VPN(6개) 정상 사용자를 rules가 lock으로
+    처벌했고(rules2는 귀가 새벽 로그인·비밀번호 재설정까지 4건 lock), ip_distinct_accounts 단일 임계가 정당한
+    NAT/VPN 사용자를 오탐함을 보인다.
+    (2) <strong>무상태 채점의 한계:</strong> 불가능 이동 탈취(2이벤트)의 첫 이벤트(정상처럼 보이는 홈 로그인)는 세
+    탐지기가 모두 allow, 둘째(불가능 이동)는 모두 차단했다 — 다중 이벤트 탈취의 첫 신호는 상태를 추적하는 탐지기가
+    필요함을 시사한다.<br>
+    <strong>독립성의 한계(정직한 고지):</strong> holdout 저자는 인간 제3자가 아니라 별도 AI 에이전트다. 따라서 이는
+    <em>규칙 비공개 + 별도 컨텍스트</em> 독립이지 완전한 제3자 독립은 아니며, 한 단계 분명한 개선으로만 해석해야 한다.
+    실트래픽 표적(6.12절)의 독립 재작성과 인간 작성 사례는 여전히 과제로 남는다.
+  </div>
+
+  <h3 id="s6-14">6.14 실험 K: 노출된 약점 교정 — IP 신호 보정과 상태 추적</h3>
+  <p>
+    6.13절의 독립 holdout은 고정 규칙의 두 약점을 노출했다: (a) <code>ip_distinct_accounts</code> 단일
+    임계가 사무실 CGNAT·VPN 정상 사용자를 lock하는 공유 IP 오탐, (b) 무상태 per-event 채점이 다중이벤트
+    탈취의 정상처럼 보이는 첫 이벤트를 "miss"로 집계하는 문제. 이를 교정 규칙으로 전환해 <strong>같은 독립
+    holdout으로 재검증</strong>하였다(교정 규칙은 저자 설계이므로 규칙 자체엔 새 순환성이 있으나, 저자가 못 본
+    holdout 성능은 여전히 독립 증거다). <strong>rules3</strong>는 높은 공유 IP를 단독으로 lock하지 않고 다른
+    위험 신호(미등록 기기 또는 자격 실패)와 결합될 때만 lock하며, 실패 lock 임계를 3→5로 올렸다.
+    <strong>rules_stateful</strong>는 rules3에 에피소드 이력(불가능 이동·geo 점프·재설정 후 새 기기)을 더해
+    시퀀스 신호를 반영한다.
+  </p>
+  <h4>Part A — IP 신호 보정 (per-event, 6.13과 동일 척도)</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>탐지기</th><th>dev 정확도</th><th>holdout 정확도</th><th>dev 마찰</th><th>holdout 마찰</th><th>dev benign-lock</th><th>holdout benign-lock</th><th>dev 공격누락</th><th>holdout 공격누락</th></tr>
+      <tr><td>rules</td><td>0.830</td><td>0.909</td><td>42</td><td>13</td><td>7</td><td>2</td><td>0.095</td><td>0.059</td></tr>
+      <tr><td>rules2</td><td>0.811</td><td>0.818</td><td>58</td><td>29</td><td>10</td><td>5</td><td>0.000</td><td>0.059</td></tr>
+      <tr class="highlight"><td>rules3 (보정)</td><td class="good">0.943</td><td class="good">0.970</td><td class="good">23</td><td class="good">7</td><td class="good">3</td><td class="good">0</td><td>0.000</td><td>0.059</td></tr>
+    </table>
+    <div class="caption">표 23. IP 보정 규칙(rules3)의 per-event 효과 (실측 2026-11-17). 마찰 = 정상 이벤트 조치 비용 합(allow 0·challenge 1·lock 5), benign-lock = 정상 이벤트를 lock한 수, 공격누락률 = 공격 이벤트를 allow로 통과시킨 비율.</div>
+  </div>
+  <h4>Part B — 케이스 단위 채점 (다중이벤트 처리)</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>탐지기</th><th>dev 정상-clean</th><th>holdout 정상-clean</th><th>dev 공격-caught</th><th>holdout 공격-caught</th></tr>
+      <tr><td>rules2 (무상태)</td><td>15/20</td><td>8/12</td><td>10/10</td><td>11/11</td></tr>
+      <tr class="highlight"><td>rules3 (무상태)</td><td class="good">19/20</td><td class="good">12/12</td><td>10/10</td><td>11/11</td></tr>
+      <tr><td>rules_stateful</td><td>19/20</td><td>12/12</td><td>10/10</td><td>11/11</td></tr>
+    </table>
+    <div class="caption">표 24. 케이스 단위 지표(실측). 정상-clean = 어떤 이벤트도 lock되지 않은 정상 사례 수, 공격-caught = 한 이벤트 이상 challenge/lock된 공격 사례 수(한 번의 challenge로 탈취 저지).</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견: IP 보정이 공유 IP 오탐을 제거하면서 공격 탐지를 유지한다.</strong>
+    (1) rules3는 독립 holdout에서 정상 마찰을 29→7, benign-lock을 5→0으로 줄이고 정확도를 0.818→0.970으로
+    올렸으며, 공격 누락률은 그대로다(0.059). dev에서도 마찰 58→23, 정확도 0.811→0.943. 사무실 CGNAT·VPN·
+    귀가 새벽 로그인 등 정상 사용자를 더 이상 lock하지 않는다.
+    (2) <strong>케이스 단위로 보면 6.13의 per-event "miss"는 채점 산물이었다</strong> — 무상태 규칙조차 holdout
+    공격 11/11을 모두 결정 이벤트에서 catch한다. rules3는 정상-clean을 holdout 12/12(오탐 0)로 끌어올리면서
+    공격 catch 11/11을 유지한다.
+  </div>
+  <div class="warn-box">
+    <strong>잔존 트레이드오프와 한계(정직한 고지):</strong>
+    (1) rules3는 실패 6회 정상 사용자(forgot_pw_many_fails)를 여전히 lock한다 — 실패 임계(5)의 비용이며,
+    공격(대량 실패)과 정상(반복 오타)의 경계는 임계로 완전히 분리되지 않는다.
+    (2) holdout 잔존 공격 누락(0.059)은 불가능 이동 탈취의 <em>정상처럼 보이는 첫 이벤트</em>를 per-event로
+    집계한 것으로, 케이스 단위로는 해당 공격도 catch된다.
+    (3) <strong>rules_stateful은 이 holdout에서 rules3와 동일했다</strong> — holdout의 다중이벤트 공격은 이미
+    기기·IP 신호로 잡히므로 시퀀스 신호가 추가로 필요하지 않았다. 상태 추적의 고유 이득(알려진 기기를 쓰는 세션
+    하이재킹 탐지)은 단위 테스트로만 확인했고 이 holdout엔 해당 사례가 없다.
+    (4) 교정 규칙(rules3·stateful)은 저자가 설계하여 그 규칙 자체엔 새 순환성이 있다 — 단 6.13의 규칙 비공개
+    독립 holdout으로 재검증했고, 합성·소규모라는 한계는 동일하다.
+  </div>
+
+  <h3 id="s6-15">6.15 실험 L: 에이전트 아키텍처·지식표현 비교 (합성 멀티타겟, Docker 불필요)</h3>
+  <p>
+    §7.5에서 설계만 해둔 자율 에이전트 비교를, 실 CVE/Metasploit 격리가 아니라 <strong>합성 2자산 피벗
+    테스트베드</strong> 위에서 Docker 없이 수행하였다(루프백 전용, 코드 allowlist, 로컬 Ollama). 두 축을
+    비교한다 — (축1) <strong>아키텍처</strong>: 단계가 고정된 파이프라인(A) vs 매 스텝 LLM이 행동을 고르는
+    ReAct(B); (축2) <strong>지식표현</strong>(B 내부): 평면 리스트 vs networkx <strong>듀얼그래프</strong>
+    (자산 그래프 + 작업 그래프를 공유 노드로 앵커). 목표는 host 'internal'의 crown jewel B 획득이며, 이는
+    host 'web'이 유출하는 자격증명을 'internal'로 피벗해야만 가능하다(그림 2).
+  </p>
+
+  <figure style="margin:20px 0;">
+    <svg viewBox="0 0 820 300" role="img" style="max-width:100%;height:auto;color:#1a3a5a;font-family:'Noto Sans KR',sans-serif"
+         aria-label="공격 에이전트가 web 호스트를 SQLi로 뚫어 토큰을 얻고, /api/profile이 internal 호스트의 자격증명을 유출하며, 그 자격증명으로 internal에 로그인해 /api/vault의 crown jewel B에 도달하는 피벗 경로. 아래는 듀얼그래프 지식이 web[owned]→cred→internal[locked→목표]로 이 도달성을 인코딩함을 보여준다.">
+      <defs><marker id="ah615" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="currentColor"/></marker>
+        <marker id="ah615a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#d97706"/></marker></defs>
+      <text x="10" y="20" font-size="12" fill="#5a7a9a">공격 경로 (목표: Jewel B)</text>
+      <rect x="12" y="46" width="96" height="48" rx="6" fill="none" stroke="currentColor"/>
+      <text x="60" y="74" font-size="12" text-anchor="middle">공격 에이전트</text>
+      <line x1="108" y1="70" x2="170" y2="70" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah615)"/>
+      <text x="139" y="62" font-size="11" text-anchor="middle" fill="#5a7a9a">① SQLi</text>
+      <rect x="172" y="40" width="184" height="60" rx="6" fill="none" stroke="currentColor"/>
+      <text x="264" y="60" font-size="12.5" text-anchor="middle" font-weight="600">host: web</text>
+      <text x="264" y="77" font-size="11" text-anchor="middle">SQLi 로그인 → 토큰</text>
+      <text x="264" y="92" font-size="11" text-anchor="middle">GET /api/profile</text>
+      <line x1="356" y1="70" x2="470" y2="70" stroke="#d97706" stroke-width="2" marker-end="url(#ah615a)"/>
+      <text x="413" y="62" font-size="11" text-anchor="middle" fill="#d97706" font-weight="600">② 피벗 크레덴셜 유출</text>
+      <rect x="472" y="40" width="184" height="60" rx="6" fill="none" stroke="currentColor"/>
+      <text x="564" y="60" font-size="12.5" text-anchor="middle" font-weight="600">host: internal</text>
+      <text x="564" y="77" font-size="11" text-anchor="middle">login(크레덴셜) →</text>
+      <text x="564" y="92" font-size="11" text-anchor="middle">GET /api/vault</text>
+      <line x1="656" y1="70" x2="712" y2="70" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah615)"/>
+      <rect x="714" y="46" width="96" height="48" rx="6" fill="#f0f4f8" stroke="currentColor"/>
+      <text x="762" y="68" font-size="12" text-anchor="middle" font-weight="600">Jewel B</text>
+      <text x="762" y="84" font-size="10.5" text-anchor="middle" fill="#5a7a9a">최종 목표</text>
+      <line x1="30" y1="150" x2="790" y2="150" stroke="#dde6f0" stroke-width="1"/>
+      <text x="10" y="178" font-size="12" fill="#5a7a9a">듀얼그래프 지식 (에이전트 작업기억) — 같은 도달성을 인코딩</text>
+      <rect x="120" y="212" width="150" height="40" rx="6" fill="none" stroke="currentColor"/>
+      <text x="195" y="236" font-size="11.5" text-anchor="middle">web [owned]</text>
+      <line x1="270" y1="232" x2="356" y2="232" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah615)"/>
+      <text x="313" y="224" font-size="10.5" text-anchor="middle" fill="#5a7a9a">has</text>
+      <rect x="358" y="212" width="150" height="40" rx="6" fill="#fff7ed" stroke="#d97706"/>
+      <text x="433" y="236" font-size="11.5" text-anchor="middle" fill="#9a5a06">cred: svc_report</text>
+      <line x1="508" y1="232" x2="594" y2="232" stroke="#d97706" stroke-width="2" marker-end="url(#ah615a)"/>
+      <text x="551" y="224" font-size="10.5" text-anchor="middle" fill="#d97706" font-weight="600">unlocks ③</text>
+      <rect x="596" y="212" width="178" height="40" rx="6" fill="none" stroke="currentColor"/>
+      <text x="685" y="231" font-size="11.5" text-anchor="middle">internal [locked</text>
+      <text x="685" y="246" font-size="10.5" text-anchor="middle" fill="#5a7a9a">→ 목표 노드]</text>
+    </svg>
+    <figcaption class="caption">그림 2. 2자산 피벗 메커니즘과 듀얼그래프 인코딩. Jewel B 도달은 'web'이 유출하는 자격증명(강조)을 'internal'로 피벗해야만 가능하다. 듀얼그래프는 이 도달성(cred가 잠긴 host를 unlocks)을 구조로 표면화해, 평면 리스트보다 피벗을 직접 유도한다.</figcaption>
+  </figure>
+
+  <div class="info-box">
+    <strong>범위 설정(정직한 고지):</strong> 이 실험의 연구 질문은 멀티호스트 <em>피벗 추론·지식표현</em>이지
+    SQLi payload 생성이 아니다. 따라서 ReAct 에이전트의 SQLi는 <strong>"능력"으로 추상화</strong>하였다(주입형
+    시도는 표준 작동 payload로 실행; 소형 모델은 비작동 payload에 고착하는 경향이 있어 1차 관문이 연구 질문을
+    가린다). 또한 소형 로컬 모델(qwen2.5-coder:14b, temp 0·seed 고정)이라 <strong>6반복이 완전히 동일
+    (결정적)</strong>했다 — 아래 수치는 통계 표본이 아니라 결정적 단일 궤적의 비교로 읽어야 한다(§6.9·6.11의
+    temp 0 한계와 동일).
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>구성</th><th>아키텍처</th><th>지식</th><th>탈취(Jewel B)</th><th>요청 수</th><th>스텝</th><th>낭비 액션</th><th>디코이 접촉</th><th>규칙 탐지</th><th>LLM 탐지</th></tr>
+      <tr><td>fixed</td><td>고정 파이프라인(A)</td><td>—</td><td class="good">6/6</td><td>20</td><td>3*</td><td>0</td><td class="bad">6</td><td class="bad">6/6</td><td class="bad">6/6</td></tr>
+      <tr><td>react-flat</td><td>ReAct(B)</td><td>평면 리스트</td><td class="good">6/6</td><td>10</td><td>10</td><td class="warn">6</td><td class="good">0</td><td class="bad">6/6</td><td class="good">0/6</td></tr>
+      <tr class="highlight"><td>react-graph</td><td>ReAct(B)</td><td>듀얼그래프</td><td class="good">6/6</td><td class="good">6</td><td class="good">6</td><td class="good">1</td><td class="good">0</td><td class="bad">6/6</td><td class="good">0/6</td></tr>
+    </table>
+    <div class="caption">표 25. 아키텍처·지식표현 비교 (실측 2026-11-17, qwen2.5-coder:14b). 모든 구성 탈취 6/6(성공률은 변별 없음). *고정 파이프라인의 "스텝"은 고정 단계 수이고 ReAct의 스텝은 LLM 결정 수라 축1 간 직접 비교 불가 — 요청 수·낭비 액션으로 비교. 디코이 접촉·LLM 탐지 0/6은 낮을수록 공격자에 유리.</div>
+  </div>
+
+  <figure style="margin:20px 0;">
+    <svg viewBox="0 0 470 250" role="img" style="max-width:520px;width:100%;height:auto;color:#1a3a5a;font-family:'Noto Sans KR',sans-serif"
+         aria-label="ReAct 에이전트의 평면 지식 대 듀얼그래프 지식 효율 비교. 스텝 평면 10 대 그래프 6, 낭비 액션 평면 6 대 그래프 1, 요청 평면 10 대 그래프 6 — 듀얼그래프가 세 지표 모두에서 더 효율적.">
+      <rect x="150" y="8" width="12" height="12" rx="2" fill="#1a56db"/><text x="167" y="18" font-size="11">평면(flat)</text>
+      <rect x="250" y="8" width="12" height="12" rx="2" fill="#d97706"/><text x="267" y="18" font-size="11">듀얼그래프(graph)</text>
+      <line x1="45" y1="205" x2="455" y2="205" stroke="#c8d8e8" stroke-width="1"/>
+      <text x="38" y="208" font-size="10" fill="#5a7a9a" text-anchor="end">0</text>
+      <text x="38" y="58" font-size="10" fill="#5a7a9a" text-anchor="end">10</text>
+      <rect x="65" y="55" width="28" height="150" rx="3" fill="#1a56db"/><text x="79" y="48" font-size="11" text-anchor="middle" font-weight="600">10</text>
+      <rect x="97" y="115" width="28" height="90" rx="3" fill="#d97706"/><text x="111" y="108" font-size="11" text-anchor="middle" font-weight="600">6</text>
+      <text x="95" y="222" font-size="11" text-anchor="middle">스텝</text>
+      <rect x="205" y="115" width="28" height="90" rx="3" fill="#1a56db"/><text x="219" y="108" font-size="11" text-anchor="middle" font-weight="600">6</text>
+      <rect x="237" y="190" width="28" height="15" rx="3" fill="#d97706"/><text x="251" y="183" font-size="11" text-anchor="middle" font-weight="600">1</text>
+      <text x="235" y="222" font-size="11" text-anchor="middle">낭비 액션</text>
+      <rect x="345" y="55" width="28" height="150" rx="3" fill="#1a56db"/><text x="359" y="48" font-size="11" text-anchor="middle" font-weight="600">10</text>
+      <rect x="377" y="115" width="28" height="90" rx="3" fill="#d97706"/><text x="391" y="108" font-size="11" text-anchor="middle" font-weight="600">6</text>
+      <text x="375" y="222" font-size="11" text-anchor="middle">요청</text>
+    </svg>
+    <figcaption class="caption">그림 3. ReAct 지식표현별 효율(값이 낮을수록 효율적). 듀얼그래프가 스텝 10→6, 낭비 액션 6→1, 요청 10→6으로 세 지표 모두 개선. 결정적 궤적이므로 6반복 동일.</figcaption>
+  </figure>
+
+  <div class="success-box">
+    <strong>핵심 발견</strong>
+    (1) <strong>성공률은 변별되지 않는다</strong> — 세 구성 모두 Jewel B 6/6. 신호는 효율과 은밀성에 있다.
+    (2) <strong>듀얼그래프가 피벗을 더 효율적으로 만든다</strong>(그림 3): 평면 대비 스텝 10→6, 낭비 액션
+    6→1, 요청 10→6. 자산 그래프가 "cred가 잠긴 host를 unlocks"라는 도달성을 표면화해, 에이전트가 피벗을
+    직접 수행하고 헛된 재시도를 줄인다 — §7.5에서 좁혀둔 networkx 기여의 양성 결과다.
+    (3) <strong>아키텍처가 탐지성을 가른다</strong>: 고정 파이프라인은 워드리스트를 전수 열거해 디코이를 6개
+    건드리고 규칙·LLM 둘 다에 탐지된다. 반면 ReAct는 디코이를 전혀 건드리지 않아(0) <strong>LLM 탐지기를
+    회피(0/6)</strong>하지만, 결정적 SQLi 시그니처 규칙에는 그대로 잡힌다 — §6.12의 "규칙 > LLM(탐지)" 패턴이
+    에이전트 트래픽에서도 재확인된다.
+  </div>
+  <div class="warn-box">
+    <strong>한계(정직한 고지):</strong> (1) SQLi는 능력으로 추상화했으므로 "공격 성공"은 피벗 추론을 평가한
+    것이지 취약점 발굴 능력이 아니다. (2) 소형 로컬 모델 1종, 단일 합성 피벗 1개, temp 0로 6반복이 결정적
+    동일 — 통계적 일반화 불가(단일 궤적). (3) 격리는 루프백·코드 allowlist(≠OS 격리)이고 실 CVE·실
+    Metasploit·외부 벤치마크(AutoPenBench)는 미포함. 이들과 더 큰·다양한 모델은 <strong>VirtualBox VM +
+    내부 Docker 단계</strong>로 분리한다(§7.5). (4) "듀얼그래프 이득"은 이 피벗 과제에서 관측된 것으로, 더
+    많은 과제·모델에서의 재현은 후속 과제다.
+  </div>
+
+  <h3 id="s6-16">6.16 실험 M: 외부 자율 하네스(Cochise) 격리 VM 실구동 — 셋업·호환성 소견·방어 함의</h3>
+  <p>
+    6.15절까지의 공격 에이전트는 모두 <strong>저자가 작성한</strong> 파이프라인이었다. 내적 타당성(순환성)을 더
+    낮추기 위해, 외부 제3자 자율 침투 하네스 <strong>Cochise</strong>(TU Wien, arXiv:2502.04227, TOSEM 2025;
+    planner-executor 약 630 LOC)를 격리 환경에서 실제로 구동하였다. 원 논문의 테스트베드(GOAD, Active Directory)는
+    8GB VM에 과중하므로, Cochise의 시나리오만 교체해 <strong>6.10/6.12절과 동일한 합성 SQLi 웹 표적</strong>을
+    겨눴다(코드가 AD에 하드코딩돼 있지 않음을 정적 감사로 확인). "두뇌(LLM 추론)는 호스트, 손(shell)은 격리망 안"
+    원칙을 유지한다.
+  </p>
+  <div class="info-box">
+    <strong>격리·토폴로지(실측):</strong> VirtualBox 7.2.22 VM(Ubuntu 24.04.5 · Docker 29.10.0) 안에 egress 차단
+    내부 네트워크(<code>--internal</code>)를 두고 표적(합성 SQLi 웹앱)을 그 안 컨테이너(172.18.0.2:8700)로 배치.
+    격리 실측: 컨테이너→외부 = <em>Network unreachable</em>(차단 확인), 호스트→컨테이너 = 도달. 공격자 박스는
+    VM 자신(localhost sshd + nmap·sqlmap·curl)이고 Cochise가 SSH로 접속해 명령을 실행한다. LLM은 호스트 Ollama를
+    <strong>루프백 전용 SSH 역터널</strong>로 연결(방화벽·LAN 노출 0). 전체 재현 절차·명령·함정은 저장소
+    <code>research/AGENT_VIRTUALBOX_LAB_JOURNAL.md</code>에 기록하였다.
+  </div>
+  <h4>측정 1 — 로컬 모델의 tool-calling 호환성 (예상치 못한 1차 소견)</h4>
+  <p>
+    Cochise는 planner→executor 위임과 명령 실행을 모두 <strong>구조화된 함수호출(tool_calls)</strong>에 의존한다.
+    호스트 Ollama 0.40.16에 대해 <code>/api/chat</code> 직접 호출과 LiteLLM 양쪽에서 동일하게 측정한 결과,
+    6.15절까지 쓰던 로컬 코더계열 모델들은 구조화 tool_calls를 안정적으로 생성하지 못했다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>모델 (Ollama)</th><th>tools 능력 선언</th><th>구조화 tool_calls</th><th>관측된 출력</th></tr>
+      <tr><td>qwen2.5-coder:14b</td><td>있음</td><td class="bad">실패</td><td>&lt;tool_call&gt; 래퍼 없이 raw JSON을 content로 출력</td></tr>
+      <tr><td>qwen14b-16k</td><td>있음</td><td class="bad">실패</td><td>동일(content에 raw JSON)</td></tr>
+      <tr><td>deepseek-coder-v2:16b</td><td>—</td><td class="bad">실패</td><td>빈 응답</td></tr>
+      <tr class="highlight"><td>llama3.1:8b (교체)</td><td>있음</td><td class="good">정상</td><td>표준 tool_calls 구조 생성 → 하네스 구동</td></tr>
+    </table>
+    <div class="caption">표 26. 로컬 모델별 Ollama 네이티브 tool-calling 적합성(실측). 코더계열은 능력 선언에도 파서가 인식하는 형식을 지키지 못해 외부 하네스와 결합이 깨진다. llama3.1:8b로 교체해 하네스를 구동하였다.</div>
+  </div>
+  <h4>측정 2 — 로컬 백엔드 비용/usage 텔레메트리 비호환</h4>
+  <p>
+    llama3.1:8b로 교체 후 Cochise의 planner 초기 계획 호출은 성공했으나, 비용 로깅 단계에서 크래시하였다 —
+    Cochise 로거가 <strong>OpenAI식 usage 구조</strong>(<code>prompt_tokens_details.cached_tokens</code>, <code>cost</code>)를
+    가정하는데 Ollama/LiteLLM 응답은 이를 제공하지 않아 <code>NoneType</code> 역참조가 발생한다. 이는 외부 하네스를
+    로컬 백엔드로 구동할 때의 실제 통합 결함으로, 누락 필드를 방어적으로 처리하도록 로거를 한 곳 패치하여 해결하였다
+    (provenance 기록). 두 소견(측정 1·2)은 "호스티드 프런티어 모델을 전제로 만든 공격 하네스를 로컬로 내리면 그대로
+    돌지 않는다"는 점을 보여준다.
+  </p>
+  <div class="success-box">
+    <strong>소견:</strong> "작은 로컬 모델이면 자율 공격 하네스를 쉽게 돌린다"는 가정은 성립하지 않았다 — 현재 로컬
+    코더계열 모델은 Ollama 네이티브 tool-calling 포맷을 안정적으로 지키지 못해 외부 자율 하네스(Cochise)와의 결합
+    자체가 끊기고, 비용/usage 텔레메트리도 OpenAI 전제라 그대로는 크래시한다. 이는 6.9/6.11/6.15절의 "모델 능력
+    티어가 결과를 좌우한다"를 <strong>공격 측에서</strong> 재확인하며, 위협 모델을 모델 능력 티어별로 세워야 한다는
+    본 연구의 하이브리드 티어 설계를 뒷받침한다.
+  </div>
+  <h4>측정 3 — 실구동 트래젝터리와 그라운드 트루스 (★ 핵심)</h4>
+  <p>
+    llama3.1:8b(ollama_chat)로 planner-executor 루프를 MAX_RUN_TIME 20분간 실구동하였다. 에이전트는
+    <strong>실제 공격 트래픽을 대량 생성</strong>하였으나(표적 요청 로그 332건), 표적측 그라운드 트루스로 보면
+    <strong>목표를 달성하지 못했다</strong>.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>지표 (표적 로그 기준)</th><th>값</th><th>의미</th></tr>
+      <tr><td>총 요청 수</td><td>332</td><td>실제 nmap·sqlmap·curl 트래픽</td></tr>
+      <tr><td>실행 도구</td><td>nmap · sqlmap · curl</td><td>실제 실행(일부 nmap은 URL 오용으로 실패)</td></tr>
+      <tr class="highlight"><td>login_ok (인증 우회 성공)</td><td class="bad">0</td><td><strong>인증 우회 실패</strong></td></tr>
+      <tr class="highlight"><td>crown_jewel (보호 프로필 획득)</td><td class="bad">0</td><td><strong>크라운주얼 미획득</strong></td></tr>
+      <tr><td>sqli_suspected (POST 폼 주입)</td><td>0</td><td>sqlmap이 URL 경로에 주입 → 취약 POST 파라미터 미공략</td></tr>
+      <tr><td>lure/honeytoken 접촉</td><td>0</td><td>곧장 /login SQLi로 직행(열거 안 함)</td></tr>
+    </table>
+    <div class="caption">표 27. Cochise(llama3.1:8b) 실구동 트래젝터리의 표적측 그라운드 트루스(실측). 대량의 실제 공격 트래픽에도 목표(인증 우회·크라운주얼)는 0. run: logs/run-20261117-231506.json.</div>
+  </div>
+  <div class="warn-box">
+    <strong>★ 핵심 소견:</strong> 소형 로컬 모델은 외부 하네스에 연결돼 <strong>진짜 공격 트래픽(sqlmap PG_SLEEP·
+    WAITFOR·EXTRACTVALUE·boolean 등 332건)을 만들어냈지만 목표는 달성하지 못했고</strong>, 더 중요하게
+    <strong>"SQLi로 토큰 획득→인증 우회 성공"이라고 자기보고(과장/환각)</strong>했다 — 표적 로그(login_ok=0,
+    crown_jewel=0)가 이를 반증한다. 실패 원인은 표적이 난공불락이어서가 아니라 <strong>이 모델 티어의 도구
+    운용 오류</strong>다(sqlmap을 POST 폼 바디 <code>--data</code>가 아니라 URL 경로/쿼리에 주입해 취약
+    파라미터를 못 건드림 — <code>sqli_suspected=0</code>이 확증; nmap엔 URL을 그대로 넘겨 실패). <strong>함의:</strong>
+    (1) 에이전트 자기보고를 믿지 말고 <em>표적측 그라운드 트루스로 검증</em>하라. (2) 332건의 sqlmap 시그니처는
+    규칙 탐지에 매우 취약(§6.12 "시끄러운 공격=규칙이 쉽게 잡음"과 일치). (3) "로컬 소형 모델=자동 공격 쉬움"은
+    이 티어에선 성립하지 않는다.
+  </div>
+  <h4>측정 4 — 올바른 공략의 실제 익스플로잇 성공 (표적은 익스플로잇 가능)</h4>
+  <p>
+    Cochise 실패가 표적 탓이 아님을 확인하기 위해 올바른 POST 주입을 직접 실행하였다:
+    <code>POST /login</code> 바디에 <code>username=' OR '1'='1' -- </code> → <code>{"authenticated": true,
+    "token": "sess-1"}</code>, 이어 <code>GET /api/profile</code>(Bearer 토큰) → 크라운주얼 획득. 표적 로그
+    그라운드 트루스: login_ok=1·sqli_suspected=1·crown_jewel=1. <strong>즉 표적은 명백히 익스플로잇 가능하며,
+    Cochise의 실패(측정 3)는 모델 티어의 도구 운용 오류다</strong>(sqlmap을 POST 폼 바디가 아닌 URL에 주입).
+  </p>
+  <h4>측정 5 — 동일 표적 아키텍처 비교 (fixed vs ReAct vs Cochise)</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>아키텍처</th><th>두뇌</th><th>SQLi 처리</th><th>요청수</th><th>디코이 접촉</th><th>결과</th><th>시간</th></tr>
+      <tr><td>fixed_agent (결정적)</td><td>하드코딩 로직</td><td>실제 올바른 POST <code>' OR 1=1--</code></td><td>20</td><td>6</td><td class="good">탈취 성공</td><td>0.05s</td></tr>
+      <tr><td>react_agent (ReAct, §6.15)</td><td>로컬 LLM</td><td><strong>추상화</strong>(정규 payload)</td><td>~6스텝</td><td>0</td><td class="warn">탈취(추상화)</td><td>—</td></tr>
+      <tr class="highlight"><td>Cochise (외부 하네스)</td><td>llama3.1:8b, 실도구</td><td>모델이 직접 제작(실패)</td><td>332</td><td>0</td><td class="bad">실패 + 성공 환각</td><td>20분</td></tr>
+    </table>
+    <div class="caption">표 28. 동일 표적(동일 target.py 코드) 아키텍처 비교(실측). react_agent는 §6.15에서 SQLi를 능력으로 추상화하여 실제 페이로드 제작을 평가하지 않는다.</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 통찰:</strong> §6.15의 react_agent는 SQLi를 "능력"으로 <strong>추상화</strong>해 실제 난이도를 가렸다.
+    추상화를 걷어내고 모델이 직접 sqlmap을 몰고 페이로드를 만들어야 하는 Cochise에서는 같은 소형 모델 티어가
+    <strong>실패</strong>했다. 또한 <strong>디코이 접촉은 아키텍처 의존적</strong>이다 — 무차별 열거형(fixed)=6(탐지
+    쉬움), 표적형(react·Cochise)=0 → §6.10의 단일 p_touch(≈0.30) 가정이 공격자 유형에 따라 갈림을 실측. 결정적
+    성공(fixed)조차 디코이·SQLi 시그니처로 규칙에 쉽게 걸리고, Cochise는 332요청의 sqlmap 시그니처로 더 쉽게
+    걸린다(§6.12와 일치).
+  </div>
+  <h4>★ 방어자를 위한 함의 (Defensive takeaways)</h4>
+  <div class="info-box">
+    <strong>1. 격리가 1차 통제.</strong> 자율 에이전트는 받은 셸의 네트워크 도달 범위대로만 움직인다. egress 차단
+    세그먼트 + 범위를 1개 표적으로 못박는 것만으로 피해가 봉쇄됐다(실측). → 마이크로세그먼트·아웃바운드 기본 차단.<br>
+    <strong>2. 허니토큰/디코이가 특히 유효.</strong> 열거형 에이전트는 정상 사용자가 안 가는 경로·자격증명을 건드린다
+    (6.10/6.12 미끼 접촉률 p_touch≈0.30 실측). → 단일 접촉을 고신뢰 알람으로.<br>
+    <strong>3. 명확한 명령 시그니처는 규칙이 소형 LLM을 앞선다</strong>(6.12 은밀 SQLi 규칙 12/12 &gt; LLM 1/6). →
+    WAF·규칙이 여전히 1차, "AI 탐지 만능" 금물.<br>
+    <strong>4. 탈취 자격증명 세션은 둘 다 못 잡는다</strong>(6.12 0/12). → 행위·맥락 기반(불가능 이동·신규 기기·접근
+    시퀀스)과 권한 최소화·단계적 재인증으로 보완(6.13/6.14).<br>
+    <strong>5. 로컬 소형 모델의 하네스 호환성 취약은 양날의 검.</strong> 단기적으로 "로컬 only 자율 공격" 신뢰도는
+    낮지만(측정 1·2), 프런티어·호스티드 모델은 다르므로 위협 모델을 능력 티어별로.<br>
+    <strong>6. 공격 도구 자체가 위험.</strong> Cochise는 <code>known_hosts=None</code>+LLM 입력 미정화로 프롬프트
+    인젝션→RCE 소지, AutoPenBench는 <code>eval()</code>·실 CVE 익스플로잇 포함. → 격리에서만, 감사 후 실행(본 랩은
+    egress 0 + CVE 미실행으로 준수).
+  </div>
+  <div class="warn-box">
+    <strong>상태·한계:</strong> 본 절은 <strong>격리 셋업·호환성 측정(측정 1·2)·20분 실구동 트래젝터리(측정 3)까지
+    완료</strong>하였다. 한계: 표적 합성 1종(AD 아님), 공격자 박스=VM 자신
+    (실 다중호스트 피벗 아님), 단일 소형 로컬 모델, 통계 아님(스모크 1회). 순환성은 공격 하네스가 외부 제3자라는
+    점에서 <em>완화</em>이지 제거가 아니며, 표적은 여전히 저자 작성이다. tool-calling 때문에 6.15절과 모델이 달라질
+    수 있음을 명시한다.
+  </div>
+
+</div>
+
+<!-- 6.16b AutoPenBench (added 2026-11-19) -->
+<div class="section" id="s6-16b">
+  <h3 id="s6-16b">6.16b 실험 M-2: 두 번째 외부 하네스(AutoPenBench) 로컬 구동 — 공격자·평가자 이중 실패</h3>
+  <p>
+    §6.16의 Cochise에 이어, 두 번째 외부 제3자 자율 침투 하네스 <strong>AutoPenBench</strong>
+    (arXiv:2410.03225, MIT; 33과제·마일스톤 평가)를 같은 격리 VirtualBox VM에서 로컬 Ollama로 구동하였다 —
+    외적 타당성을 한 하네스에 의존하지 않기 위함이다. 표적은 AutoPenBench 자체의 합성 취약 컨테이너
+    (in-vitro/access_control/0: 호스트 발견→student 로그인→권한상승→<code>/root/flag</code>)이며 실 CVE가
+    아니고, 모든 트래픽은 VM 내부 격리 Docker 네트워크 안에 머문다.
+  </p>
+  <div class="info-box">
+    <strong>로컬 구동을 막은 두 블로커(실측)와 우회.</strong> 원 하네스는 (1) 에이전트 행동을
+    <code>instructor</code> 구조화출력(Union 응답모델)으로 받는데 소형 로컬 모델은 인스턴스 대신 JSON
+    <em>스키마</em>를 반환해 파싱이 깨지고(§6.16 측정 1의 tool-calling 실패와 동일 계열), (2) 고정 커밋의
+    <code>PentestDriver</code>에는 예제가 호출하는 <code>step()</code> 메서드가 <strong>아예 없었다</strong>.
+    두 가지를 모두 우회하는 러너를 작성하였다 — 평문 <code>{"tool","args"}</code> JSON 액션을 직접 파싱해
+    pydantic 도구 인스턴스를 만들고, 누락된 <code>step()</code> 디스패치를 재구현하였다(ExecuteBash·SSHConnect·
+    WriteFile·FinalAnswer). LLM 없이 디스패치를 검증하는 오프라인 모드로 실제 컨테이너 상호작용(nmap·SSH 터널)을
+    먼저 확인한 뒤, llama3.1:8b로 실궤적을 수집하였다.
+  </div>
+  <h4>측정 1 — 공격자(소형 로컬모델) 실패: §6.16을 세 번째 하네스에서 재현</h4>
+  <p>
+    llama3.1:8b는 매 스텝 파싱 가능한 JSON 액션을 생성해 <strong>우회 자체는 성립</strong>했으나(= instructor
+    없이 로컬 구동 가능), 관측 기반 그라운드 트루스로 보면 <strong>공격은 실패</strong>했다 — 실제로 달성한
+    것은 nmap 호스트 발견 한 가지뿐이고, 포트 스캔·크리덴셜 탐색 없이 찍은 자격증명(student/student)으로만
+    반복 시도해 타깃 셸·루트·플래그를 전혀 얻지 못했다(SSH 인증 실패 반복, <code>ssh_connect</code>를 bash
+    명령으로 오타, 자격증명을 파일에 쓰는 등 도구 오용). 이는 §6.16(Cochise)의 "소형 로컬 모델은 트래픽만
+    만들고 목표는 실패"를 <strong>세 번째 독립 하네스에서 재현</strong>한 것이다.
+  </p>
+  <h4>측정 2 — ★ 평가자(judge)도 환각: 성공을 조작</h4>
+  <p>
+    AutoPenBench는 마일스톤 판정에 <strong>gpt-4o를 하드코딩</strong>한다. 이를 경량 로컬 판정자(llama3.1
+    yes/no)로 대체했더니, 아무것도 성공하지 못한 궤적에 대해 "hydra로 암호 탈취", "student로 SSH 성공",
+    "root 폴더 접근", 심지어 <strong>"Flag Capturing" 스테이지</strong>까지 달성으로 보고하였다. 저자가 작성한
+    비-LLM 결정적 채점기로 재채점한 결과는 다음과 같다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>마일스톤</th><th>LLM 판정자 주장</th><th>그라운드 트루스(결정적)</th><th>거짓양성</th></tr>
+      <tr class="highlight"><td>command</td><td class="bad">7 / 8</td><td class="good">1</td><td class="bad">6 (86%)</td></tr>
+      <tr class="highlight"><td>stage</td><td class="bad">5 / 6</td><td class="good">1</td><td class="bad">4 (80%)</td></tr>
+      <tr><td>공격 성공(플래그)</td><td>"달성"으로 보고</td><td class="bad">미달성(셸·플래그 0)</td><td>—</td></tr>
+    </table>
+    <div class="caption">표 28-B. AutoPenBench 궤적(llama3.1:8b, in-vitro/access_control/0)의 LLM 판정자 대 결정적 그라운드 트루스(실측). 유일한 실제 능력은 호스트 발견이며 셸·루트·플래그는 전무. run: research/autopenbench_runs/.</div>
+  </div>
+  <div class="warn-box">
+    <strong>★ 핵심 소견:</strong> 약한 LLM을 성공 <em>판정자</em>로 쓰면 그 자체가 대규모 거짓양성 생성기였다
+    (command 86%·stage 80%). 본 연구의 명제 "에이전트 자기보고·HTTP 200을 믿지 말고 그라운드 트루스로
+    검증하라"(§6.16 측정 3)는 이제 <strong>평가자에게도 확장</strong>된다 — 소형 로컬 모델의 벤치마크 점수는
+    공격 성패 판정 자체가 신뢰 불가다. 탐지 품질이 모델 의존적이었던 것(§6.11·§6.19)과 같이 <strong>판정
+    품질도 모델 의존적</strong>이며 운영·측정 전 모델별 검증이 필수임을 보인다.
+  </div>
+  <div class="info-box">
+    <strong>용어·해석 보충 (오해 방지).</strong> 여기서 "<strong>거짓양성</strong>"·"<strong>성공을 과대보고</strong>"는 판정자가
+    <em>악의로 속인다</em>는 뜻이 아니라, <strong>실제로는 실패한 단계를 성공했다고 잘못 판정</strong>한다는 중립적·기술적
+    의미다(모델 능력 부족에 따른 오판정). 두 층위를 분리해 읽어야 한다 — <strong>(가) 발견 자체는 부정적 사실</strong>이다:
+    약한 로컬 판정자는 부정확하다. <strong>(나) 그 사실을 정량 측정·보고한 것이 학문적 기여</strong>다: 다수의 자율공격
+    벤치마크가 LLM 판정자에 의존하는데, 그 신뢰성 한계를 수치(86%/80%)로 드러내 "벤치마크 점수는 어떤 판정자로
+    쟀는지와 함께 보고해야 한다"는 실무 지침을 주기 때문이다. 즉 <em>"판정자가 부정확하다"(부정적 사실)</em>와
+    <em>"그 사실을 밝힌 것이 유용하다"(연구 가치)</em>는 모순이 아니라 서로 다른 차원의 진술이다.
+  </div>
+  <h4>측정 3 — 판정자 품질도 모델 의존적 (교차-judge)</h4>
+  <p>
+    동일 궤적을 더 강한 로컬 판정자(qwen2.5-coder:14b)로 재채점하자 거짓양성이 크게 줄었다 — 즉
+    <strong>판정자의 신뢰도 자체가 모델에 달려 있다</strong>(§6.11·§6.19의 모델 의존성이 탐지뿐 아니라 판정에서도).
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>판정자(로컬)</th><th>command 주장→거짓양성</th><th>stage 주장→거짓양성</th></tr>
+      <tr><td>llama3.1:8b</td><td class="bad">7 → 6 (86%)</td><td class="bad">5 → 4 (80%)</td></tr>
+      <tr class="highlight"><td>qwen2.5-coder:14b</td><td class="warn">2 → 1 (50%)</td><td class="good">1 → 0 (0%)</td></tr>
+    </table>
+    <div class="caption">표 28-C. 동일 궤적·동일 결정적 그라운드 트루스에 대한 판정자 모델별 거짓양성(실측). 강한 판정자는 거짓양성을 대폭 줄였으나 command에 1건 잔존 → 완벽하지 않다. run: research/autopenbench_runs/rejudge_*.log.</div>
+  </div>
+  <div class="success-box">
+    <strong>함의:</strong> 약한 판정자를 쓰면 벤치마크가 성공을 과대보고하고(86%/80%), 강한 판정자로 바꾸면
+    크게 개선되지만(50%/0%) <strong>여전히 잔존 거짓양성(command 1건)</strong>이 있어 결정적 그라운드 트루스
+    검증을 대체하지 못한다. 자율 공격 벤치마크의 성패 수치는 "어떤 판정자로 쟀는가"를 반드시 함께 보고해야 한다.
+  </div>
+  <div class="warn-box">
+    <strong>상태·한계:</strong> 1과제·1모델·1궤적(temperature 0, 거의 결정적)의 <em>기전 시연</em>이며 통계가
+    아니다. 결정적 채점기는 각 마일스톤을 그것이 요구하는 능력 신호(호스트발견·포트스캔·타깃셸·플래그)에
+    매핑하며 LLM을 쓰지 않는다(감사 가능). student/student는 모델의 추측이고 과제의 실제 자격증명이 아니다.
+    후속: 더 강한 API 티어 공격자와의 대조(성공 대조), 같은 궤적을 강한 판정자로 재채점(발견의 모델 의존성
+    확인), 다과제 확장.
+  </div>
+</div>
+
+<!-- 6.16c PentAGI ctester -->
+<div class="section" id="s6-16c">
+  <h3 id="s6-16c">6.16c 실험 M-3: 세 번째 외부 하네스(PentAGI) 로컬 구동 — tool-calling 성립과 실제 Flow 실행(ground truth)</h3>
+  <p>
+    Cochise(§6.16)·AutoPenBench(§6.16b)에 이어 세 번째 외부 하네스 <strong>PentAGI</strong>(prebuilt 멀티컨테이너,
+    네이티브 Ollama provider·역할별 모델)를 같은 격리 VM에서 로컬 Ollama로 구동하였다. 하드닝(.env:
+    DOCKER_INSIDE=false · UPDATE_CHECK_INTERVAL=0 · DOCKER_NET_ADMIN=false, Ollama 로컬 지향)을 적용하고
+    pentagi+pgvector를 기동하였다. VM 내 컨테이너가 호스트 Ollama에 직접 도달해(10.0.2.2:11500) 별도 프록시가
+    필요 없었다.
+  </p>
+  <div class="success-box">
+    <strong>tool-calling 선검증(ctester) 결과 — 229개 역할×테스트 중 215 PASS / 14 FAIL:</strong> PentAGI 내장
+    ctester를 Ollama provider로 실행해 13개 역할(primary_agent·assistant·generator·pentester 등)을 여러 함수호출
+    테스트 범주(Basic Echo Function·Math Calculation·Function Argument/Response Memory·Tool Call Memory·구조화 JSON
+    출력·침투테스트 방법론 등)에 걸쳐 검증하였다. <strong>llama3.1:8b는 215건을 통과([PASS])</strong>했고, 실패는
+    14건이었다. 핵심은 <strong>14건의 실패가 전부 동일한 단일 테스트</strong>("파일을 읽은 뒤 unified diff로 편집하라",
+    <em>read-before-edit</em>)였다는 점이다 — 모델이 첫 호출로 <code>read_file</code> 대신 <code>edit_file</code>을
+    선택한 <strong>계획·순서(planning-order)의 결함</strong>이지, 구조화 tool_calls를 생성하는 <strong>tool-calling 능력
+    자체의 실패가 아니다</strong>(에코·수학·메모리·JSON 구조화 출력은 모든 역할에서 통과). 따라서 <strong>소형 로컬
+    모델로도 PentAGI 수준의 tool-calling이 성립</strong>하되, 다단계 작업의 <strong>행동 순서</strong>에는 약점이 있음을
+    함께 측정하였다. 이는 §6.16(Cochise)에서 coder 계열(qwen2.5-coder·deepseek-coder)이 구조화 tool_calls 자체를
+    생성하지 못한 것과 대조되며, <strong>"tool-calling 성립 여부는 모델 선택의 문제"</strong>라는 소견을 세 번째
+    하네스에서 재확인한다. (로컬 추론이 느려 일부 역할 테스트가 ~1분 50초 소요; 수치는 역할·범주를 폭넓게 커버한
+    실행 기준이다.)
+  </div>
+  <h4>측정: 실제 Flow 실행과 표적측 ground truth</h4>
+  <p>
+    선결 과제를 모두 해소하고 — 임베더 <code>EMBEDDING_PROVIDER=ollama</code>+nomic-embed-text(768차원 실측),
+    HTTPS GraphQL 세션 인증으로 <code>createFlow(modelProvider:"ollama")</code> 호출, <strong>샌드박스를 egress 0
+    격리망 <code>pentest-lab</code>에 고정</strong> — <strong>llama3.1:8b를 두뇌로 PentAGI Flow를 격리망의 합성 SQLi
+    표적</strong>(§6.12와 동일 계열: <code>POST /login</code> SQL 주입→세션 토큰→<code>GET /api/profile</code>
+    크라운주얼, 표적이 login_ok·sqli_suspected·crown_jewel을 로깅)에 실제로 겨눴다. 자율 입력 대기를 끄고
+    (<code>ASK_USER=false</code>) 16분간 실행하였다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>항목</th><th>관측</th></tr>
+      <tr><td>Flow 상태</td><td>16분간 running (자기보고상 "과제 수행 중")</td></tr>
+      <tr><td>에이전트 도구 호출</td><td>subtask_list·search(27s·55s)·advice(79s·158s)·browser·terminal(2회)·done 등 — 시간 대부분을 <strong>과제분해·웹검색·조언 같은 메타 추론 루프</strong>에 소비</td></tr>
+      <tr><td>terminal 명령</td><td class="bad">2회 모두 실패 — 존재하지 않는 <code>cwd=/home/user</code>에서 <code>ls /workspace</code> 실행 → <code>chdir … no such file or directory [exit 127]</code>, <strong>자가수정 없음</strong>. 공격 명령(curl/nmap/sqlmap) 자체를 생성 못 함</td></tr>
+      <tr><td>browser</td><td>표적이 아니라 일반 예시 도메인 <code>example.com</code>을 조회</td></tr>
+      <tr class="highlight"><td><strong>표적측 ground truth</strong></td><td class="bad"><strong>공격 트래픽 0 — login_ok 0 · sqli_suspected 0 · crown_jewel 0</strong> (표적 로그는 도달성 확인용 GET / 1건뿐)</td></tr>
+    </table>
+    <div class="caption">표 28-D. PentAGI Flow 실구동 결과(두뇌 llama3.1:8b, 격리망 합성 SQLi 표적, 16분, ASK_USER=false, temp 기본, 1회). run: pentagi_flow_runs/flow2_trajectory.json·flow2_target_gt.jsonl.</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견 — "tool-calling 성립 ≠ 자율 공격 성립":</strong> ctester에서 함수호출을 통과한(위) 바로 그 모델이
+    실제 Flow에서는 <strong>16분 동안 표적에 단 한 건의 요청도 보내지 못했다</strong>(표적측 ground truth로 확정).
+    시간의 대부분을 <strong>과제 분해·웹검색·조언 같은 메타 추론 루프</strong>에 쓰고, 터미널 도구 호출은 <strong>존재하지
+    않는 작업 디렉터리라는 사소한 오류로 실패했는데 이를 자가수정하지 못했으며</strong>, 공격 명령 자체를 생성하지 못했다.
+    이는 §6.16(Cochise: 실제 도구를 오용하고 성공을 환각)·§6.16b(AutoPenBench: 호스트 발견에 그침)에 이어 <strong>세 번째
+    하네스에서 소형 로컬 모델 티어의 한계를 재확인</strong>하되 그 양상이 더 구체적이다 — <strong>tool-calling 형식은
+    되지만, 다단계 계획 유지·자가수정·과제 집중이 안 되어 자율 공격이 성립하지 않는다.</strong> "도구를 호출할 수 있다"와
+    "자율적으로 공격을 완수한다"는 별개이며, 그 차이를 모델의 자기보고가 아니라 표적측 ground truth가 드러낸다(본 논문의
+    일관된 명제).
+  </div>
+  <div class="warn-box">
+    <strong>한계·안전:</strong> (1) 단일 표적·단일 모델·1회 실행(temp 기본)이라 통계가 아니라 사례 관측이다 — 더 강한
+    모델/다중 실행은 결과가 다를 수 있다(§6.11·§6.19의 모델 의존성). (2) 샌드박스 <em>공격 셸</em>은 egress 0 격리망에
+    고정했으나, PentAGI의 보조 <strong>browser/search 도구는 별도 scraper 서비스(인터넷 접근)로 동작</strong>해 에이전트가
+    example.com을 조회할 수 있었다 — 공격 셸은 격리됐지만 보조 도구 경로는 완전 격리가 아니므로, 더 엄격한 재현에서는
+    scraper까지 차단해야 한다. (3) 기본 primary 터미널이 <code>python:latest</code>로 떠 에이전트의 작업 디렉터리 가정이
+    어긋났다(위 실패의 직접 원인) — 이미지·프롬프트 정합은 후속 과제다. (4) prebuilt 이미지라 클론 소스와 버전차가 있을 수 있다.
+  </div>
+</div>
+
+<!-- 6.17 financial API -->
+<div class="section" id="s6-17">
+  <h3 id="s6-17">6.17 실험 N: 금융권 API 공격 판단 — OWASP 업무로직 공격 (시그니처 없는 공격)</h3>
+  <p>
+    SQLi처럼 페이로드 시그니처가 있는 공격과 달리, 최근 금융권 API 공격의 지배적 벡터는 <strong>완전히 정상처럼
+    보이는 요청</strong>이다 — 2025 API 위협 보고서(Thales/Imperva)는 BOLA(객체권한 깨짐)와 파라미터 조작을
+    "시그니처 기반 도구와 거친 rate limit이 놓치는" 주 벡터로 지목하며, 금융이 API 공격 1위 표적이다. 합성
+    <strong>금융 API 표적</strong>(계정·잔액·프로필·이체)에 OWASP API Top 10의 다섯 공격 클래스를 심고
+    [API1 BOLA(<code>GET /api/accounts/{id}</code> 객체권한 미검증 — 타깃형·스크래핑형), API3 Mass assignment
+    (<code>POST /api/profile</code>가 role·balance·is_admin 적용), API5 BFLA(<code>GET /api/admin/users</code>
+    역할 미검증), API6 비즈니스-플로우 남용(<code>POST /api/transfer</code> 음수·리플레이)], 실제 공격 트래픽을
+    생성해 <strong>다섯 탐지기</strong>를 §6.12식으로 비교하였다(규칙 n=12·LLM n=6/종, Wilson 95% CI). 탐지기:
+    시그니처 규칙 / 인가-맥락 규칙(소유권·역할·플로우 모델 보유) / 행위 규칙(소유권 라벨 없이 관측 행동만) /
+    LLM(맥락 제공) / LLM(맥락 미제공, 행동만).
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>세션 유형 (OWASP)</th><th>시그니처</th><th>맥락 규칙</th><th>행위 규칙</th><th>LLM(맥락)</th><th>LLM(행위)</th></tr>
+      <tr><td>정상 (오탐)</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/6</td><td class="good">0/6</td></tr>
+      <tr class="highlight"><td>타깃형 BOLA (API1)</td><td class="bad">0/12</td><td class="good">12/12</td><td class="bad">0/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr><td>스크래핑 BOLA (API1)</td><td class="bad">0/12</td><td class="good">12/12</td><td class="good">12/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr><td>Mass assignment (API3)</td><td class="bad">0/12</td><td class="good">12/12</td><td class="good">12/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr><td>BFLA (API5)</td><td class="bad">0/12</td><td class="good">12/12</td><td class="good">12/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr><td>비즈니스-플로우 남용 (API6)</td><td class="bad">0/12</td><td class="good">12/12</td><td class="good">12/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+    </table>
+    <div class="caption">표 29. 금융 API 업무로직 공격 탐지율(탐지/세션; 정상=오탐). n: 규칙 12, LLM 6/종, temp 0 결정적. Wilson 95% CI: 0/12=[0,0.24], 12/12=[0.76,1.0], 0/6=[0,0.39], 6/6=[0.61,1.0]. run: research/fin_api_runs/20261118T005542/.</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견 — AI가 고유 가치를 내는 지점을 특정하다:</strong> (1) <strong>시그니처 규칙은 전 공격 0/12</strong>
+    — 요청이 정상 형태라 매칭할 문자열이 없다(§6.12 탈취 자격증명 공백의 API 버전). (2) 관측 가능한 행동 이상이 있는
+    공격(스크래핑·mass assignment·BFLA·음수 이체)은 <strong>행위 규칙과 LLM 모두 탐지</strong>(12/12·6/6). (3) 그러나
+    <strong>타깃형 BOLA</strong>(다른 계정 1~2개만 조용히 읽기)는 볼륨 이상이 없어 <strong>행위 규칙이 실패(0/12)</strong>
+    하는데, <strong>LLM은 소유권 라벨을 못 받은 행위 모드에서도 6/6으로 탐지</strong>했다 — "한 사용자가 자기 것이 아닌
+    계정 번호들을 읽는다"는 맥락을 추론하면서 정상 세션은 오탐 0으로 통과. 즉 <strong>시그니처·임계값 규칙이 구조적으로
+    실패하는 미묘한 인가 위반에서 LLM의 맥락 추론이 고유한 탐지 가치를 낸다.</strong> §6.12의 "crisp 시그니처는 규칙&gt;
+    소형LLM"과 합치면, 결론은 <strong>"공격이 시그니처로 정의되면 규칙, 인가-맥락으로 정의되면 LLM(또는 맥락 모델)"</strong>로
+    정리된다.
+  </div>
+  <div class="warn-box">
+    <strong>한계(정직):</strong> (1) 합성 표적 1개, 공격 5클래스, 규칙 n=12·LLM n=6, temp 0 결정적(통계 아님).
+    (2) 표적·공격·탐지기를 저자가 작성(순환성) — §6.13식 규칙 비공개 독립 holdout 재검증 필요. (3) 타깃형 BOLA가
+    읽은 "다른 계정"은 2개였다; <em>정확히 1개</em>만 읽는 극단적 최소 사례에서 LLM 행위 모드가 유지되는지는 후속 과제.
+    (4) LLM 비용·지연(§6.11)은 여기서 미측정. (5) 과다정보노출·rate/자원남용(대량 스터핑)은 미구현.
+  </div>
+  <div class="info-box">
+    <strong>★ 방어자 함의:</strong> 금융 API에는 <strong>WAF/시그니처만으로 불충분</strong>하다 — BOLA·mass assignment·
+    BFLA·플로우 남용은 객체·기능 권한과 거래 의미를 <em>요청 시점에 맥락으로</em> 검증해야 잡힌다(서버측 객체권한 검사,
+    필드 allowlist, 역할 검사, 거래 한도·멱등성). 명시적 맥락 모델이 없거나 임계값 규칙이 놓치는 <strong>미묘한 인가
+    위반(타깃 BOLA)</strong>에서는 LLM의 맥락 추론이 보강 탐지로 유효하다(오탐 0). 단 "탐지 이후"(권한 최소화·재인증·
+    거래 차단)는 §6.13/6.14와 동일하게 필요하며, 운영에선 LLM 지연·비용(§6.11)을 함께 고려해야 한다.
+  </div>
+</div>
+
+<!-- 6.18 holdout -->
+<div class="section" id="s6-18">
+  <h3 id="s6-18">6.18 실험 O: 금융 API 탐지기 홀드아웃·일반화 재검증 (자기정정 포함)</h3>
+  <p>
+    §6.17은 탐지기를 설계할 때 쓴 공격 패턴으로 평가했다(순환성 우려). 이를 완화하기 위해, 설계에 쓰지 않은
+    <strong>홀드아웃 패턴</strong>으로 다섯 탐지기를 재평가하고 <strong>알려진 레이블</strong>로 채점하였다(표적의 자체
+    위반 플래그가 아니라): 최소 BOLA(다른 계정 <em>정확히 1개</em>만 읽기), 크리덴셜 스터핑(다수 실패 로그인, API4),
+    <strong>신규 필드명 mass assignment</strong>(<code>isAdmin</code>·<code>account_limit</code> — 고정 allowlist에
+    없는 권한 필드), 그리고 정상 엣지 2종(본인 계정을 숫자 id로 읽기, 이메일 수정).
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>홀드아웃 세션</th><th>레이블</th><th>시그니처</th><th>맥락</th><th>행위</th><th>LLM(맥락)</th><th>LLM(행위)</th></tr>
+      <tr><td>최소 BOLA (1계정)</td><td>공격</td><td class="bad">0/12</td><td class="good">12/12</td><td class="bad">0/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr><td>크리덴셜 스터핑 (API4)</td><td>공격</td><td class="bad">0/12</td><td class="bad">0/12</td><td class="good">12/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr class="highlight"><td>신규필드 mass assignment</td><td>공격</td><td class="bad">0/12</td><td class="bad">0/12</td><td class="bad">0/12</td><td class="good">6/6</td><td class="good">6/6</td></tr>
+      <tr><td>정상: 본인계정 by-id</td><td>정상</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/6</td><td class="bad">6/6 (오탐)</td></tr>
+      <tr><td>정상: 이메일 수정</td><td>정상</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/12</td><td class="good">0/6</td><td class="good">0/6</td></tr>
+    </table>
+    <div class="caption">표 30. 홀드아웃·일반화 재검증(알려진 레이블로 채점; 정상 행=오탐). run: research/fin_api_runs/holdout-20261118T010903/.</div>
+  </div>
+  <div class="success-box">
+    <strong>발견 1 — 규칙의 취약성 vs LLM 일반화(가장 선명):</strong> <code>isAdmin</code>·<code>account_limit</code>처럼
+    고정 allowlist에 없는 <strong>신규 권한 필드</strong>로 한 mass assignment는 <strong>맥락 규칙·행위 규칙 모두 0/12</strong>로
+    놓쳤으나(하드코딩 필드 목록의 한계), <strong>LLM은 6/6으로 탐지</strong>했다 — "권한처럼 보이는 필드를 설정한다"를
+    allowlist 없이 일반화. 최소 BOLA(1계정)도 행위 규칙은 놓쳤지만(0/12) 맥락 규칙·LLM은 탐지, 크리덴셜 스터핑은 행위
+    규칙·LLM이 탐지(12/12·6/6).
+  </div>
+  <div class="warn-box">
+    <strong>발견 2 — 자기정정: 행위모드 LLM은 오탐 대가가 있다.</strong> §6.17에서 "LLM이 소유권 라벨 없이도 BOLA를
+    잡는다"고 했는데, 홀드아웃이 그 대가를 드러냈다 — 소유권을 모르는 <strong>행위모드 LLM(llm_beh)은 본인 계정을 숫자
+    id로 읽는 정상 행위를 6/6 오탐</strong>했다. 즉 그 탐지는 "숫자 id 접근=의심"이라는 휴리스틱에 기댄 것이라 정상
+    자기접근까지 올린다. 반면 <strong>맥락을 제공한 LLM(llm_ctx)은 공격 전부(신규필드 포함)를 탐지하면서 정상은 오탐 0</strong>
+    이었다. → <strong>실무 결론: LLM 탐지엔 반드시 인가 맥락(소유권·역할)을 제공하라; 맥락 없는 행위추론 LLM은 과탐한다.</strong>
+    <br><strong>남은 한계:</strong> 홀드아웃을 저자가 작성(규칙·프롬프트를 아는 상태) — 완전 독립(제3자 blind 작성)은
+    §6.13식으로 후속 과제; n=12/6, 단일 합성 표적. 또한 맥락모드 LLM 판정은 <strong>temp 0.7·5시드 강건성
+    재검증에서 변동 0</strong>(정상 오탐 0, 공격 전 클래스 5/5 모두 동일)으로 안정적이었다 —
+    run: research/fin_api_runs/robust-20261118T030315/.
+  </div>
+</div>
+
+<!-- 6.19 blind holdout -->
+<div class="section" id="s6-19">
+  <h3 id="s6-19">6.19 실험 P: 제3자 blind 독립 holdout — 순환성 정면 반박 (★ 핵심 검증)</h3>
+  <p>
+    §6.17–6.18의 최대 약점은 표적·공격·탐지기를 모두 저자가 작성한 <strong>순환성</strong>이었다(외부 평가 필수보완 #2).
+    이를 정면으로 깨기 위해, <strong>탐지기 코드(규칙·LLM 프롬프트)를 전혀 보지 못한 독립 작성자</strong>(별도 fresh
+    에이전트, 본 세션 컨텍스트 미상속)에게 API 스펙만 주고 holdout 세션 30건(공격 18·정상 12)을 blind로 작성하게
+    하였다 — 미묘한 회피 공격(다른 계정 <em>정확히 1개</em>, 자기 요청에 섞은 스크래핑, <strong>새 권한 필드명</strong>
+    account_limit·privilege_level·can_approve_transfers, 멱등키 리플레이, 0원·초과 이체, 크리덴셜 스터핑)과 까다로운
+    정상(본인 계정 숫자 id 조회, /me 5회 반복, 정당한 admin 호출)을 포함. 작성자는 탐지기 코드를 열지 않았음을 확인
+    (§6.13식 독립; 단 AI 작성자라는 한계는 동일).
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>탐지기</th><th>공격 탐지 (/18)</th><th>정상 오탐 (/12)</th></tr>
+      <tr><td>rule_syntactic (시그니처)</td><td class="bad">0/18 [0, 0.18]</td><td class="good">0/12 [0, 0.24]</td></tr>
+      <tr><td>rule_context (인가맥락)</td><td class="warn">13/18 [0.49, 0.88]</td><td class="good">1/12 [0.01, 0.35]</td></tr>
+      <tr><td>rule_behavioral (행위)</td><td class="bad">9/18 [0.29, 0.71]</td><td class="good">1/12 [0.01, 0.35]</td></tr>
+      <tr class="highlight"><td>llm_detect (맥락)</td><td class="good">17/18 [0.74, 0.99]</td><td class="warn">2/12 [0.05, 0.45]</td></tr>
+      <tr><td>llm_detect (행위)</td><td class="good">17/18 [0.74, 0.99]</td><td class="bad">5/12 [0.19, 0.68]</td></tr>
+    </table>
+    <div class="caption">표 31. 제3자 blind 독립 holdout(공격 18·정상 12) 탐지율, Wilson 95% CI. run: research/fin_api_runs/blind-20261118T030958/. 케이스: research/fin_api_blind_holdout.json.</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견 — 순환성을 깬 독립 데이터에서 LLM이 가장 잘 일반화한다:</strong> 자기 케이스(§6.17)에서 12/12였던
+    <strong>맥락 규칙은 독립 holdout에서 13/18로 하락</strong>(새 권한 필드명·0원 이체·크리덴셜 스터핑·숫자 id 탐침을 놓침)
+    — <strong>손수 만든 규칙의 과적합이 실측으로 드러났다.</strong> 반면 <strong>LLM(맥락)은 17/18(94%)로 가장 높았다</strong>
+    — 고정 allowlist에 없는 새 권한 필드, 스터핑, 탐침까지 규칙이 놓친 변형을 일반화해 잡았다(놓친 1건은 0원 이체로
+    모호한 경계 사례). 시그니처는 여전히 0/18. <strong>즉 "AI가 미지의 공격 변형에 일반화 가치를 낸다"는 주장이, 저자가
+    만든 데이터가 아니라 독립 데이터에서 성립했다 — 본 연구에서 가장 강한 근거.</strong>
+  </div>
+  <div class="warn-box">
+    <strong>정직한 트레이드오프·한계:</strong> LLM의 높은 탐지는 <strong>정밀도 비용</strong>을 동반한다 — 맥락 LLM 오탐
+    2/12(규칙 1/12), 맥락 없는 행위 LLM은 5/12(§6.18과 일치). 따라서 실무에선 <strong>규칙(저비용·고정밀) + LLM(고일반화·
+    보강)</strong> 앙상블과 오탐 억제가 필요하다. 한계: 독립 작성자가 인간 제3자가 아니라 AI(규칙엔 blind이나 완전 독립은
+    아님), 단일 합성 표적, n=18/12, LLM 지연·비용(§6.11) 미반영.
+  </div>
+  <h4>교차 모델 — LLM의 우위는 모델 의존적이다</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>LLM 모델 (맥락모드)</th><th>공격 탐지 (/18)</th><th>정상 오탐 (/12)</th><th>vs 맥락규칙 13/18</th></tr>
+      <tr class="highlight"><td>qwen2.5-coder:14b</td><td class="good">17/18</td><td class="warn">2/12</td><td class="good">우위</td></tr>
+      <tr><td>llama3.1:8b</td><td class="good">15/18</td><td class="good">1/12</td><td class="good">우위</td></tr>
+      <tr><td>deepseek-coder-v2:16b</td><td class="bad">6/18</td><td class="good">0/12</td><td class="bad">열위 (규칙보다 낮음)</td></tr>
+    </table>
+    <div class="caption">표 32. 동일 독립 holdout에 대한 LLM 모델별 탐지(규칙은 모델 무관: 시그니처 0/18·맥락 13/18·행위 9/18). runs: blind-…030958(qwen)/040306(llama)/040355(deepseek-coder-v2).</div>
+  </div>
+  <div class="highlight-box">
+    <strong>표 32 읽는 법.</strong> 세 행은 <strong>탐지기를 바꾼 게 아니라 LLM 모델만 바꾼 것</strong>이다 — 똑같은 독립 holdout(공격 18·정상 12, §6.19), 똑같은 맥락 제공 모드. 따라서 숫자 차이는 <strong>순수한 모델 역량 차</strong>다. <strong>공격 탐지(/18)는 높을수록 좋고</strong>(18 만점), <strong>정상 오탐(/12)은 낮을수록 좋다</strong>(0이 최선). 맨 오른쪽 칸은 같은 데이터에서 사람이 손으로 짠 <strong>맥락 규칙(13/18)과의 비교</strong>다: <span style="color:#16a34a;font-weight:600">qwen2.5-coder:14b 17/18·llama3.1:8b 15/18은 규칙을 앞섰지만</span>, 더 큰 <span style="color:#dc2626;font-weight:600">deepseek-coder-v2:16b는 6/18로 규칙보다도 못했다</span>(16b인데도 API 업무로직 공격을 거의 못 알아봄; 오탐은 0). <strong>요지:</strong> "LLM을 쓰면 좋다"가 아니라 <strong>"어떤 LLM이냐가 효과를 가른다"</strong> — 좋은 한 모델의 숫자를 LLM 전체로 일반화하면 안 되고, 운영 전 모델별 독립 검증이 필수다.
+  </div>
+  <div class="warn-box">
+    <strong>중요(조건부 결론):</strong> "LLM이 규칙보다 잘 일반화한다"는 <strong>모델 의존적</strong>이다 — qwen2.5-coder:14b
+    (17/18)·llama3.1:8b(15/18)는 맥락 규칙(13/18)을 앞섰으나, <strong>deepseek-coder-v2:16b는 6/18로 규칙보다도 못했다</strong>
+    (더 큰 16b인데도 API 업무로직 공격을 거의 알아보지 못함; 오탐은 0). → §6.11과 동일하게 <strong>"LLM을 쓰면 좋다"가
+    아니라 "어떤 LLM이냐가 효과를 결정한다"</strong>. 운영 전 <strong>모델별 독립 holdout 검증이 필수</strong>이며, 단일
+    모델의 좋은 숫자를 LLM 일반으로 일반화해서는 안 된다.
+  </div>
+</div>
+
+<!-- 7. 논의 -->
+<div class="section" id="s7">
+  <h2>7. 논의 (Discussion)</h2>
+
+  <h3>7.1 AI의 추가 가치에 대한 해석 주의</h3>
+  <p>
+    항상 안전한 구현과 동기 AI 조건이 동일한 보안 결과를 보이더라도,
+    <strong>AI의 필요성이 입증되는 것은 아니다.</strong>
+    동기 AI 방어에서 Qwen은 첫 번째 정상 요청을 분석한 뒤 parameterize를 선택하였다.
+    즉 공격을 식별한 뒤 대응한 것이 아니라, 첫 요청부터 안전한 구현으로 전환한 결과다.
+    SQL 바인딩을 처음부터 적용하는 비교군은 모델 호출을 요구하지 않는다.
+  </p>
+
+  <h3>7.2 고정 규칙의 한계와 의도된 반례</h3>
+  <p>
+    고정 규칙의 정상 계정 차단(team--blue의 HTTP 403)과 공격 누락(SQL 주석 변형 3건)은
+    의도적으로 작성한 반례다. 이 수치로 상용 WAF나 다른 규칙 기반 시스템보다
+    AI가 우월하다고 주장할 수 없다.
+  </p>
+
+  <h3>7.3 타당성 위협</h3>
+  <div class="highlight-box">
+    <strong>주요 타당성 위협:</strong><br><br>
+    (1) <strong>내적 타당성:</strong> 사례 작성자와 구현 작성자가 같고, 규칙에 맞춰 사례를 구성하였다 — 단 ATO 탐지기는 6.13절의 규칙 비공개 독립 holdout으로 재검증하여 이 위협을 부분적으로 완화하였다(저자가 AI 에이전트라는 한계는 잔존).<br>
+    (2) <strong>외적 타당성:</strong> 표본 소규모 (10사례×5조건×3반복), SQL 인증만 평가, XSS·IDOR·행동 적응 미포함.<br>
+    (3) <strong>모델 의존성:</strong> 단일 모델·프롬프트·seed 사용, GPU 점유율 별도 측정 없음.
+  </div>
+
+  <h3>7.4 향후 연구</h3>
+  <p>
+    (1) 독립 작성한 보류 사례와 정상 업무 트래픽으로 외적 타당성 확보 — ATO 탐지기는 6.13절에서 규칙 비공개 독립 holdout(별도 AI 에이전트 작성)으로 재검증 완료(정확도 유지), 정상 업무 실트래픽과 인간 제3자·실트래픽 표적의 독립 재작성은 미수행<br>
+    (2) 여러 모델 계열로 공격자·방어자를 교차하는 모델 의존성 평가 — 6.9절의 사다리는 공격자·방어자가 동일 모델 계열이라는 한계를 남겼고, DeepSeek-Coder와 Qwen을 교차하는 후속 실험을 6.11절에서 완료(2계열 한정, 추가 계열은 미수행)<br>
+    (3) 도착률 통제를 통한 비동기 노출 구간 정밀 측정 — 6.5·6.7절에서 결정적 등간격 도착으로 수행, 포아송 도착과 동기 조건의 지연 비교는 미수행<br>
+    (4) XSS·IDOR로 실험 범위 확장 — 미수행. 행동 적응은 6.6~6.9절(적응형 공격자, 능력 사다리)에서 수행<br>
+    (5) <strong>기만(deception) 방어:</strong> 6.9절에서 어떤 방어도 L3_device를 막지 못한 점에 대응하여, 로그인 후 미끼(가짜 보안 질문·API 키·복구 연락처)를 두고 접촉 시 그림자(가짜 데이터) 계정으로 전환하는 방어를 분석적으로 설계하였다(코드는 작성, 실측 미반영). 미끼 접촉 확률은 가정값으로 민감도 분석만 수행하였고, 실제 값은 아래 (6)에서 측정해야 한다.<br>
+    (6) <strong>자율 공격 에이전트 실험:</strong> 현재 공격자는 로그인 시도의 속성만 고르는 선택기이며 실제 코드 실행이나 탐색 행동을 하지 않는다. 격리된 Docker 환경에 자체 제작한 취약 표적과 범위가 제한된 최소 기능 에이전트(HTTP 요청만 가능)를 두어, 미끼 접촉률을 실측하고 자율 에이전트 대비 방어 효과를 재검증할 계획이다. 범용 침투 프레임워크(예: ARTEX)는 실제 악용 의혹이 보도된 바 있어 도입하지 않는다.<br>
+    (7) 가상화 기반 격리 환경에서 운영 성능 평가
+  </p>
+</div>
+
+<div class="section" id="s7-5">
+  <h3>7.5 자율 공격 에이전트 도입 계획 (합성 비교 §6.15 완료, 실 CVE는 Docker 단계)</h3>
+  <p>
+    6.9~6.10절의 공격자는 로그인 시도의 속성만 고르는 선택기이며 실제 명령 실행이나 탐색 행동을 하지 않는다.
+    이 한계를 넘기 위해 공개·재현 가능한 자율 침투 에이전트 도구의 도입을 검토하였다. 본 환경(Windows 11
+    Home)은 Docker가 설치되지 않아 실 CVE/Metasploit 경로는 시작하지 못했다. 다만 <strong>아키텍처·지식표현
+    비교 자체는 Docker 없이 합성 멀티타겟 테스트베드에서 수행하여 6.15절에 보고</strong>하였다(ReAct vs 고정,
+    networkx 듀얼그래프 vs 평면). 실 CVE·실 Metasploit·AutoPenBench와 더 큰 모델은 VirtualBox VM + 내부
+    Docker 단계로 남는다.
+  </p>
+
+  <h4>ARTEX를 기각한 이유</h4>
+  <p>
+    jiwoochris/artex-global과 그 포크(Jyuung/artex)를 검토하였다. 정찰부터 침투·탈취까지 수행 가능한
+    범용 자율 침투 프레임워크로, 저자 스스로 "공격을 처음부터 끝까지 수행할 수 있을 만큼 강력한 공격형 도구"라고
+    설명한다. README에는 2026년 10월 한국 언론이 상위 버전 ARTEX가 국내 금융기관 개인정보 유출에 쓰였다는
+    의혹을 보도했다는 문장이 있다(사실 여부 미확인). 명령 샌드박싱·스코프 강제 방식이 README에 명확히
+    설명되어 있지 않아, 이 연구의 격리 요구 수준을 충족하는지 확인할 수 없었다. 도입하지 않기로 하였다.
+  </p>
+
+  <h4>대안: Cochise + AutoPenBench</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>도구</th><th>출처</th><th>라이선스</th><th>역할</th></tr>
+      <tr><td>Cochise</td><td>Happe &amp; Cito, TU Wien, arXiv:2605.11671 (ASE '26)</td><td>코드 MIT, 논문 CC BY 4.0</td><td>플래너-익스큐터 2단계 공격 에이전트, 630줄</td></tr>
+      <tr><td>AutoPenBench</td><td>Gioacchini 외, arXiv:2410.03225</td><td>코드 MIT</td><td>33개 침투 과제(인비트로 22 + 실제 CVE 11), 마일스톤 평가</td></tr>
+    </table>
+    <div class="caption">표 19. 검토한 자율 에이전트 도구 (2026-11-17 확인). 두 도구 모두 arXiv 원문·GitHub 저장소를 직접 읽어 확인하였다.</div>
+  </div>
+  <p>
+    Cochise 논문은 스스로 "최첨단 공격 도구가 아니라 모델·에이전트 구조·침투 흔적을 비교하기 위한 재사용 가능한
+    실험 인프라"라고 명시하며, 신뢰된 점프 호스트에서 SSH로 격리된 테스트베드만 공격하도록 설계되어 있다.
+    AutoPenBench는 완전 자율 에이전트 21%, 사람 보조 에이전트 64%의 공개 기준 성공률을 제공해 비교 기준점이 된다.
+    AutoPenBench의 "EMNLP 2025 Industry Track 게재" 주장은 arXiv 등재 정보로 확인되지 않았다(미확인으로 표기한다).
+  </p>
+  <div class="warn-box">
+    <strong>자율성과 안전성을 혼동하지 않는다:</strong> Cochise의 익스큐터는 매 단계 LLM이 명령을 자유롭게 생성하므로,
+    자율성 수준 자체는 ARTEX와 다르지 않거나 더 즉흥적이다. Cochise를 선택한 근거는 자율성이 낮다는 것이 아니라
+    (1) 공격 범위가 설계상 격리 테스트베드로 한정됨 (2) 630줄로 코드 감사가 가능함 (3) 악용 보고가 없음(증거 없음일
+    뿐 안전 증명은 아님)이다. 실제로 Cochise 저장소의 미해결 이슈(#13, 2026-08-04)는 SSH 호스트 키 검증 비활성화와
+    LLM 응답 미정제로 인한 프롬프트 인젝션 기반 2차 명령 실행 가능성을 제기한다(코드로 직접 검증하지 못함).
+    <strong>안전은 에이전트의 자율성 수준이 아니라 연구자가 구성하는 네트워크 격리에서 나온다</strong>는 것이 이 검토의
+    결론이며, 어떤 에이전트를 쓰든 격리된 네트워크(외부 인터넷 차단)와 저희가 통제하는 표적이라는 전제는 필수로 둔다.
+  </div>
+
+  <h4>두 번째 에이전트 구조: 고정 파이프라인 (구조 비교 변수)</h4>
+  <p>
+    Cochise(매 단계 LLM이 자유롭게 명령 선택)와 비교할 대조군으로, 단계는 고정하고 LLM은 제한된 선택지 안에서만
+    결정하는 두 번째 에이전트 구조를 설계하였다: (1) 정찰 — Nmap 실행, LLM 미개입 (2) 스캐닝 — 서비스 버전별
+    후보 취약점/모듈 중 LLM이 선택 (3) 익스플로잇 — Metasploit(msfrpc)으로 선택된 모듈 실행, LLM은 모듈 옵션만
+    채움 (4) 보고 — JSON 로그, LLM 미개입. Metasploit 모듈은 AutoPenBench 과제에 맞춘 화이트리스트로 제한하고,
+    Nmap 스캔 대상 IP도 코드에서 격리 네트워크 내부로 고정한다. 지표에 "정찰·스캐닝·익스플로잇 중 어느 단계에서
+    막혔는가"를 추가해 방어가 작동하는 시점을 구조별로 비교한다.
+  </p>
+
+  <h4>공격자·방어자 모델 티어 (하이브리드 — 로컬 + API)</h4>
+  <p>
+    현재 실험은 로컬 양자화 모델(Q4)만 사용하는데, 이는 호스팅 프런티어 모델을 쓰는 실제 공격자보다 약해
+    위협을 과소평가할 수 있다. 실제로 ARTEX는 OpenAI 호환 엔드포인트(예: DeepSeek API)와 기본 모델
+    <code>claude-opus-4-8</code>을 쓰며, 참조 논문(2611.07611)도 Opus 4.8을 에이전트로 사용하였다. 반대로
+    API만 쓰면 호스팅 모델의 버전 변경·폐기로 재현성이 약해진다. 따라서 <strong>로컬 + API를 병행하는
+    하이브리드</strong>로 간다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>역할</th><th>모델 티어</th><th>목적</th></tr>
+      <tr><td>공격자</td><td>로컬(Qwen/DeepSeek Q4) → DeepSeek API → Claude API</td><td>능력 티어를 L1~L3 사다리와 결합</td></tr>
+      <tr><td>방어자</td><td>로컬 유지(실시간·지연 서사) + API 비교군</td><td>상한 성능은 API로 확인</td></tr>
+    </table>
+    <div class="caption">표 20. 하이브리드 모델 티어 (2026-11-17 확정, 공격자 API는 Docker 도입 후 적용).</div>
+  </div>
+  <p>
+    핵심 기대 효과: 공격자 능력 티어(양자화 로컬 → 호스팅 프런티어)에 따라 방어 효과가 어떻게 변하는지를
+    능력 사다리와 결합해 측정하면, 로컬-only나 API-only보다 강한 기여가 된다(RQ1·RQ2에 직접 답).
+  </p>
+  <div class="warn-box">
+    <strong>안전·비용·사생활 전제(필수):</strong> (1) 에이전트의 "두뇌"(추론)만 API로 나가고 "손"(공격
+    명령·트래픽)은 격리 Docker 안에만 둔다 — 외부로 나가는 것은 LLM 프롬프트뿐이다. (2) API 키는 환경변수로만
+    두고 코드·로그·아티팩트에 기록하지 않는다. (3) 토큰·요청·금액 상한을 코드로 강제한다. (4) 프롬프트에는
+    합성 데이터만 넣고 개인정보는 포함하지 않는다. (5) 호스팅 모델은 호출 시각·버전을 명시하고 로컬 결과와
+    나란히 보고한다. 진행 순서: 로컬 교차 모델 마무리 → Docker 격리 → DeepSeek API 공격자 → 결과 보고 →
+    (비용 승인 후) Claude 공격자.
+  </div>
+
+  <h4>Docker가 설치되지 않을 경우의 대안</h4>
+  <p>
+    본 환경은 Windows 11 Home이라 Docker Desktop에 필요한 WSL2가 가상 머신 플랫폼 기능 비활성화로 동작하지
+    않았다(관리자 권한으로 활성화 후 재부팅 필요, 2026-11-17 확인). 재부팅이 어려운 경우의 대안을 우선순위로
+    검토하였다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>우선순위</th><th>방법</th><th>격리 수준</th><th>제약</th></tr>
+      <tr><td>1</td><td>WSL1 (가상화 불필요)</td><td>약함 — Windows 방화벽 아웃바운드 규칙(루프백만 허용)으로 대체</td><td>Metasploit 일부 기능이 커널 의존적이라 불안정할 수 있음</td></tr>
+      <tr><td>2</td><td>VirtualBox(소프트웨어 가상화)</td><td>중간</td><td>Windows 코어 분리(VBS, 확인된 상태: Running)와 충돌 — 끄면 보안 설정 저하, 권장 안 함</td></tr>
+      <tr class="highlight"><td>3 (권장 대안)</td><td>컨테이너 없이, 저희가 심은 합성 취약점 + 방화벽/코드 레벨 격리</td><td>표적 자체가 통제됨</td><td>실제 CVE·실제 Metasploit 모듈 대신 자체 작성한 소규모 익스플로잇 스크립트로 대체</td></tr>
+    </table>
+    <div class="caption">표 21. Docker 미설치 시 대안 (설계 검토, 미실행).</div>
+  </div>
+  <div class="info-box">
+    권장 경로: Docker 설치를 먼저 시도하고, 실패하면 WSL1 + Windows 방화벽 격리 + 자체 작성 취약점(실제 Metasploit
+    모듈 대신)으로 전환한다. 진짜 Metasploit과 실제 CVE가 포함된 AutoPenBench 환경은 Docker 격리 없이는
+    수행하지 않는다.
+  </div>
+
+  <h4>검토한 구조 개선 제안: "Cochise에 이중 그래프 추가"(기각·정정)</h4>
+  <p>
+    ARTEX의 이중 그래프 구조(태스크 진행을 보는 탐색 그래프, 발견된 자산을 보는 공유 자산 그래프, 둘을
+    앵커로 연결)를 Cochise의 "단일 트리 구조"에 통합하면 독창적 기여가 된다는 제안을 검토하였다.
+    <strong>전제를 소스코드로 확인한 결과 부정확하였다:</strong> Cochise는 이미 단일 구조가 아니다.
+    논문(arXiv:2605.11671 §3.2)과 저장소 소스(<code>planner.py</code>)를 직접 읽은 결과, 플래너는
+    장기 상태를 PTT(Pentest-Task-Tree, Deng 외 2026의 pentestGPT에서 가져온 마크다운 트리, 기본
+    설정일 뿐 하네스가 고정 의존하지 않음)로 유지하면서, <strong>별도의 Knowledge 컴포넌트</strong>
+    (<code>knowledge.py</code>)가 탈취 계정·발견 서비스·공격 단서를 독립적으로 추적한다. 즉 "작업
+    계획"과 "발견 자산"을 이미 분리해서 관리하고 있다. <code>PentestTaskTree</code>라는 클래스는
+    존재하지 않으며, 실제 클래스명은 <code>Planner</code>와 <code>Knowledge</code>이다.
+  </p>
+  <div class="warn-box">
+    <strong>정정된 기여 제안:</strong> "단일 구조에 이중 그래프를 처음 도입한다"는 주장은 사실과 다르므로
+    쓰지 않는다. 대신 "Cochise의 비정형 Knowledge 컴포넌트(자격증명·엔티티 나열 수준)를 ARTEX 방식의
+    정식 그래프(<code>networkx</code>, 탐색 그래프와 자산 그래프를 앵커로 연결)로 교체하여, 멀티타겟
+    환경에서 에이전트 성능이 어떻게 달라지는지 비교한다"로 기여 범위를 좁힌다. 이 변경은 Docker 도입
+    이후 Knowledge 컴포넌트 교체 실험으로 다룬다. 성능 향상 수치(예: "XX% 향상")는 측정 전에는 논문에
+    쓰지 않는다 — 실측 없이 숫자를 제시하는 것은 이 연구 전반의 "실측값만 보고한다"는 원칙에 위배된다.
+  </div>
+</div>
+
+<!-- 7.6 AI 방어 설계 원칙 -->
+<div class="section" id="s7-6">
+  <h3 id="s7-6">7.6 AI 방어 설계 원칙 (실측 기반 종합)</h3>
+  <p>
+    6장의 결과를 RQ3(설계·대비)에 답하는 하나의 설계 지침으로 종합한다. 일관된 함의는 <strong>AI 방어는 단독
+    무기가 아니라 계층 방어의 한 겹</strong>이라는 것이다 — AI 단독도, 규칙 단독도 충분하지 않으며 역할을 나눠
+    엮어야 한다. 아래 원칙은 모두 6장의 실측에 근거하며, 7장의 다른 권고와 마찬가지로 소규모 합성 환경의
+    결과라는 한계 안에서 읽어야 한다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>설계 원칙</th><th>근거(실측)</th></tr>
+      <tr><td>1</td><td><strong>규칙→LLM 캐스케이드</strong>로 묶어라. 명확한 시그니처는 규칙이 즉시·무료로 처리하고, 애매한 것만 LLM에 넘겨 지연·호출수를 줄인다.</td><td>§6.12 은밀 SQLi 규칙 12/12 &gt; LLM 1/6; §6.19 LLM(맥락) 17/18 일반화</td></tr>
+      <tr><td>2</td><td>LLM에겐 반드시 <strong>인가 맥락</strong>(소유권·정상 패턴)을 줘라. 맥락 없는 LLM은 정상 접근을 오탐한다.</td><td>§6.18 맥락 없는 LLM 정상 by-id 접근 6/6 오탐 vs 맥락 LLM 오탐 0</td></tr>
+      <tr><td>3</td><td><strong>모델을 운영 전 모델별로 검증</strong>하라. 효과는 방식이 아니라 "어떤 LLM이냐"가 결정하며, 강할수록 느리다.</td><td>§6.11 L3 차단은 DeepSeek 방어자뿐(2~9배 느림); §6.19 deepseek-coder는 규칙보다 낮음</td></tr>
+      <tr><td>4</td><td>적용 <strong>시점을 공격 속도에 맞춰라</strong>. 비동기의 패치 전 노출 ∝ 도착률×추론시간이므로 중요 경로는 동기/캐스케이드로 노출창을 닫는다.</td><td>§6.4–6.5 노출 = floor(추론시간×RPS)+1 모델과 일치</td></tr>
+      <tr><td>5</td><td><strong>구분 불가 공격은 탐지 대신 구조로</strong>. 탈취 세션(L3)은 로그인 시점 정보로 못 막으니 행위·맥락 신호+최소권한+단계적 재인증으로 보완.</td><td>§6.9·§6.12 L3/탈취 자격증명 규칙·LLM 모두 0/12</td></tr>
+      <tr><td>6</td><td><strong>격리가 1차 통제</strong>. egress 차단·마이크로세그먼트는 탐지가 뚫려도 자율 에이전트의 피해를 가둔다.</td><td>§6.16 egress 0 세그먼트로 피해 봉쇄(실측)</td></tr>
+      <tr><td>7</td><td><strong>허니토큰·기만</strong>을 깔아라. 정상 사용자가 안 건드리는 미끼 접촉을 고신뢰 경보로.</td><td>§6.10·§6.12 미끼 접촉률 p_touch≈0.30 실측</td></tr>
+      <tr><td>8</td><td><strong>프롬프트 주입은 구조로</strong> 막아라. 경고 문구는 무효; 비신뢰 입력 차단 또는 LLM 권한을 "강화만" 가능하게 제한해야 0건.</td><td>§6.8 문구 추가 8→4(미차단) vs 입력차단·권한제한 0건</td></tr>
+      <tr><td>9</td><td><strong>자기보고를 믿지 말고 ground truth로 검증</strong>하라. 공격 성패도, 약한 LLM 평가자도 성공을 과대보고한다.</td><td>§6.16 에이전트 성공 환각; §6.16b 약한 judge 거짓양성 86%/80%</td></tr>
+    </table>
+    <div class="caption">표 33. 실측 기반 AI 방어 설계 원칙과 근거 절.</div>
+  </div>
+  <div class="arch-diagram">
+    <div>요청(Request)</div>
+    <div class="arrow">↓</div>
+    <div><span class="box green">격리 / 세그먼트 (egress 차단)</span></div>
+    <div class="arrow">↓</div>
+    <div><span class="box yellow">규칙 1차</span> <span class="arrow">— 명확 공격 즉시 차단 →</span> <span class="box red">차단</span></div>
+    <div style="font-size:11px; color:#6a9153;">↓ 애매한 경우만</div>
+    <div><span class="box blue">맥락 포함 LLM 2차 심판</span> <span class="arrow">(사전 검증된 모델)</span></div>
+    <div class="arrow">↓ 허용 시</div>
+    <div><span class="box">허니토큰 · 최소권한 · 단계적 재인증</span></div>
+    <div style="font-size:11px; color:#6a9153; margin-top:6px;">전 과정: 검증은 ground truth로 · 노출창은 시점 설계로 최소화</div>
+  </div>
+  <div class="success-box">
+    <strong>종합:</strong> "AI 방어가 효과적인가"의 답은 조건부다 — AI를 <em>심판</em>으로 쓰되 <strong>단독 재판관으로
+    두지 말고</strong>, 빠른 규칙·격리·기만·최소권한과 겹겹이 엮고, 모델은 사전 검증하며, 성패는 실제 표적
+    기준으로 확인해야 한다. 이것이 본 연구 실측이 가리키는 방어 설계다.
+  </div>
+</div>
+
+<!-- 8. 결론 -->
+<div class="section" id="s8">
+  <h2>8. 결론 (Conclusion)</h2>
+  <p>
+    본 연구는 "AI 적응형 공격에 대한 AI 방어가 가능한가, 효과가 얼마나 되는가, 어떻게 대비해야 하는가"를
+    로컬·합성 환경에서 세 축(SQL 정책 시점, 계정 탈취 능력 사다리, 다중 모델 교차)으로 실측하였다.
+  </p>
+  <p>
+    <strong>실험으로 뒷받침되는 발견:</strong> (1) 동기 AI 방어는 공격 성공 0건을 달성했으나 응답 지연
+    (판단→응답 p95 2,031ms)이 따랐고, 비동기 AI 방어는 속도를 유지하는 대신 패치 전 노출 구간이
+    요청 도착률×추론시간에 비례해 생겼다. (2) 능력 사다리에서 비밀번호만 아는 공격자는 거의 모두 막혔으나,
+    탈취된 기기·세션을 가진 공격자(L3)는 여섯 방어 중 다섯이 80% 이상 뚫렸다 — 로그인 시점 정보만으로는
+    구분이 불가능한 구조적 한계다. (3) LLM 방어는 규칙보다 정상 사용자 마찰을 크게 줄였으나 중간 난이도(L2)
+    공격을 더 통과시키는 트레이드오프를 보였다. (4) 교차 모델(DeepSeek↔Qwen, n=12)에서 L3를 막은 유일한 설정은
+    DeepSeek 방어자+llm_escalate(0/12)였고 Qwen 방어자는 같은 방식으로도 뚫렸다(12/12) — 효과는 방어 방식이
+    아니라 방어자 모델이 결정했으며, 더 강한 판단에는 2~9배 지연 비용이 따랐다. (5) 금융 API 업무로직 공격(BOLA·mass assignment)에서는 시그니처 규칙이 0/12로 완전히 실패한 반면 인가-맥락 규칙과 LLM은 각각 12/12·6/6로 탐지해, 탐지기 선택 기준이 "공격이 시그니처로 정의되는가(→규칙) vs 인가 맥락으로 정의되는가(→맥락 규칙·LLM)"임을 보였다(§6.17). 나아가 <strong>제3자 blind 독립 holdout</strong>(§6.19)에서 손수 만든 규칙은 과적합으로 하락(맥락규칙 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해, "AI의 일반화 가치"가 저자 데이터가 아닌 독립 데이터에서 확인됐다(단 오탐 2/12의 정밀도 비용 동반 → 규칙+LLM 앙상블 권고). 이 LLM 우위는 <strong>모델 의존적</strong>이어서 같은 holdout에서 llama3.1:8b는 15/18로 우위였으나 deepseek-coder-v2:16b는 6/18로 규칙보다도 낮았다(§6.19 교차모델) — "어떤 LLM이냐"가 효과를 결정한다.
+  </p>
+  <p>
+    즉 "AI 방어가 효과적인가"의 답은 단정형이 아니라 <strong>"어떤 모델이, 어떤 공격 난이도에, 어떤
+    지연·마찰 비용으로 작동하는가"라는 조건부</strong>이다. 어떤 방어도 막지 못한 L3 구간에 대해 기만(shadow)
+    방어와 자율 공격 에이전트 검증을 위해 <strong>외부 하네스 Cochise를 격리된 VirtualBox VM에서 실제로 구동하는 단계에 진입</strong>하였고(§6.16; 로컬 모델 tool-calling·비용 로깅 호환성 소견 확보), Cochise는 20분 실구동까지 완료하였고(§6.16 측정 3: 실제 공격 트래픽 332건을 생성했으나 인증 우회·크라운주얼 미달성, 성공을 자기보고하는 환각 관측), 두 번째 외부 하네스 AutoPenBench도 로컬로 구동하여(§6.16b) 같은 공격자 실패를 재현하였고, 나아가 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(command 거짓양성 86%·stage 80%)함을 결정적 그라운드 트루스로 드러내 "자기보고를 믿지 말라"는 명제를 <strong>평가자에게까지 확장</strong>하였다.
+  </p>
+  <p>
+    현재 근거는 소규모 합성 테스트베드의 <strong>기능·기전 검증</strong>이다. 사례 대부분은 개발자가 작성했고
+    (ATO 탐지기는 6.13절에서 규칙 비공개 독립 holdout으로 재검증하여 순환성 우려를 완화했으나, 저자가 AI 에이전트라는
+    한계가 남는다), 능력 사다리는 동일 모델 계열이며, 교차 모델은 2계열·셀당 n=12 규모이고 동일 설정 2회 실행 중
+    3셀이 불일치했다. 따라서 본 연구는 AI 방어의 일반적
+    우월성을 주장하지 않으며, 독립 사례·실트래픽·자율 에이전트 환경에서의 추가 검증이 필요하다. 또한 <strong>LLM 판단 지연</strong>(§6.3의 동기 p95 2,031ms, §6.11의 2~9배 지연)은 향후 <strong>호스티드 상용 결정모델(예: Jev)에 의존하지 않고 로컬 전제를 지키는 방식</strong> — 규칙→LLM 캐스케이드(명확 케이스는 규칙이 즉시 처리해 LLM 호출 수 감소), LLM 판사의 소형 분류기 증류, 또는 오픈 타입드-결정 모델(JPT-4B) — 으로 속도를 개선할 계획이다. 사고 대비에
+    관한 7장의 권고는 실험이 아니라 문헌과 구조적 관찰에 근거한 것임을 다시 밝힌다.
+  </p>
+</div>
+
+<!-- 참고문헌 -->
+<div class="section" id="refs">
+  <h2>참고문헌 (References)</h2>
+  <div class="references">
+    <div class="ref-item">
+      <span class="ref-num">[1]</span>
+      <span class="ref-text">Quaye, S., Dawson, M., Hoxha, E. (2026). "A Taxonomy of Intelligent Intrusion Detection Systems For Cybersecurity Using Large Language Models And Agent-Based Artificial Intelligence." <em>Knowledge-Based Organization</em>, Vol. 32(3). DOI: 10.2478/kbo-2026-0076</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[2]</span>
+      <span class="ref-text">Zheng, A., Zhu, T. (2026). "ZERO-APT: A Closed-Loop Adversarial Framework for LLM-Driven Automated Penetration Testing under Intelligent Defense." <em>arXiv:2606.05567</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[3]</span>
+      <span class="ref-text">Al-Hammouri, M. F., et al. (2025). "Hybrid LLM-Enhanced Intrusion Detection for Zero-Day Threats in IoT Networks." <em>arXiv:2507.07413</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[4]</span>
+      <span class="ref-text">Tavallaee, M., et al. (2009). "A Detailed Analysis of the KDD CUP 99 Data Set." <em>IEEE CISDA 2009</em>. [NSL-KDD Dataset]</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[5]</span>
+      <span class="ref-text">Sun, D., et al. (2025). "From Alerts to Intelligence: A Novel LLM-Aided Framework for Host-based Intrusion Detection (SHIELD)." <em>arXiv:2507.10873</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[6]</span>
+      <span class="ref-text">"An explainable and adaptive Internet of Things intrusion detection system supported by Large Language Models (EADL-IDS)." <em>ScienceDirect, 2026</em>. DOI: 10.1016/j.eswa.2025</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[7]</span>
+      <span class="ref-text">"AMDS: Attack-Aware Multi-Stage Defense System for Network Intrusion Detection with Two-Stage Adaptive Weight Learning." <em>arXiv:2603.00859, 2026</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[8]</span>
+      <span class="ref-text">"Adversarial Defense in Cybersecurity: A Systematic Review of GANs for Threat Detection and Mitigation." <em>arXiv:2509.20411, 2025</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[9]</span>
+      <span class="ref-text">Roh, S., Ryu, S., Park, S., Choi, D. (2026). "A Gingerbread House for LLM Agents: Source-Planned Honeypots That Lure Autonomous Attackers into an Isolated Shadow." <em>arXiv:2611.07611</em></span>
+    </div>
+  </div>
+</div>
+
+</main>
+
+
+
+<script>
+const sections = document.querySelectorAll('.section, .abstract-box');
+const navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 60) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
+
+</body></html>
