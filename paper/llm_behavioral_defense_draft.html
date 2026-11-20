@@ -1857,6 +1857,58 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     엮어야 한다. 아래 원칙은 모두 6장의 실측에 근거하며, 7장의 다른 권고와 마찬가지로 소규모 합성 환경의
     결과라는 한계 안에서 읽어야 한다.
   </p>
+  <figure style="margin:22px 0;text-align:center">
+    <svg viewBox="0 0 880 548" role="img" aria-label="AI 방어는 API 게이트웨이·인가 계층에 배치되어, 모든 요청을 규칙 층(0ms)이 먼저 판정하고 애매하거나 신종인 경우에만 LLM 층(인가 맥락 제공)이 판정한 뒤 대응하며, 중앙은 동기 인라인 경로, 오른쪽은 비동기 모니터가 스트림을 관찰해 정책을 갱신하고, 결과는 모델 주장이 아닌 표적 ground-truth 로그로 기록된다." style="max-width:100%;height:auto">
+      <defs>
+        <marker id="ah7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      </defs>
+      <rect x="345" y="12" width="190" height="36" rx="6" fill="none" stroke="currentColor"/>
+      <text x="440" y="35" text-anchor="middle" font-size="12.5" fill="currentColor">클라이언트 / API 호출자</text>
+      <text x="440" y="64" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.6">중앙 = 동기(인라인) 경로 · 오른쪽 = 비동기(관찰) 경로</text>
+      <line x1="440" y1="48" x2="440" y2="74" stroke="currentColor" marker-end="url(#ah7)"/>
+      <text x="450" y="70" font-size="10.5" fill="currentColor" opacity="0.75">요청</text>
+      <rect x="250" y="76" width="380" height="312" rx="10" fill="none" stroke="#1a56db" stroke-width="2"/>
+      <text x="440" y="95" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a56db">API 게이트웨이 · 인가 계층  —  AI 방어 위치</text>
+      <rect x="280" y="106" width="320" height="60" rx="6" fill="none" stroke="currentColor"/>
+      <text x="440" y="125" text-anchor="middle" font-size="12.5" font-weight="700" fill="currentColor">① 규칙 층 — 모든 요청 즉시 (0ms)</text>
+      <text x="440" y="141" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.8">시그니처 · 맥락규칙 · 임계값</text>
+      <text x="440" y="157" text-anchor="middle" font-size="10" font-style="italic" fill="currentColor" opacity="0.7">↳ SQLi 등 시그니처 공격을 여기서 차단</text>
+      <line x1="440" y1="166" x2="440" y2="190" stroke="currentColor" stroke-dasharray="4 3" marker-end="url(#ah7)"/>
+      <text x="450" y="182" font-size="10" fill="currentColor" opacity="0.75">애매·신종만</text>
+      <rect x="280" y="190" width="320" height="56" rx="6" fill="none" stroke="currentColor"/>
+      <text x="440" y="210" text-anchor="middle" font-size="12.5" font-weight="700" fill="currentColor">② LLM 층 — 인가 맥락 제공 · 검증 모델</text>
+      <text x="440" y="229" text-anchor="middle" font-size="10" font-style="italic" fill="currentColor" opacity="0.7">↳ BOLA · 대량할당 등 무시그니처 공격을 여기서 차단</text>
+      <line x1="440" y1="246" x2="440" y2="266" stroke="currentColor" marker-end="url(#ah7)"/>
+      <rect x="280" y="266" width="320" height="56" rx="6" fill="none" stroke="currentColor"/>
+      <text x="440" y="286" text-anchor="middle" font-size="12.5" font-weight="700" fill="currentColor">대응 (탐지 이후)</text>
+      <text x="440" y="305" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.85">allow · challenge · block · lock · 토큰폐기 · 거래차단</text>
+      <line x1="440" y1="388" x2="440" y2="412" stroke="currentColor" marker-end="url(#ah7)"/>
+      <text x="450" y="405" font-size="10.5" fill="currentColor" opacity="0.75">허용된 요청만</text>
+      <rect x="340" y="414" width="200" height="38" rx="6" fill="none" stroke="currentColor"/>
+      <text x="440" y="438" text-anchor="middle" font-size="12" fill="currentColor">백엔드: 인증 서비스 · API</text>
+      <line x1="440" y1="452" x2="440" y2="474" stroke="currentColor" marker-end="url(#ah7)"/>
+      <text x="450" y="468" font-size="10" fill="currentColor" opacity="0.7">실제 결과</text>
+      <rect x="300" y="476" width="280" height="38" rx="6" fill="none" stroke="currentColor"/>
+      <text x="440" y="499" text-anchor="middle" font-size="11.5" fill="currentColor">Ground-truth 로그 (모델 주장 아닌 실제 결과)</text>
+      <rect x="22" y="150" width="200" height="78" rx="6" fill="none" stroke="currentColor"/>
+      <text x="122" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">인가 맥락 모델</text>
+      <text x="122" y="192" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.8">소유권 · 역할 ·</text>
+      <text x="122" y="206" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.8">필드 allowlist · 한도</text>
+      <text x="122" y="222" text-anchor="middle" font-size="10" font-style="italic" fill="#1a56db">맥락 제공 (필수)</text>
+      <line x1="222" y1="188" x2="278" y2="150" stroke="currentColor" marker-end="url(#ah7)"/>
+      <line x1="222" y1="200" x2="278" y2="216" stroke="currentColor" marker-end="url(#ah7)"/>
+      <text x="760" y="100" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.7">비동기 경로</text>
+      <rect x="662" y="110" width="196" height="58" rx="6" fill="none" stroke="currentColor"/>
+      <text x="760" y="133" text-anchor="middle" font-size="11" fill="currentColor">비동기 모니터</text>
+      <text x="760" y="150" text-anchor="middle" font-size="10" fill="currentColor" opacity="0.8">로그·이벤트 스트림 관찰</text>
+      <line x1="630" y1="130" x2="662" y2="135" stroke="currentColor" marker-end="url(#ah7)"/>
+      <text x="646" y="124" text-anchor="middle" font-size="9.5" fill="currentColor" opacity="0.7">관찰</text>
+      <polyline points="662,160 646,160 646,330 632,330" fill="none" stroke="currentColor" stroke-dasharray="4 3" marker-end="url(#ah7)"/>
+      <text x="760" y="188" text-anchor="middle" font-size="10" fill="#1a56db">↺ 정책 갱신(토큰차단·패치)</text>
+      <text x="760" y="204" text-anchor="middle" font-size="9.5" font-style="italic" fill="currentColor" opacity="0.7">노출: floor(지연×RPS)+1</text>
+    </svg>
+    <div class="caption">그림 4. AI 방어의 배치·판정·시점. <strong>어디</strong>=API 게이트웨이/인가 계층, <strong>어떻게</strong>=규칙 층(0ms, 모든 요청)→애매·신종만 LLM 층(인가 맥락 제공) 캐스케이드→대응, <strong>언제</strong>=중앙 동기(인라인, 백엔드 실행 전)·오른쪽 비동기(스트림 관찰·정책 갱신). SQLi는 규칙 층, BOLA·업무로직은 LLM/맥락 층이 담당하며 성패는 표적 ground-truth로 기록(§6.2·6.12·6.16d–e·6.17–6.19 종합).</div>
+  </figure>
   <div class="table-wrap">
     <table>
       <tr><th>#</th><th>설계 원칙</th><th>근거(실측)</th></tr>
