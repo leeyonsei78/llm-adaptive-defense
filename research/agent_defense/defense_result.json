@@ -1,0 +1,34 @@
+{
+  "ollama_url": "http://127.0.0.1:11500",
+  "model": "llama3.1:8b",
+  "rows": [
+    {
+      "name": "autonomous-attack",
+      "label": "attack",
+      "requests": 3,
+      "ground_truth": {
+        "login_ok": 1,
+        "crown_jewel": 1,
+        "sqli_suspected": 1
+      },
+      "rule": "attack",
+      "rule_latency_index": 1,
+      "rule_reason": "SQL injection signature",
+      "llm": "benign"
+    },
+    {
+      "name": "benign-user",
+      "label": "benign",
+      "requests": 3,
+      "ground_truth": {
+        "login_ok": 1,
+        "crown_jewel": 1,
+        "sqli_suspected": 0
+      },
+      "rule": "benign",
+      "rule_latency_index": null,
+      "rule_reason": null,
+      "llm": "benign"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+{"method": "GET", "path": "/", "status": 200, "lure": false, "client": "127.0.0.1", "session": "", "ts": "2026-11-20T10:41:58.460513+00:00"}
+{"method": "POST", "path": "/login", "status": 200, "lure": false, "client": "127.0.0.1", "session": "", "login_ok": true, "sqli_suspected": false, "honeytoken_used": false, "query": "SELECT name, role FROM users WHERE name = 'student' AND password = 'practice123'", "ts": "2026-11-20T10:41:58.462614+00:00"}
+{"method": "GET", "path": "/api/profile", "status": 200, "lure": false, "client": "127.0.0.1", "session": "", "crown_jewel": true, "user": "student", "ts": "2026-11-20T10:41:58.463954+00:00"}
