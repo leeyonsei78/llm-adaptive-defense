@@ -1,0 +1,102 @@
+{
+  "rules-L2_informed": {
+    "mode": "rules",
+    "level": "L2_informed",
+    "takeovers": 0,
+    "n": 15,
+    "rate": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.2039,
+    "failed": 0
+  },
+  "rules2-L2_informed": {
+    "mode": "rules2",
+    "level": "L2_informed",
+    "takeovers": 0,
+    "n": 15,
+    "rate": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.2039,
+    "failed": 0
+  },
+  "llm_sync-L2_informed": {
+    "mode": "llm_sync",
+    "level": "L2_informed",
+    "takeovers": 14,
+    "n": 15,
+    "rate": 0.9333,
+    "ci_low": 0.7018,
+    "ci_high": 0.9881,
+    "failed": 0
+  },
+  "llm_escalate-L2_informed": {
+    "mode": "llm_escalate",
+    "level": "L2_informed",
+    "takeovers": 0,
+    "n": 15,
+    "rate": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.2039,
+    "failed": 0
+  },
+  "llm_history-L2_informed": {
+    "mode": "llm_history",
+    "level": "L2_informed",
+    "takeovers": 13,
+    "n": 15,
+    "rate": 0.8667,
+    "ci_low": 0.6212,
+    "ci_high": 0.9626,
+    "failed": 0
+  },
+  "rules-L3_device": {
+    "mode": "rules",
+    "level": "L3_device",
+    "takeovers": 10,
+    "n": 15,
+    "rate": 0.6667,
+    "ci_low": 0.4171,
+    "ci_high": 0.8482,
+    "failed": 0
+  },
+  "rules2-L3_device": {
+    "mode": "rules2",
+    "level": "L3_device",
+    "takeovers": 9,
+    "n": 15,
+    "rate": 0.6,
+    "ci_low": 0.3575,
+    "ci_high": 0.8018,
+    "failed": 0
+  },
+  "llm_sync-L3_device": {
+    "mode": "llm_sync",
+    "level": "L3_device",
+    "takeovers": 15,
+    "n": 15,
+    "rate": 1.0,
+    "ci_low": 0.7961,
+    "ci_high": 1.0,
+    "failed": 0
+  },
+  "llm_escalate-L3_device": {
+    "mode": "llm_escalate",
+    "level": "L3_device",
+    "takeovers": 10,
+    "n": 15,
+    "rate": 0.6667,
+    "ci_low": 0.4171,
+    "ci_high": 0.8482,
+    "failed": 0
+  },
+  "llm_history-L3_device": {
+    "mode": "llm_history",
+    "level": "L3_device",
+    "takeovers": 15,
+    "n": 15,
+    "rate": 1.0,
+    "ci_low": 0.7961,
+    "ci_high": 1.0,
+    "failed": 0
+  }
+}
