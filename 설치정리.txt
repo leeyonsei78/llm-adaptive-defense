@@ -1,3 +1,121 @@
+원래는 사람이 판정해야 하는 데, codex, qwen, deepseek가 사람 대신 판단해서, 각각 결과를 만들어 줘. 다음 내용 참고해서 올바른 경로의 파일들을 찾고 판정을 한 다음에 각자의 파일을 동일 경로에 만들어서 3명의 전문가가 의견을 준 것처럼 만들어 줘. 1순위 — 블라인드 라벨링 (실험의 핵심 정답)
+
+LLM 권고 실험(run_advisor)의 정답을 전문가 판정으로 검증하는 용도입니다. 정답·심어둔 유형·원본 번호가 전부 제거된 블라인드 버전이라 판단에 영향을 안 받습니다.
+
+- cases/review_blind.html ⭐ 권장 (이것 하나로 일원화)
+  - 서버·인터넷 없이 브라우저로 열면 됩니다. 심사자 코드 입력 → 사례별 approve/investigate 판정 + 타이머(소요시간 자동 측정) + 현실성 평가 + 메모, 자동저장, JSON 내보내기 지원.
+  - "비정형 사례 작성" 탭도 들어 있어, 아래 3순위 템플릿 대신 여기서 바로 작성 가능.
+  - 다른 심사자도 같은 파일로 라벨링하면 심사자 수(실험군)를 늘릴 수 있습니다.
+- CSV를 선호하시면 대안 (HTML과 같은 expert_label 필드를 쓰므로 둘을 섞지 말 것):
+  - cases/review_claims_blind.csv — 청구 150건
+  - cases/review_apps_blind.csv — 청약 90건
+  - cases/review_claims_complex_blind.csv — 복잡도 층(L2/L3) 청구
+
+2순위 — 비정형 사례 작성 (외부 타당성용)
+
+- cases/expert_cases_template.csv — 전문가가 직접 현실적인 사례를 새로 작성하는 템플릿 (예시 2행 삭제 후 사용). ※ HTML의 "작성" 탭으로 대체 가능.
+
+3순위 — 가정값·현실성 검토 (라벨링은 아니지만 전문가 판단 필요)
+
+- 비용 모형 가정치 (rules_baseline.py / score_advisor.py의 검토비용 $15·손실비율 1.0·유병률 3%·소액비중 85%) — 전부 자리표시 가정치라 회사 실제 값, 특히 한도 대비 청구액 분포를 주셔야 곡선이 의미를 갖습니다.
+- 생성 사례들의 현실성 (라벨 CSV의 "현실성" 열).
+
+———
+
+⚠️ 주의할 점 두 가지:
+
+1. gen_cases.py를 다시 돌리면 블라인드 시트가 덮어써집니다 — 기입을 시작하신 뒤에는 생성 스크립트를 재실행하지 마세요.
+2. 작성 완료 후 결과 JSON을 cases/rater_results/에 넣고 import_rater_results.py를 돌리면 사례 파일에 전문가 라벨이 합류됩니다. 이때 LLM을 다시 돌릴 필요는 없습니다 (채점 시점에 사례 파일에서 정답을 재조인하므로).
+
+가장 먼저 하실 것 하나만 고르자면 → cases/review_blind.html 입니다.
+
+
+⚠ Heads up, you have less than 25% of your 5h limit left. Run /status for a breakdown.
+• Ran python -c "import json,pathlib; p=pathlib.Path('paper/eval/review/cases/rater_results/ai_proxy_20261119'); print([(r,len(o.get('labels',{}))+len(o.get('complex_labels',{}))) for r in ('codex','qwen','de…
+  └ [('codex', 314), ('qwen', 50)]
+    qwen_supplement True
+현재 전체 판정의 약 **39%**를 완료했습니다.
+
+- Codex: 314건 전체 판정, 가상 사례 2건, 비용 가정 검토 완료
+- Qwen: 50/314건 판정 완료, 가상 사례·비용 검토 완료
+- DeepSeek: Qwen 종료 후 실행 대기
+
+Qwen 14B가 이 PC에서 느리게 처리되어 시간이 걸리고 있습니다. 현재 속도라면 추가로 약 1시간 전후 예상되며, 완료된 결과는 계속 파일에 저장하고 있습니다.
+• Ran python -X utf8 -c "import json,pathlib; p=pathlib.Path('paper/eval/review/cases/rater_results/ai_proxy_20261119'); o=json.loads((p/'rater_codex.json').read_text(encoding='utf-8')); lines=['# Codex AI 대…
+  └ Codex readable report ready
+Qwen은 60/314건까지 완료했습니다. 먼저 끝난 Codex 의견서 (paper/eval/review/cases/rater_results/ai_proxy_20261119/rater_codex.md)는 지금 열어보실 수 있습니다. 나머지 두 모델도 같은 폴더에 각각 의견서와 JSON 결과를 만들고 있습니다.
+Qwen은 70건을 완료했고, 현재까지 결과 형식 오류나 누락은 없습니다. 마지막에는 세 모델의 판정을 나란히 비교한 표와 의견이 갈리는 사례 목록도 함께 만들겠습니다.
+
+Qwen은 80/314건까지 저장했습니다. 각 모델의 판단 사유와 현실성 점수를 그대로 보존하고 있으며, 의견 차이를 맞추기 위해 라벨을 수정하지 않고 있습니다.
+Qwen은 90건을 완료했습니다. 현재까지 완료된 판정은 Codex 314건을 합쳐 404/942건입니다. DeepSeek는 GPU 메모리 충돌을 피하기 위해 Qwen 다음 순서로 대기하고 있습니다.
+• Ran python -c "import json,pathlib,statistics,collections; p=pathlib.Path('paper/eval/review/cases/rater_results/ai_proxy_20261119'); o=json.loads((p/'rater_qwen.json').read_text(encoding='utf-8')); l={**o[…
+  └ Qwen: 90 {'investigate': 21, 'approve': 69}
+    Recent batch median seconds: 84.1
+    Last generation tokens: 228
+현재 Qwen은 완료된 90건 중 승인 69건, 추가조사 21건을 제시했습니다. 이 비율은 진행 중인 일부 사례의 결과이며 정확도를 뜻하지 않습니다. 최종 문서에는 모델·실행 설정뿐 아니라 Codex가 프로젝트 문맥을 알고 판정했다는 조건도 명시하겠습니다.
+• Ran python -X utf8 -c "import json,pathlib; p=pathlib.Path('paper/eval/review/cases/rater_results/ai_proxy_20261119'); f=p/'audit/manifest.json'; m=json.loads(f.read_text(encoding='utf-8')); m['note']='Code…
+  └ Context exposure documented; decision labels unchanged
+Qwen은 100/314건을 완료했습니다. 최종 비교 조건을 맞추기 위해, 출력 형식을 조정하기 전에 처리한 첫 20건은 별도 예비 기록으로 보관하고 마지막에 동일한 최종 설정으로 다시 판정하겠습니다. 나머지 사례를 재실행하는 것은 아닙니다.
+• Exited (status 1) python paper/eval/review/finish_ai_blind_raters.py --continue-after-qwen
+  └ Waiting for Qwen labels, supplement, and model unload.
+• Ran python -c "import pathlib; p=pathlib.Path('paper/eval/review/cases/rater_results/ai_proxy_20261119/audit/qwen').resolve(); d=p/'pilot'; d.mkdir(exist_ok=True) …
+  └ Preserved first 20 pilot responses for audit
+• Edited paper\eval\review\finish_ai_blind_raters.py (+4 -1)
+-                  "Qwen 첫 10건은 context 16384 및 긴 메모 지시, 다음 10건은 context 4096 및 40자 이내 메모 지시로 완료되었습니다. 나머지는 context 4096, 25자 이내 메모 지시와 압축 JSON 배열을 사용했습니다. 실제 설정은 audit 원문에 남습니다. 중단된 미완료 요청은 판정에 포함하지 않았습니다. DeepSeek는 think=false 설정의 R1 8B이며 기본 추론 모드와 동일한 실험 조건이 아닙니다.",
++                  "Qwen 첫 20건의 속도·출력 형식 점검 결과는 audit/qwen/pilot/에 별도 보관하고 최종 집계에서 제외했습니다. 해당 20건을 최종 설정으로 다시 요청해 Qwen과 DeepSeek의 최종 건별 요청은 동일
+⚠ Heads up, you have less than 10% of your 5h limit left. Run /status for a breakdown.
+Qwen은 120/314건까지 진행했습니다. 완료된 묶음은 저장되어 있고, 이후에는 Qwen의 예비 20건을 최종 설정으로 다시 처리한 뒤 DeepSeek 판정과 전체 비교표 검증을 진행합니다.
+Qwen은 130건을 완료했습니다. 건별 사유와 현실성 평가는 각 모델의 원문을 유지하고 있으며, 최종 비교표에는 승인·추가조사 판정과 세 모델의 일치 여부를 함께 표시하겠습니다.
+⚠ Heads up, you have less than 5% of your 5h limit left. Run /status for a breakdown.
+Qwen 판정이 140/314건까지 저장되었습니다. 오류 없이 계속 진행 중입니다.
+• Ran python -c "import pathlib,json; p=pathlib.Path('paper/eval/review/cases/rater_results/ai_proxy_20261119'); o=json.loads((p/'rater_qwen.json').read_text(encoding='utf-8')); print('Qwen:',len(o['labels'])…
+  └ Qwen: 140
+    Validated batches: 12
+    Preserved pilot batches: 2
+현재 Qwen의 다음 묶음을 생성 중입니다. 저장된 140건은 보존되어 있고, 이후 작업도 같은 파일에 누적됩니다.
+Qwen은 150/314건을 완료했습니다. Codex와 합쳐 현재 464개의 판정이 저장되어 있습니다.
+■ You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at Nov 20th, 2026 12:42 AM.
+--------------------
+VM 생성·무인설치 스크립트(vm_setup/create_vm.sh)와 Docker 프로비저닝(provision_vm.sh) 준비 완료. ISO 다운로드가 끝나는 대로 자동으로 단계별 진행하겠습니다.
+
+전체 로드맵 (정직한 단계별, 체크포인트마다 보고)
+
+┌────────┬──────────────────────────────────────────────┬────────────────┬─────────────────────┐
+│  단계  │                     내용                     │      누가      │        소요         │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 0      │ ISO 다운로드(백그라운드) + 스크립트 준비     │ 완료 중        │ ~수 분              │
+│ (지금) │                                              │                │                     │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 1      │ VM 생성 + Ubuntu 무인 설치(headless,         │ 제가 실행      │ ~15–30분(설치 자동) │
+│        │ VBoxManage unattended)                       │                │                     │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 2      │ SSH 접속 → Docker + 격리망                   │ 제가 실행      │ ~5–10분             │
+│        │ 설치(provision_vm.sh)                        │                │                     │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 3      │ Cochise·AutoPenBench 클론 + 코드 감사        │ 제가(격리)     │ ~중                 │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 4      │ LLM 백엔드 배선 — 호스트 Ollama를 VM에서     │ 제가 + 호스트  │ ~소                 │
+│        │ 호출(10.0.2.2)                               │ 설정 1개       │                     │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 5      │ 단일 과제 end-to-end 스모크(AutoPenBench     │ 제가           │ 느림(CPU/네트워크   │
+│        │ in-vitro 1개 또는 Cochise 1표적) → 첫 결과   │                │ 추론)               │
+├────────┼──────────────────────────────────────────────┼────────────────┼─────────────────────┤
+│ 6      │ 과제 확대 + §6.15와 나란히 논문 반영         │ 제가           │ 다회                │
+└────────┴──────────────────────────────────────────────┴────────────────┴─────────────────────┘
+
+꼭 아셔야 할 현실
+
+- 한 턴에 결과까지는 불가 — 설치·추론이 오래 걸리고 외부 코드 감사가 필요합니다. 첫 목표는 "1개 과제 end-to-end 성공"(스모크)이고, 전 .
+- GPU 없음 → 에이전트 두뇌는 호스트 Ollama(GPU)를 쓰는데, 그러려면 호스트 Ollama가 VM 연결을 받도록
+  OLLAMA_HOST=0.0.0.0 설정이 4단계 ).
+- 실 CVE 이미지는 위험 → 반드시 격리망(pentest-lab, 외부 egress 차단)에서만.
+- API 공격자(DeepSeek/Claude)는 비 , 필요 시 승인 후 추가.
+
+
+---------------------
+
+
+
 1. Windows를 재부팅해 주세요 (저장 안 된 작업 먼저 저장).
 2. 재부팅 후 이 프로젝트에서 Claude Code를 다시 열고 "WSL 이어서" 라고 말씀해 주세요.
 3. 그럼 제가 wsl --install -d Ubuntu-24.04 재실행 → 계정 설정 → Docker 설치/검증까지 이어서 진행합니다.
