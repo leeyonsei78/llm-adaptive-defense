@@ -149,6 +149,7 @@
   <a href="#s7-6" style="padding-left:20px; font-size:12px;">7.6 AI 방어 설계 원칙 (종합)</a>
   <a href="#s8"><span class="section-num">8.</span>결론</a>
   <a href="#refs"><span class="section-num">—</span>참고문헌</a>
+  <a href="#bio"><span class="section-num">—</span>저자 약력</a>
 </nav>
 
 <main>
@@ -157,7 +158,8 @@
   <h1>진화하는 AI 기반 사이버 공격에 대한<br>LLM 행동 분석 방어 시스템의 효과성 연구</h1>
   <div class="subtitle">Effectiveness Research of LLM Behavioral Analysis Defense System Against Evolving AI-Based Cyber Attacks</div>
   <div class="authors">이종재<sup>1,*</sup></div>
-  <div class="affiliation"><sup>1</sup>정보대학원 AI FINTECH 전공 · <sup>*</sup>교신저자(이종재)</div>
+  <div class="authors" style="font-size:0.9em;color:#555">Jongjae Lee<sup>1,*</sup></div>
+  <div class="affiliation"><sup>1</sup>연세대학교 정보대학원 AI FINTECH 전공 (AI FINTECH Major, Graduate School of Information, Yonsei University) · <sup>*</sup>교신저자(Corresponding author)</div>
   <div class="badges">
     <span class="badge draft">초안 (Draft)</span>
     <span class="badge year">2026</span>
@@ -170,7 +172,39 @@
 <!-- Abstract -->
 <div class="abstract-box" id="abstract">
   <h2>국문초록 (Abstract)</h2>
-  <p style="font-size:0.85em;color:#666;margin:0 0 8px"><em>[형식 주] KCI(정보보호학회논문지)는 국문초록 + 영문 Abstract를 모두 요구한다. 영문 Abstract는 영문화 단계(최종)에서 본 국문초록을 번역·압축해 추가한다. IEEE Access(SCIE) 투고 시에는 전체를 영문화하고 본 섹션을 영문 Abstract로 대체한다.</em></p>
+  <p style="font-size:0.85em;color:#666;margin:0 0 8px"><em>[형식 주] KCI(정보보호학회논문지)는 영문 Abstract + 국문초록을 모두 요구한다 — 영문 Abstract·Keywords를 아래에 추가하였다(투고 HWP 양식에서는 영문 제목/저자/소속/Abstract/Keywords를 1쪽 앞부분에, 국문초록을 그 뒤에 배치). IEEE Access(SCIE) 투고 시에는 본문 전체를 영문화하고 본 영문 Abstract를 그대로 사용한다.</em></p>
+
+  <!-- 영문 Abstract (KCI 필수) -->
+  <div style="border:1px solid #d4d4d8;border-radius:8px;padding:12px 16px;margin:0 0 16px;background:#fafafa">
+    <h3 style="margin:0 0 8px;font-size:1.0em">ABSTRACT</h3>
+    <p style="font-size:0.92em;line-height:1.55">
+      This study empirically examines whether, and under what conditions, LLM-based defenses can counter AI-adaptive
+      cyberattacks, using a local synthetic testbed (Ollama with Qwen2.5-Coder-14B and DeepSeek-Coder-v2-16B, with
+      GPT-5 as a hosted strong-model reference). We evaluate three axes: (1) the <strong>timing of policy enforcement
+      (synchronous vs. asynchronous)</strong> in SQL authentication attacks; (2) an <strong>account-takeover (ATO)
+      capability ladder</strong> in which an adaptive attacker revises login attributes from feedback; and (3)
+      <strong>cross-model comparison</strong> pairing attacker and defender from different model families. In replay
+      experiments, synchronous AI defense blocked all attacks (0/12) with no legitimate-user friction, whereas
+      asynchronous defense left an exposure window matching a <em>floor(inference-time × RPS)+1</em> model; on the
+      capability ladder, defenses that stopped password-only attackers (L1) failed against attackers holding a hijacked
+      device or session (L3). Driving real HTTP traffic from autonomous attack agents (Cochise, AutoPenBench, PentAGI)
+      inside an isolated VM, we found that small local models fail to complete exploitation and <strong>over-report
+      success (hallucination)</strong>, which ground-truth target logs refute—extending the "do not trust self-report"
+      principle to weak LLM evaluators. For <strong>API business-logic attacks</strong> (BOLA, mass assignment, BFLA),
+      signature rules fail entirely while authorization-context detection (context rules and LLMs) succeeds; on an
+      <strong>independent blind holdout</strong>, hand-written rules overfit (13/18) whereas a context-aware LLM
+      generalized best (17/18), though this advantage is <strong>model-dependent</strong> and carries a precision cost.
+      A hosted strong model (GPT-5) reached 16/18 at <strong>zero false positives</strong>, and on an external public
+      benchmark (CSIC-2010) LLMs achieved 2.7×–3.5× the recall of signature rules at zero false positives, reproducing
+      the finding on independent, non-synthetic data. We therefore advance not a general superiority claim for AI
+      defense but a <strong>conditional one—which model, at which attack difficulty, at what cost—</strong>and recommend
+      rule+LLM ensembles.
+    </p>
+    <p style="font-size:0.9em;margin-top:8px"><strong>Keywords:</strong> Large Language Models, AI-adaptive attacks,
+      LLM defense, Account Takeover (ATO), policy enforcement timing (synchronous/asynchronous), capability ladder,
+      cross-model comparison, deception defense, API security (OWASP), BOLA, autonomous attack agents, Qwen, DeepSeek,
+      Llama, GPT-5, Ollama, cybersecurity</p>
+  </div>
   <p>
     본 연구는 <strong>AI 적응형 공격에 대한 AI(LLM) 방어의 가능성과 효과, 그리고 설계 원칙</strong>을
     로컬·합성 환경에서 실측한다. Windows 로컬 환경(Ollama + Qwen 2.5-Coder 14B / DeepSeek-Coder-v2 16B)에서
@@ -2269,7 +2303,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     </div>
     <div class="ref-item">
       <span class="ref-num">[28]</span>
-      <span class="ref-text">김동훈, 이수진 (2025). "거대 언어 모델과 프롬프트 엔지니어링을 기반으로 한 다단계 공격의 시나리오 탐지 기법." <em>융합보안논문지</em>, 25(3).</span>
+      <span class="ref-text">김동훈, 이수진 (2025). "거대 언어 모델과 프롬프트 엔지니어링을 기반으로 한 다단계 공격의 시나리오 탐지 기법 (A Novel Multi-stage Attack Scenario Detection Technique Based on a Large Language Model and Prompt Engineering)." <em>융합보안논문지</em>, 25(3), 87–97. DOI: 10.33778/kcsa.2025.25.3.087</span>
     </div>
     <div class="ref-item">
       <span class="ref-num">[29]</span>
@@ -2277,6 +2311,19 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     </div>
   </div>
   <p class="caption" style="margin-top:10px">참고문헌 표기 주의: arXiv 식별자가 붙은 항목은 전부 2026-11-26 실검색으로 실재를 확인하였으나, 일부 2025–2026 프리프린트는 동료심사 전 단계이며(피어리뷰 게재본으로 교체 권장), 저자가 일부만 확인된 항목은 "et al."로 두었다. 국내 선행연구 [26]–[29]는 KCI 투고 대비로 추가하였다(정보보호학회논문지·한국통신학회논문지·융합보안논문지·JSAV); 권·호·면 등 정확한 서지는 투고 단계에서 KCI/DBpia 원문으로 최종 확인 권장.</p>
+</div>
+
+<!-- 저자 약력 (KCI 필수) -->
+<div class="section" id="bio">
+  <h2>저자 약력 (Author Biography)</h2>
+  <p style="font-size:0.85em;color:#666;margin:0 0 8px"><em>[형식 주] KCI(정보보호학회논문지)는 저자 약력과 교신저자 연락처를 요구한다. 아래는 저자가 제공하는 내용으로 채운다.</em></p>
+  <div class="ref-item">
+    <p><strong>이종재 (Jongjae Lee)</strong></p>
+    <p>소속: 연세대학교 정보대학원 AI FINTECH 전공 석사과정 (AI FINTECH Major, Graduate School of Information, Yonsei University)</p>
+    <p>경력: 라이나생명 법무 &amp; 프라이버시 (Chubb/LINA Life Insurance, Legal &amp; Privacy)</p>
+    <p>관심분야: LLM 보안, AI 적응형 공격·방어, 핀테크·API 보안, 개인정보보호</p>
+    <p>교신저자 이메일: privat@naver.com &nbsp;·&nbsp; ORCID: 해당 없음</p>
+  </div>
 </div>
 
 </main>
