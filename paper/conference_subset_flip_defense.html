@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소형 로컬 LLM의 자율 공격 성공과 상반된 방어 프로파일</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Serif KR', Georgia, serif; background: #f8f7f4; color: #1a1a1a; line-height: 1.75; }
+  main { margin: 0 auto; padding: 48px 56px 80px; max-width: 880px; }
+
+  .paper-header { text-align: center; padding: 24px 0 28px; border-bottom: 2px solid #2a3f5a; margin-bottom: 32px; }
+  .paper-header h1 { font-size: 21px; font-weight: 700; line-height: 1.4; color: #0d1f33; margin-bottom: 8px; }
+  .paper-header .subtitle { font-size: 13.5px; color: #5a7a9a; font-style: italic; margin-bottom: 18px; }
+  .authors { font-size: 14px; color: #2a4a6a; margin-bottom: 4px; }
+  .authors .en { font-size: 0.9em; color: #557; }
+  .affiliation { font-size: 12px; color: #6a8aaa; margin-bottom: 14px; }
+  .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-family: 'Noto Sans KR', sans-serif; font-weight: 600; }
+  .badge.conf { background: #e8f0fe; color: #1a56db; }
+  .badge.year { background: #e8f7e8; color: #166534; }
+  .badge.draft { background: #fef3c7; color: #92400e; }
+
+  .section { margin-bottom: 30px; }
+  .section h2 { font-size: 16px; font-weight: 700; color: #0d1f33; border-left: 4px solid #1a56db; padding-left: 12px; margin: 26px 0 14px; font-family: 'Noto Sans KR', sans-serif; }
+  .section h3 { font-size: 14px; font-weight: 600; color: #1a3a5a; margin: 18px 0 8px; font-family: 'Noto Sans KR', sans-serif; }
+  .section p { margin-bottom: 12px; font-size: 14px; text-align: justify; }
+
+  .abstract-box { background: #f0f4f8; border: 1px solid #c8d8e8; border-radius: 8px; padding: 20px 24px; margin-bottom: 26px; }
+  .abstract-box h2 { font-size: 12px; letter-spacing: 1.2px; color: #3a6a9a; text-transform: uppercase; margin-bottom: 10px; font-family: 'Noto Sans KR', sans-serif; }
+  .abstract-box p { font-size: 13px; color: #2a3a4a; margin: 0 0 10px; line-height: 1.8; }
+  .abstract-box.en { background: #fafafa; border-color: #d4d4d8; }
+  .keywords { margin-top: 10px; font-size: 12.5px; color: #3a5a7a; }
+  .keywords strong { color: #1a3a5a; }
+
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-family: 'Noto Sans KR', sans-serif; }
+  th { background: #1e2a3a; color: #d0dcea; padding: 9px 12px; text-align: left; font-weight: 600; font-size: 11.5px; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+  tr:nth-child(even) { background: #f5f8fb; }
+  .caption { text-align: center; font-size: 11.5px; color: #5a7a9a; margin-top: 6px; font-style: italic; font-family: 'Noto Sans KR', sans-serif; }
+  td.good { color: #16a34a; font-weight: 600; }
+  td.bad { color: #dc2626; font-weight: 600; }
+  tr.highlight { background: #eff6ff !important; }
+
+  code { background: #eef2f7; padding: 1px 5px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+  .highlight-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 13px; }
+  .success-box { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 13px; }
+  .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 13px; }
+
+  .references { font-size: 12.5px; }
+  .ref-item { padding: 7px 0; border-bottom: 1px solid #e8edf2; display: flex; gap: 10px; }
+  .ref-num { color: #1a56db; min-width: 30px; font-weight: 600; }
+  .ref-text { color: #2a3a4a; line-height: 1.55; }
+  .cite { font-size: 11px; color: #1a56db; vertical-align: super; }
+</style>
+</head>
+<body>
+<main>
+
+<div class="paper-header">
+  <h1>소형 로컬 LLM의 자율 공격 성공과 상반된 방어 프로파일:<br>SQL 인젝션과 API 업무로직 공격의 비교</h1>
+  <div class="subtitle">Autonomous Attacks by Small Local LLMs and Their Opposite Defense Profiles: SQL Injection vs. API Business-Logic Attacks</div>
+  <div class="authors">이종재<sup>*</sup> &nbsp;<span class="en">(Jongjae Lee)</span></div>
+  <div class="affiliation">연세대학교 정보대학원 AI FINTECH 전공 · <sup>*</sup>교신저자 privat@naver.com</div>
+  <div class="badges">
+    <span class="badge draft">발표논문 초안 (Draft)</span>
+    <span class="badge year">2026</span>
+    <span class="badge conf">학술대회 발표용 서브셋 (비등재 발표논문집)</span>
+  </div>
+</div>
+
+<!-- 국문초록 -->
+<div class="abstract-box">
+  <h2>국문초록</h2>
+  <p>
+    LLM을 두뇌로 삼는 자율 공격 에이전트가 현실 위협으로 부상하고 있다. 그러나 개방형 외부 하네스(Cochise·AutoPenBench·PentAGI)에서
+    소형 로컬 모델은 실제 공격 트래픽을 대량 생성하면서도 인증 우회·권한 상승에는 <strong>단 한 번도 성공하지 못했다</strong>. 본 연구는
+    이 실패가 모델의 근본적 무능인지, 하네스의 과도한 개방성·실행 불안정 탓인지를 분리하기 위해, <strong>행동 공간을 제약하되 LLM이
+    여전히 모든 행동과 페이로드를 스스로 작성하는 "제약된 자율" 하네스</strong>를 설계하였다. 동일한 소형 로컬 모델(llama3.1:8b)로
+    두 가지 구조적으로 다른 공격을 측정한 결과, <strong>자율 SQL 인젝션은 73%(11/15), API 업무로직 공격(BOLA+권한 상승)은 10/10</strong>으로
+    성공했으며(모두 표적측 ground truth로 검증, 전부 로컬·격리·무비용), 이는 "소형 모델은 자율 공격을 못 한다"는 인상이 하네스·실행의
+    문제였음을 보인다. 더 중요하게, 두 공격의 <strong>방어 프로파일이 정반대</strong>였다 — 시그니처가 있는 SQLi는 시그니처 규칙이
+    탐지하고 소형 LLM이 놓쳤으며, 시그니처가 없는 업무로직 공격은 시그니처 규칙이 놓치고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)가
+    잡았다(정상 세션은 모두 오탐 0). 따라서 <strong>공격의 정의가 방어기 선택을 가르며</strong>, 어느 한쪽도 단독으로 충분하지 않아
+    규칙+LLM 병행 방어가 필요하다.
+  </p>
+  <div class="keywords"><strong>주제어:</strong> 자율 공격 에이전트, 대형 언어 모델, SQL 인젝션, API 보안, BOLA, 업무로직 공격, LLM 방어, 침입 탐지</div>
+</div>
+
+<!-- 영문초록 -->
+<div class="abstract-box en">
+  <h2>Abstract</h2>
+  <p>
+    Autonomous attack agents driven by LLMs are an emerging real-world threat, yet in open external harnesses
+    (Cochise, AutoPenBench, PentAGI) small local models generate heavy attack traffic but <strong>never</strong>
+    complete authentication bypass or privilege escalation. To separate whether this failure stems from model
+    incapacity or from harness over-openness and execution instability, we design a <strong>constrained-autonomy</strong>
+    harness in which the LLM still chooses every action and writes every payload itself, but within a defined action
+    space with stabilized execution. With one small local model (llama3.1:8b), <strong>autonomous SQL injection
+    succeeds 73% (11/15) and an API business-logic attack (BOLA + privilege escalation) succeeds 10/10</strong>
+    (all verified by target-side ground truth, all local and free). Crucially, the two attacks have
+    <strong>opposite defense profiles</strong>: signature-bearing SQLi is caught by a signature rule but missed by the
+    small LLM, whereas the signature-free business-logic attack is missed by the signature rule but caught by
+    authorization-context detection (context rule and LLM), with zero false positives on benign sessions. Thus the
+    <strong>definition of the attack determines the choice of detector</strong>, and a rule+LLM ensemble is required.
+  </p>
+  <div class="keywords"><strong>Keywords:</strong> autonomous attack agents, large language models, SQL injection, API security, BOLA, business-logic attacks, LLM defense, intrusion detection</div>
+</div>
+
+<!-- 1. 서론 -->
+<div class="section">
+  <h2>1. 서론</h2>
+  <p>
+    LLM을 의사결정 두뇌로 삼아 정찰·침투·권한 상승을 스스로 반복하는 <strong>자율 공격 에이전트</strong>가 빠르게 발전하고 있다<span class="cite">[1,2]</span>.
+    방어 측에서 이 위협을 평가하려면, 실제 공격 하네스를 격리 환경에서 구동해 "무엇이 실제로 성공하는가"를 표적측 사실(ground truth)로
+    확인하는 것이 중요하다. 선행 작업에서 우리는 세 가지 공개 자율 공격 하네스(Cochise·AutoPenBench·PentAGI)를 격리된 가상 환경에서
+    로컬 소형 모델로 구동하였는데, 에이전트는 nmap·sqlmap 등 실제 공격 트래픽을 대량 생성했음에도 <strong>인증 우회·크라운주얼
+    획득에는 한 번도 성공하지 못하고, 때로는 성공을 스스로 과대보고(환각)</strong>하였다 — 표적 로그가 이를 반증한다<span class="cite">[8]</span>.
+  </p>
+  <p>
+    이 결과만 보면 "소형 로컬 모델은 자율 공격 능력이 없다"고 결론짓기 쉽다. 그러나 그 실패가 (a) 모델의 <strong>근본적 무능</strong>인지,
+    (b) 개방형 하네스의 <strong>다단계 계획 부담·불안정한 도구 실행</strong> 탓인지는 구분되지 않았다. 본 연구는 스캐폴딩 스펙트럼의
+    반대쪽을 측정하여 이 둘을 분리한다 — <strong>LLM이 여전히 모든 행동과 공격 페이로드를 스스로 작성하되</strong>, 행동 공간을 실제
+    HTTP 원시 동작으로 제약하고 실행을 안정화한 <strong>"제약된 자율" 하네스</strong>를 설계한다.
+  </p>
+  <div class="info-box">
+    <strong>연구 질문.</strong> <strong>RQ1.</strong> 행동 공간을 제약하면 동일한 소형 로컬 모델이 자율적으로(스스로 페이로드 작성)
+    공격에 성공하는가? <strong>RQ2.</strong> 이 성공이 특정 공격 클래스(시그니처가 있는 SQLi)에 국한되는가, 아니면 시그니처가 없는
+    API 업무로직 공격에서도 재현되는가? <strong>RQ3.</strong> 실제로 성공한 자율 공격을 어떤 방어기(시그니처 규칙·맥락 규칙·LLM)가
+    탐지하며, 공격 종류에 따라 그 결과가 달라지는가?
+  </div>
+  <p><strong>기여.</strong></p>
+  <p>
+    (C1) 개방형 하네스에서 0회 성공하던 소형 로컬 모델(llama3.1:8b)이 제약된 자율 하네스에서는 <strong>자율 SQL 인젝션 73%,
+    자율 API 업무로직 공격(BOLA+권한 상승) 10/10</strong>으로 성공함을 표적측 ground truth로 보인다 — 소형 모델의 자율 공격 실패는
+    근본 무능이 아니라 하네스·실행의 문제였다.<br>
+    (C2) 성공한 두 자율 공격의 <strong>방어 프로파일이 정반대</strong>임을 측정한다 — 시그니처 유무가 어떤 탐지기가 작동하는지를 가른다.<br>
+    (C3) 이로부터 <strong>"공격이 시그니처로 정의되면 규칙, 인가 맥락으로 정의되면 LLM"</strong>이라는 탐지기 선택 원칙을 실제로 성공한
+    자율 AI 공격 두 종에 대해 실증하고, 규칙+LLM 병행의 필요성을 제시한다.
+  </p>
+</div>
+
+<!-- 2. 관련 연구 -->
+<div class="section">
+  <h2>2. 관련 연구</h2>
+  <p>
+    <strong>자율 침투 에이전트.</strong> PentestGPT<span class="cite">[2]</span>는 LLM 기반 침투시험 자동화의 한계를 벤치마크로 평가해
+    맥락 상실과 서브태스크 성공률을 보고하였고, ZERO-APT<span class="cite">[1]</span>는 지능형 방어 하에서도 LLM 공격 에이전트가 높은
+    성공률에 이를 수 있음을 보였다. 이들은 주로 강한(호스티드) 모델을 전제하거나 공격 성공 자체에 초점을 두며, <strong>소형 로컬
+    모델의 실패 원인 분리와 성공한 공격에 대한 방어</strong>는 다루지 않는다.
+  </p>
+  <p>
+    <strong>API 보안과 업무로직 공격.</strong> OWASP API Security Top 10(2023)<span class="cite">[3]</span>은 BOLA(Broken Object Level
+    Authorization)를 API 1위 위험으로 유지한다. Kaur<span class="cite">[4]</span>는 100건 이상의 버그바운티 공개로 BOLA를 분류하고
+    기존 문헌이 대부분 개념적임을 지적하며, Wu 등<span class="cite">[5]</span>은 자원 ID 데이터 흐름을 추적하는 Bolaz를 제안한다.
+    산업 보고서<span class="cite">[6]</span>는 금융을 API 공격 1위 표적으로, BOLA·파라미터 조작을 "시그니처 도구와 거친 rate limit이
+    놓치는" 벡터로 지목한다 — 본 연구가 그 공백을 로컬 LLM 방어 축에서 실측한다.
+  </p>
+  <p>
+    <strong>LLM의 취약성과 신뢰성.</strong> 프롬프트 인젝션은 LLM 통합 애플리케이션의 구조적 취약점이며<span class="cite">[7]</span>,
+    LLM의 환각·자기보고 신뢰성 문제<span class="cite">[8]</span>는 "성공했다"는 자기보고를 표적측 사실로 반증해야 함을 시사한다. 국내에서도
+    SQL 질의 구조 분석 기반 SQLi 탐지<span class="cite">[9]</span>, LLM·프롬프트 엔지니어링을 이용한 다단계 공격 시나리오 탐지<span class="cite">[10]</span>,
+    LLM 기반 침입탐지<span class="cite">[11]</span>가 보고되었으나, <strong>성공한 자율 공격 두 종에 대한 탐지기별 상반 결과</strong>를
+    교차 측정한 연구는 드물다.
+  </p>
+</div>
+
+<!-- 3. 방법 -->
+<div class="section">
+  <h2>3. 방법</h2>
+  <h3>3.1 제약된 자율 하네스</h3>
+  <p>
+    에이전트는 LLM이 다음 행동을 스스로 선택하고 그 <strong>값(공격 페이로드·조회 대상·설정 필드)을 직접 작성</strong>하지만, 행동 공간은
+    실제 HTTP 원시 동작(정찰 / 로그인 / 자원 조회 / 프로필 수정)으로 제약하고 실행을 안정화한다(추상화된 ReAct와 개방형 하네스의
+    <em>중간</em>; "정의된 행동 공간 내 자율"). LLM에는 정확한 익스플로잇을 주지 않고 <strong>취약점 클래스 수준의 정찰 사실만</strong>
+    제공한다(예: SQLi는 "로그인이 문자열 결합으로 구성됨", 업무로직은 "소유권 미검증·필드 allowlist 부재"). 두뇌는 로컬 Ollama의
+    <code>llama3.1:8b</code>이다.
+  </p>
+  <h3>3.2 표적과 ground truth</h3>
+  <p>
+    두 합성 표적을 사용한다. (1) <strong>SQLi 표적</strong>: 문자열 결합 쿼리로 인증하는 취약 로그인과 보호 자원(크라운주얼)을 갖는 합성
+    웹 서버. (2) <strong>금융 API 표적</strong>: 계정·잔액·프로필 API에 소유권 미검증(BOLA)과 프로필 대량할당(mass assignment)
+    취약점을 심은 합성 API. 두 표적 모두 모든 요청과 결과를 로그로 남겨, 공격 성공 여부를 <strong>모델의 자기보고가 아니라 표적측 사실</strong>
+    (<code>login_ok ∧ crown_jewel</code>, <code>bola_violation ∧ privilege_escalation</code>)로 판정한다.
+  </p>
+  <h3>3.3 방어기</h3>
+  <p>
+    성공한 공격 세션에 세 가지 탐지기를 겨눈다. <strong>시그니처 규칙</strong>(페이로드 패턴 정규식), <strong>맥락 규칙</strong>(요청의
+    소유권·역할 맥락을 관측값으로 계산해 비소유 객체 접근 등을 판정), <strong>LLM</strong>(<code>llama3.1:8b</code>, 세션 1회 판정,
+    temperature 0). 정상 세션 1건을 대조로 둔다.
+  </p>
+  <h3>3.4 환경과 윤리</h3>
+  <p>
+    모든 공격은 <strong>저자가 만든 합성 표적</strong>에 대해 <strong>로컬 루프백·격리 환경</strong>에서만 수행하였고, 외부 서비스·실존
+    시스템·개인정보를 대상으로 하지 않는다. 모든 추론은 로컬 Ollama로 수행하여 <strong>무비용</strong>이며, 연구 목적은 방어 설계 개선으로
+    바로 악용 가능한 완성형 공격 페이로드 모음은 배포하지 않는다.
+  </p>
+</div>
+
+<!-- 4. 결과 -->
+<div class="section">
+  <h2>4. 결과</h2>
+
+  <h3>4.1 플립 1 — 자율 SQL 인젝션 성공과 그 방어</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>설정 (llama3.1:8b)</th><th>성공 / 시도</th><th>성공률 [Wilson 95% CI]</th><th>대조: 개방형 하네스</th></tr>
+      <tr><td>temperature 0.4 (10 시드)</td><td class="good">7 / 10</td><td>0.70 [0.40, 0.89]</td><td rowspan="3" class="bad" style="vertical-align:middle">0 / 전부<br>(Cochise·AutoPenBench·PentAGI)</td></tr>
+      <tr><td>temperature 0.6 (5 시드)</td><td class="good">4 / 5</td><td>0.80 [0.38, 0.96]</td></tr>
+      <tr class="highlight"><td><strong>합계</strong></td><td class="good"><strong>11 / 15</strong></td><td><strong>0.73 [0.50, 0.87]</strong></td></tr>
+    </table>
+    <div class="caption">표 1. 제약된 자율 하네스에서의 자율 SQLi 공격 성공률(ground truth: login_ok ∧ crown_jewel). LLM이 페이로드를 자작(예: <code>1' OR 1=1 --</code>; 주입문 미제공).</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>세션</th><th>표적 GT</th><th>시그니처 규칙</th><th>LLM (llama3.1)</th></tr>
+      <tr class="highlight"><td>성공한 자율 공격</td><td>login_ok 1 · crown_jewel 1 · sqli 1</td><td class="good">ATTACK (요청 #1, SQLi 시그니처)</td><td class="bad">BENIGN (놓침)</td></tr>
+      <tr><td>정상 사용자</td><td>login_ok 1 · crown_jewel 1 · sqli 0</td><td class="good">benign (오탐 0)</td><td class="good">benign (오탐 0)</td></tr>
+    </table>
+    <div class="caption">표 2. 성공한 자율 SQLi 공격 vs 정상 세션에 대한 방어.</div>
+  </div>
+  <div class="success-box">
+    <strong>소형 모델의 자율 공격 실패는 "근본 무능"이 아니라 "하네스·실행" 문제였다.</strong> 개방형 하네스에서 0회 성공하던 동일 모델이,
+    행동 공간을 제약하자 정찰→자작 SQLi 로그인→세션 토큰→크라운주얼을 <strong>15회 중 11회(73%)</strong> 자율 완수했다. 성공한 공격은
+    명확한 SQLi 시그니처를 남겨 <strong>시그니처 규칙이 첫 요청에서 즉시 탐지</strong>했으나 <strong>소형 LLM 방어는 놓쳤다</strong>.
+  </div>
+
+  <h3>4.2 플립 2 — 시그니처 없는 API 업무로직 공격 성공과 그 방어</h3>
+  <p>
+    이 성공이 시그니처가 있는 SQLi에 국한되는지 확인하기 위해, 구조적으로 전혀 다른 — 페이로드 시그니처가 없는 — API 업무로직 공격으로
+    재현한다. 저권한 사용자(alice)로 시작해 <strong>(1) 소유하지 않은 타 고객 계정 조회(BOLA)</strong>와 <strong>(2) 프로필 대량할당으로
+    자기 역할을 관리자로 상승</strong>을 자율 수행한다.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>설정 (llama3.1:8b, temp 0.4)</th><th>BOLA 성공</th><th>완전 장악 (BOLA ∧ 권한상승)</th><th>대조: 개방형 하네스</th></tr>
+      <tr class="highlight"><td>10 시드</td><td class="good">10 / 10 [0.72, 1.0]</td><td class="good">10 / 10 [0.72, 1.0]</td><td class="bad">0</td></tr>
+    </table>
+    <div class="caption">표 3. 제약된 자율 하네스에서의 API 업무로직 공격 성공률(ground truth: bola_violation ∧ privilege_escalation). LLM이 조회 계정·권한 필드를 자작(예: 계정 1000·1002 조회 후 프로필에 <code>{"role":"admin"}</code> 주입).</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>세션</th><th>시그니처 규칙</th><th>맥락 규칙</th><th>LLM (llama3.1)</th></tr>
+      <tr class="highlight"><td>성공한 BOLA+권한상승</td><td class="bad">benign (놓침 — 시그니처 없음)</td><td class="good">ATTACK (비소유 객체 접근)</td><td class="good">ATTACK</td></tr>
+      <tr><td>정상 사용자(본인 계정·이메일 수정)</td><td class="good">benign</td><td class="good">benign</td><td class="good">benign (오탐 0)</td></tr>
+    </table>
+    <div class="caption">표 4. 성공한 자율 업무로직 공격 vs 정상 세션에 대한 방어.</div>
+  </div>
+  <div class="success-box">
+    <strong>플립이 공격 클래스를 넘어 일반화한다.</strong> 동일 소형 모델이 시그니처가 전혀 없는 업무로직 공격에서도 <strong>10/10 완전
+    장악</strong>에 성공했다. 그러나 방어 결과는 SQLi와 정반대였다 — <strong>시그니처 규칙이 놓치고, 맥락 규칙·LLM이 잡았다</strong>.
+  </div>
+
+  <h3>4.3 종합 — 상반된 방어 프로파일</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>공격 (성공한 자율)</th><th>공격 정의</th><th>시그니처 규칙</th><th>맥락 규칙 / LLM</th><th>정상 오탐</th></tr>
+      <tr><td>SQL 인젝션 (플립 1)</td><td>페이로드 <strong>시그니처 있음</strong></td><td class="good">탐지 ✓</td><td class="bad">소형 LLM 놓침 ✗</td><td>0</td></tr>
+      <tr><td>API 업무로직 (플립 2)</td><td>인가 <strong>맥락으로 정의</strong></td><td class="bad">놓침 ✗</td><td class="good">탐지 ✓</td><td>0</td></tr>
+    </table>
+    <div class="caption">표 5. 두 플립의 방어 프로파일 대조 — 공격 정의가 작동하는 방어기를 가른다.</div>
+  </div>
+</div>
+
+<!-- 5. 논의 -->
+<div class="section">
+  <h2>5. 논의</h2>
+  <p>
+    두 결과를 합치면 하나의 명제가 선다 — <strong>공격의 정의가 방어기 선택을 가른다.</strong> 공격이 <strong>페이로드 시그니처로
+    정의</strong>되면(SQLi) 시그니처 규칙이 저비용·결정적으로 탐지하고 소형 LLM은 오히려 놓치며, 공격이 <strong>인가 맥락으로 정의</strong>되면
+    (BOLA·권한 상승) 시그니처 규칙은 무력하고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)만 작동한다. 어느 한쪽도 두 공격 모두를 단독으로
+    막지 못하므로, 실무 방어는 <strong>규칙+LLM 병행(앙상블)</strong>이 필요하다. 이는 "AI 방어가 규칙보다 일반적으로 우월하다"는 주장이
+    아니라, <strong>공격 종류에 조건부</strong>라는 점을 성공한 자율 공격 두 종으로 실증한 것이다.
+  </p>
+  <div class="highlight-box">
+    <strong>한계.</strong> (1) 행동 공간을 제약한 "정의된 자율"이며 완전 개방형 자율성은 아니다(스펙트럼상 중간). (2) 단일 합성 표적·소형
+    모델 1종이고, 공격 성공은 확률적이다(SQLi ~73%). (3) 방어 측정은 짧은 세션(세션당 1회 판정)으로, 더 큰 규모·독립 holdout·교차 모델
+    검증이 필요하다. 이들은 본 발표의 확장판(전체 논문)에서 능력 사다리·교차 모델·강한 모델(GPT-5)·외부 공개 벤치마크(CSIC-2010)로 보완된다.
+  </div>
+</div>
+
+<!-- 6. 결론 -->
+<div class="section">
+  <h2>6. 결론</h2>
+  <p>
+    개방형 하네스에서 0회 성공하던 소형 로컬 모델이, 행동 공간을 제약한 자율 하네스에서는 <strong>자율 SQL 인젝션 73%,
+    API 업무로직 공격 10/10</strong>으로 성공했다(전부 표적측 ground truth 검증, 로컬·격리·무비용). 더 중요하게, 성공한 두 공격의
+    <strong>방어 프로파일이 정반대</strong>였다 — 시그니처가 있으면 규칙이, 인가 맥락으로 정의되면 LLM·맥락 규칙이 잡는다. 따라서 자율
+    AI 공격 시대의 방어 설계는 <strong>공격의 정의에 따라 탐지기를 선택</strong>하고 <strong>규칙과 LLM을 병행</strong>해야 한다.
+  </p>
+</div>
+
+<!-- 참고문헌 -->
+<div class="section references" id="refs">
+  <h2>참고문헌</h2>
+  <div class="ref-item"><span class="ref-num">[1]</span><span class="ref-text">Zheng, A., Zhu, T. (2026). "ZERO-APT: A Closed-Loop Adversarial Framework for LLM-Driven Automated Penetration Testing under Intelligent Defense." <em>arXiv:2606.05567</em>.</span></div>
+  <div class="ref-item"><span class="ref-num">[2]</span><span class="ref-text">Deng, G., Liu, Y., Mayoral-Vilches, V., et al. (2024). "PentestGPT: Evaluating and Harnessing Large Language Models for Automated Penetration Testing." <em>USENIX Security Symposium 2024</em>. arXiv:2308.06782.</span></div>
+  <div class="ref-item"><span class="ref-num">[3]</span><span class="ref-text">OWASP Foundation (2023). "OWASP API Security Top 10 — 2023." <em>https://owasp.org/API-Security/</em> (API1: Broken Object Level Authorization).</span></div>
+  <div class="ref-item"><span class="ref-num">[4]</span><span class="ref-text">Kaur, B. (2026). "Broken Object Level Authorization in the Wild: An Empirical Taxonomy from 100+ Bug Bounty Disclosures." <em>arXiv:2605.25865</em>.</span></div>
+  <div class="ref-item"><span class="ref-num">[5]</span><span class="ref-text">Wu, Y., et al. (2025). "Rethinking Broken Object Level Authorization Attacks Under Zero Trust Principle (Bolaz)." <em>arXiv:2507.02309</em>.</span></div>
+  <div class="ref-item"><span class="ref-num">[6]</span><span class="ref-text">Thales/Imperva (2025). "2025 Imperva Bad Bot / API Threat Report." <em>Thales Group</em>.</span></div>
+  <div class="ref-item"><span class="ref-num">[7]</span><span class="ref-text">Greshake, K., Abdelnabi, S., Mishra, S., Endres, C., Holz, T., Fritz, M. (2023). "Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection." <em>ACM AISec '23</em>. arXiv:2302.12173.</span></div>
+  <div class="ref-item"><span class="ref-num">[8]</span><span class="ref-text">Huang, L., et al. (2023). "A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions." <em>arXiv:2311.05232</em>.</span></div>
+  <div class="ref-item"><span class="ref-num">[9]</span><span class="ref-text">이인용, 조재익, 조규형, 문종섭 (2008). "SQL 질의 애트리뷰트 값 제거 방법을 이용한 효과적인 SQL Injection 공격 탐지 방법 연구." <em>정보보호학회논문지(JKIISC)</em>, 18(5), 135–148.</span></div>
+  <div class="ref-item"><span class="ref-num">[10]</span><span class="ref-text">김동훈, 이수진 (2025). "거대 언어 모델과 프롬프트 엔지니어링을 기반으로 한 다단계 공격의 시나리오 탐지 기법." <em>융합보안논문지</em>, 25(3), 87–97. DOI: 10.33778/kcsa.2025.25.3.087.</span></div>
+  <div class="ref-item"><span class="ref-num">[11]</span><span class="ref-text">안석현 외 (2024). "스마트빌딩 환경을 위한 LLM 기반 침입탐지 모델." <em>소프트웨어 평가와 가치(JSAV)</em>, 20(4), 303–314. DOI: 10.29056/jsav.2024.12.30.</span></div>
+  <p class="caption" style="margin-top:10px">본 발표논문은 전체 연구의 서브셋이다(§6.16d–e 플립 + 탐지 이분법). 국내 선행연구 [9]–[11]의 권·호·면은 투고 단계에서 KCI/DBpia 원문으로 최종 확인 권장. 전체 논문은 능력 사다리·정책 적용 시점·교차 모델·강한 모델(GPT-5)·외부 공개 벤치마크(CSIC-2010)를 포함한다.</p>
+</div>
+
+</main>
+</body>
+</html>
