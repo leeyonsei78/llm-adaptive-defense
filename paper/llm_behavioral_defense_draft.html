@@ -163,9 +163,7 @@
   <div class="affiliation"><sup>1</sup>연세대학교 정보대학원 AI FINTECH 전공 (AI FINTECH Major, Graduate School of Information, Yonsei University) · <sup>*</sup>교신저자(Corresponding author)</div>
   <div class="badges">
     <span class="badge draft">초안 (Draft)</span>
-    <span class="badge year">2026</span>
-    <span class="badge conf">투고 전략: 학술대회 발표(서브셋) → 30%+ 확장 → KCI(정보보호학회논문지) 또는 SCIE(IEEE Access) 중 택1</span>
-  </div>
+    <span class="badge year">2026</span>  </div>
 </div>
 
 
@@ -173,9 +171,8 @@
 <!-- Abstract -->
 <div class="abstract-box" id="abstract">
   <h2>국문초록 (Abstract)</h2>
-  <p style="font-size:0.85em;color:#666;margin:0 0 8px"><em>[형식 주] KCI(정보보호학회논문지)는 영문 Abstract + 국문초록을 모두 요구한다 — 영문 Abstract·Keywords를 아래에 추가하였다(투고 HWP 양식에서는 영문 제목/저자/소속/Abstract/Keywords를 1쪽 앞부분에, 국문초록을 그 뒤에 배치). IEEE Access(SCIE) 투고 시에는 본문 전체를 영문화하고 본 영문 Abstract를 그대로 사용한다.</em></p>
 
-  <!-- 영문 Abstract (KCI 필수) -->
+  <!-- 영문 Abstract -->
   <div style="border:1px solid #d4d4d8;border-radius:8px;padding:12px 16px;margin:0 0 16px;background:#fafafa">
     <h3 style="margin:0 0 8px;font-size:1.0em">ABSTRACT</h3>
     <p style="font-size:0.92em;line-height:1.55">
@@ -383,7 +380,7 @@
       <tr><td>ZERO-APT [2]</td><td>LLM 공격 에이전트</td><td>✓</td><td>✗</td><td>✗</td><td>부분적</td></tr>
       <tr class="highlight"><td><strong>본 연구</strong></td><td><strong>LLM 공격·방어 + 능력 사다리 + 교차 모델</strong></td><td><strong>✓</strong></td><td><strong>✓</strong></td><td><strong>✓ (Qwen·DeepSeek)</strong></td><td><strong>✓</strong></td></tr>
     </table>
-    <div class="caption">표 1. 관련 연구와의 비교. 타 연구의 ✗/부분적 표시는 각 논문이 다루는 범위에 대한 본 저자들의 해석이며, 원문 재검증이 필요하다(본 세션에서 전수 검증하지 않음). 본 연구의 ✓는 모두 6장에서 실측으로 뒷받침된다.</div>
+    <div class="caption">표 1. 관련 연구와의 비교. 타 연구의 ✗/부분적 표시는 각 논문이 다루는 범위에 대한 본 저자의 해석이며 원문 재검증이 필요하다. 본 연구의 ✓는 모두 6장에서 실측으로 뒷받침된다.</div>
   </div>
 </div>
 
@@ -577,8 +574,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
 
   <div class="info-box">
     <strong>결과 구성 — 4개 테마로 읽기.</strong> 본 장의 실험들은 다음 네 갈래로 묶인다. 괄호 안이 핵심 소절이며,
-    <em>보조</em>로 표시한 소절(§6.10·§6.14·§6.15)은 핵심 결과를 보강하는 민감도·세부 분석으로, 영문 저널 템플릿 변환 시
-    <strong>부록(Supplementary)</strong>으로 이동할 후보다(번호·교차참조 보존을 위해 현 초안에서는 제자리에 둔다).<br><br>
+    <em>보조</em>로 표시한 소절(§6.10·§6.14·§6.15)은 핵심 결과를 보강하는 민감도·세부 분석이다.<br><br>
     <strong>· 테마 I — 정책 적용 시점(동기/비동기)과 비동기 노출:</strong> §6.1–6.5<br>
     <strong>· 테마 II — 공격자 능력 사다리와 모델 의존성:</strong> §6.6–6.9, §6.11 &nbsp;(<em>보조</em> §6.10 기만 민감도)<br>
     <strong>· 테마 III — 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격:</strong> §6.12, §6.16d–e, §6.17–6.19 &nbsp;<span style="color:#1e3a8a;font-weight:700">(핵심 thesis)</span> &nbsp;(<em>보조</em> §6.14 약점교정, §6.15 아키텍처·듀얼그래프)<br>
@@ -1819,7 +1815,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
   <p>
     §6.17–6.18의 최대 약점은 표적·공격·탐지기를 모두 저자가 작성한 <strong>순환성</strong>이었다(외부 평가 필수보완 #2).
     이를 정면으로 깨기 위해, <strong>탐지기 코드(규칙·LLM 프롬프트)를 전혀 보지 못한 독립 작성자</strong>(별도 fresh
-    에이전트, 본 세션 컨텍스트 미상속)에게 API 스펙만 주고 holdout 세션 30건(공격 18·정상 12)을 blind로 작성하게
+    에이전트, 컨텍스트 미상속)에게 API 스펙만 주고 holdout 세션 30건(공격 18·정상 12)을 blind로 작성하게
     하였다 — 미묘한 회피 공격(다른 계정 <em>정확히 1개</em>, 자기 요청에 섞은 스크래핑, <strong>새 권한 필드명</strong>
     account_limit·privilege_level·can_approve_transfers, 멱등키 리플레이, 0원·초과 이체, 크리덴셜 스터핑)과 까다로운
     정상(본인 계정 숫자 id 조회, /me 5회 반복, 정당한 admin 호출)을 포함. 작성자는 탐지기 코드를 열지 않았음을 확인
@@ -2038,7 +2034,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
   <div class="warn-box">
     <strong>안전·비용·사생활 전제(필수):</strong> (1) 에이전트의 "두뇌"(추론)만 API로 나가고 "손"(공격
     명령·트래픽)은 격리 Docker 안에만 둔다 — 외부로 나가는 것은 LLM 프롬프트뿐이다. (2) API 키는 환경변수로만
-    두고 코드·로그·아티팩트에 기록하지 않는다. (3) 토큰·요청·금액 상한을 코드로 강제한다. (4) 프롬프트에는
+    두고 코드·로그·산출물에 기록하지 않는다. (3) 토큰·요청·금액 상한을 코드로 강제한다. (4) 프롬프트에는
     합성 데이터만 넣고 개인정보는 포함하지 않는다. (5) 호스팅 모델은 호출 시각·버전을 명시하고 로컬 결과와
     나란히 보고한다. 진행 순서: 로컬 교차 모델 마무리 → Docker 격리 → DeepSeek API 공격자 → 결과 보고 →
     (비용 승인 후) Claude 공격자.
@@ -2345,7 +2341,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
       <span class="ref-text">Gniewkowski, M., Maciejewski, H., Surmacz, T., Walentynowicz, W. (2021). "HTTP2vec: Embedding of HTTP Requests for Detection of Anomalous Traffic." <em>arXiv:2108.01763</em></span>
     </div>
 
-    <!-- 국내 선행연구 (KCI 투고 대비) -->
+    <!-- 국내 선행연구 -->
     <div class="ref-item">
       <span class="ref-num">[26]</span>
       <span class="ref-text">이인용, 조재익, 조규형, 문종섭 (2008). "SQL 질의 애트리뷰트 값 제거 방법을 이용한 효과적인 SQL Injection 공격 탐지 방법 연구." <em>정보보호학회논문지(JKIISC)</em>, 18(5), 135–148.</span>
@@ -2363,13 +2359,12 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
       <span class="ref-text">안석현 외 (2024). "스마트빌딩 환경을 위한 LLM 기반 침입탐지 모델." <em>소프트웨어 평가와 가치(JSAV)</em>, 20(4), 303–314. DOI: 10.29056/jsav.2024.12.30</span>
     </div>
   </div>
-  <p class="caption" style="margin-top:10px">참고문헌 표기 주의: arXiv 식별자가 붙은 항목은 전부 2026-11-26 실검색으로 실재를 확인하였으나, 일부 2025–2026 프리프린트는 동료심사 전 단계이며(피어리뷰 게재본으로 교체 권장), 저자가 일부만 확인된 항목은 "et al."로 두었다. 국내 선행연구 [26]–[29]는 KCI 투고 대비로 추가하였다(정보보호학회논문지·한국통신학회논문지·융합보안논문지·JSAV); 권·호·면 등 정확한 서지는 투고 단계에서 KCI/DBpia 원문으로 최종 확인 권장.</p>
+  <p class="caption" style="margin-top:10px">참고문헌 표기 주의: 일부 2025–2026 프리프린트는 동료심사 전 단계이며(피어리뷰 게재본으로 교체 권장), 저자가 일부만 확인된 항목은 "et al."로 표기하였다.</p>
 </div>
 
-<!-- 저자 약력 (KCI 필수) -->
+<!-- 저자 약력 -->
 <div class="section" id="bio">
   <h2>저자 약력 (Author Biography)</h2>
-  <p style="font-size:0.85em;color:#666;margin:0 0 8px"><em>[형식 주] KCI(정보보호학회논문지)는 저자 약력과 교신저자 연락처를 요구한다. 아래는 저자가 제공하는 내용으로 채운다.</em></p>
   <div class="ref-item">
     <p><strong>이종재 (Jongjae Lee)</strong></p>
     <p>소속: 연세대학교 정보대학원 AI FINTECH 전공 석사과정 (AI FINTECH Major, Graduate School of Information, Yonsei University)</p>
