@@ -54,6 +54,14 @@ def context_detect(trace):
         # BFLA: admin function used by a non-admin caller
         if e.get('caller_role') and e.get('caller_role') != 'admin' and '/admin/' in str(e.get('path', '')):
             return True, 'admin function used by non-admin (BFLA)'
+        # Business-flow abuse: transfer with an invalid amount (negative), from the observable amount
+        # (not the server's biz_flow_violation verdict flag)
+        if '/transfer' in str(e.get('path', '')) and e.get('amount') is not None:
+            try:
+                if float(e.get('amount')) < 0:
+                    return True, 'negative-amount transfer (business-flow abuse)'
+            except (TypeError, ValueError):
+                pass
     return False, None
 
 
@@ -61,12 +69,16 @@ def _compact(trace):
     lines = []
     for e in trace:
         s = f"{e.get('method')} {e.get('path')} -> {e.get('status')} (caller={e.get('token_user')}"
+        if e.get('caller_role'):
+            s += f", caller_role={e.get('caller_role')}"
         if e.get('object_owner'):
             s += f", object_owner={e.get('object_owner')}"
         if e.get('privileged_fields'):
             s += f", sets_privileged={e.get('privileged_fields')}"
         if e.get('fields_set'):
             s += f", sets={e.get('fields_set')}"
+        if e.get('amount') is not None:
+            s += f", amount={e.get('amount')}"
         s += ')'
         lines.append(s)
     return '\n'.join(lines)

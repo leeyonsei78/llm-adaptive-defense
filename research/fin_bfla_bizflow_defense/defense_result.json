@@ -1,0 +1,20 @@
+{
+  "ollama_url": "http://127.0.0.1:11434",
+  "model": "llama3.1:8b",
+  "rows": [
+    {
+      "name": "autonomous-biz-logic-attack",
+      "label": "attack",
+      "signature": "benign",
+      "context": "attack",
+      "llm": "attack"
+    },
+    {
+      "name": "benign-user",
+      "label": "benign",
+      "signature": "benign",
+      "context": "benign",
+      "llm": "benign"
+    }
+  ]
+}

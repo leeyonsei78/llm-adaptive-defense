@@ -1,0 +1,3 @@
+{"method": "POST", "status": 200, "login_ok": true, "path": "/api/login", "client": "127.0.0.1", "session": "", "ts": "2026-11-26T21:55:37.493045+00:00"}
+{"method": "GET", "status": 200, "token_user": "alice", "caller_role": "user", "bfla_violation": true, "path": "/api/admin/users", "client": "127.0.0.1", "session": "", "ts": "2026-11-26T21:55:40.182466+00:00"}
+{"method": "POST", "status": 200, "token_user": "alice", "amount": -1000.0, "to_account": "SomeOtherAccount", "negative": true, "over_balance": false, "replay": false, "biz_flow_violation": true, "path": "/api/transfer", "client": "127.0.0.1", "session": "", "ts": "2026-11-26T21:55:42.053839+00:00"}

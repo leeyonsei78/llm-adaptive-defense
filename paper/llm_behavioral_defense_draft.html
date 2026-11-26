@@ -140,6 +140,7 @@
   <a href="#s6-16c" style="padding-left:20px; font-size:12px;">6.16c PentAGI — Flow 실행·GT</a>
   <a href="#s6-16d" style="padding-left:20px; font-size:12px;">6.16d 자율 공격 성공 + 방어</a>
   <a href="#s6-16e" style="padding-left:20px; font-size:12px;">6.16e 2차 플립 — API 업무로직</a>
+  <a href="#s6-16f" style="padding-left:20px; font-size:12px;">6.16f 3차 플립 — BFLA·업무플로우</a>
   <a href="#s6-17" style="padding-left:20px; font-size:12px;">6.17 금융 API 공격 판단 (OWASP)</a>
   <a href="#s6-18" style="padding-left:20px; font-size:12px;">6.18 금융 API 홀드아웃·일반화</a>
   <a href="#s6-19" style="padding-left:20px; font-size:12px;">6.19 제3자 blind 독립 holdout</a>
@@ -1642,6 +1643,58 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     자율성은 아님. (2) 단일 합성 금융 API·소형 모델 1종. (3) 성공은 에피소드 단위(여기서는 10/10). (4) 방어의 맥락 규칙·LLM은
     소유권·역할 맥락을 관측값으로 계산하며(표적의 위반 플래그를 직접 쓰지 않음), §6.17–6.19의 독립 holdout·교차 모델 결과와
     함께 해석해야 한다.
+  </div>
+</div>
+
+<!-- 6.16f third flip: BFLA + business-flow abuse autonomous attack + defense -->
+<div class="section" id="s6-16f">
+  <h3 id="s6-16f">6.16f 실험 M-6: 세 번째 플립 — BFLA + 업무플로우 남용(음수 이체) 자율 공격 성공과 그 방어</h3>
+  <p>
+    §6.16e는 BOLA·mass assignment에서 플립을 보였다. 플립이 특정 업무로직 클래스에 국한되지 않음을 더 넓게 확인하기 위해,
+    OWASP API의 또 다른 두 signature-free 클래스로 재현하였다 — <strong>BFLA(API5: 관리자 전용 함수를 저권한 사용자가 호출)</strong>와
+    <strong>업무플로우 남용(API6: 이체 금액 검증 부재를 이용한 음수 이체)</strong>. 자율성 수준은 §6.16d·e와 동일하다 — LLM이
+    행동과 값(어느 관리자 엔드포인트를 호출할지, 어떤 금액을 보낼지)을 스스로 정하고, 취약점 <em>클래스</em> 수준의 정찰 사실만 제공한다
+    (역할 검사 누락 가능·금액 검증 부재 가능; 정확한 익스플로잇 미제공). 표적·GT는 §6.17 금융 API와 동일하다.
+  </p>
+  <h4>측정 1: 자율 공격 성공률 (표적측 ground truth)</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>설정 (llama3.1:8b, temp 0.4)</th><th>BFLA 성공</th><th>업무플로우 남용(음수 이체)</th><th>완전 장악<br>(둘 다)</th><th>대조: 개방형 하네스</th></tr>
+      <tr class="highlight"><td>10 시드</td><td class="good">10 / 10 [0.72, 1.0]</td><td class="good">10 / 10 [0.72, 1.0]</td><td class="good">10 / 10 [0.72, 1.0]</td><td class="bad">0 (§6.16/16b/16c)</td></tr>
+    </table>
+    <div class="caption">표 28-I. 제약된 자율 하네스에서의 BFLA+업무플로우 공격 성공률(ground truth: bfla_violation, biz_flow_violation; 본 실행 델타로 귀속). LLM이 관리자 엔드포인트 호출과 음수 금액을 자작(예: <code>GET /api/admin/users</code>를 비관리자로, <code>amount=-1000</code> 이체). run: research/llm_bfla_bizflow_runs/.</div>
+  </div>
+  <div class="success-box">
+    <strong>세 번째 플립도 성공 — 플립이 공격 클래스 전반에 일반화한다:</strong> 동일 소형 모델(llama3.1:8b)이 BFLA와 업무플로우
+    남용에서도 <strong>10/10 완전 장악</strong>에 성공했다(보통 2~3스텝). SQLi(§6.16d, 시그니처 있음), BOLA+mass assignment(§6.16e),
+    그리고 BFLA+업무플로우(본 절, 시그니처 없음)까지, "소형 모델은 자율 공격을 못 한다"는 개방형 하네스의 인상은 세 공격 클래스에서
+    모두 <strong>제약된 자율 하네스에서는 재현되지 않았다</strong>.
+  </div>
+  <h4>측정 2: 성공한 BFLA+업무플로우 공격에 대한 방어</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>세션</th><th>시그니처 규칙</th><th>맥락 규칙</th><th>LLM (llama3.1)</th></tr>
+      <tr class="highlight"><td>성공한 BFLA+음수이체</td><td class="bad">benign (놓침 — 페이로드 시그니처 없음)</td><td class="good">ATTACK (비관리자의 admin 함수 호출)</td><td class="good">ATTACK</td></tr>
+      <tr><td>정상 사용자(본인 조회·정상 이체·이메일 수정)</td><td class="good">benign</td><td class="good">benign</td><td class="good">benign (오탐 0)</td></tr>
+    </table>
+    <div class="caption">표 28-J. 성공한 자율 BFLA+업무플로우 공격 vs 정상 세션에 대한 방어. run: research/fin_bfla_bizflow_defense/defense_result.json.</div>
+  </div>
+  <div class="success-box">
+    <strong>방어 프로파일이 §6.16e와 동일하다:</strong> 시그니처 규칙은 놓치고, <strong>맥락 규칙과 LLM이 잡았다</strong>(정상은 셋 다
+    오탐 0). 이로써 "시그니처가 없는 업무로직 공격은 인가 맥락을 쓰는 탐지만 작동한다"는 결론이 BOLA·mass assignment에 더해 BFLA·업무플로우
+    남용까지 <strong>네 개의 성공한 자율 업무로직 공격</strong>에서 성립한다.
+  </div>
+  <div class="info-box">
+    <strong>정보 대등성(information parity) 관찰:</strong> 초기 측정에서 LLM은 이 공격을 <em>놓쳤는데</em>, 원인은 LLM에 준 압축
+    세션에 이체 <strong>금액(amount)</strong>과 호출자 <strong>역할(caller_role)</strong>이 빠져 있었기 때문이다. 맥락 규칙이 쓰는 것과
+    동일한 관측값(위반 플래그가 아니라 금액·역할 자체)을 LLM에도 제공하자 즉시 ATTACK으로 판정했다. 이는 §6.9의 정보 대등성 원칙을
+    재확인한다 — <strong>LLM의 탐지력은 어떤 맥락 관측값을 입력으로 주느냐에 결정적으로 의존</strong>하며, 업무로직 공격 탐지에는 금액·역할·
+    소유권 같은 인가 맥락을 반드시 함께 제공해야 한다.
+  </div>
+  <div class="warn-box">
+    <strong>한계:</strong> (1) §6.16d·e와 동일한 "정의된 행동 공간 내 자율"이며 완전 개방형 자율성은 아니다. (2) 단일 합성 금융 API·
+    소형 모델 1종. (3) 방어 측정은 세션당 1회 판정이며, 공격 성공은 에피소드 단위(여기서는 10/10). (4) 맥락 규칙·LLM은 소유권·역할·금액을
+    관측값으로 계산하며(표적의 위반 플래그를 직접 쓰지 않음), §6.17–6.19의 독립 holdout·교차 모델 결과와 함께 해석해야 한다.
   </div>
 </div>
 
