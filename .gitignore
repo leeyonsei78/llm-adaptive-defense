@@ -17,3 +17,6 @@ Thumbs.db
 *.key
 *_secret*
 *credential*
+
+# External public dataset (CSIC-2010) — downloaded, not redistributed (large; licensing)
+research/csic2010/*.parquet
