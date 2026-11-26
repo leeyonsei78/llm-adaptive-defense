@@ -118,6 +118,8 @@
   <a href="#s5-1" style="padding-left:20px; font-size:12px;">5.1 환경 구성</a>
   <a href="#s5-2" style="padding-left:20px; font-size:12px;">5.2 실험 A: AI 공격·방어</a>
   <a href="#s5-3" style="padding-left:20px; font-size:12px;">5.3 실험 B: 동일 입력 재생</a>
+  <a href="#s5-4" style="padding-left:20px; font-size:12px;">5.4 윤리적 고려와 안전</a>
+  <a href="#s5-5" style="padding-left:20px; font-size:12px;">5.5 재현성과 공개</a>
   <a href="#s6"><span class="section-num">6.</span>실험 결과</a>
   <a href="#s6-1" style="padding-left:20px; font-size:12px;">6.1 실험 A 결과</a>
   <a href="#s6-2" style="padding-left:20px; font-size:12px;">6.2 실험 B 결과</a>
@@ -141,6 +143,7 @@
   <a href="#s6-17" style="padding-left:20px; font-size:12px;">6.17 금융 API 공격 판단 (OWASP)</a>
   <a href="#s6-18" style="padding-left:20px; font-size:12px;">6.18 금융 API 홀드아웃·일반화</a>
   <a href="#s6-19" style="padding-left:20px; font-size:12px;">6.19 제3자 blind 독립 holdout</a>
+  <a href="#s6-20" style="padding-left:20px; font-size:12px;">6.20 외부 공개 벤치마크(CSIC-2010)</a>
   <a href="#s7"><span class="section-num">7.</span>논의</a>
   <a href="#s7-5" style="padding-left:20px; font-size:12px;">7.5 자율 에이전트 도입 계획</a>
   <a href="#s7-6" style="padding-left:20px; font-size:12px;">7.6 AI 방어 설계 원칙 (종합)</a>
@@ -153,12 +156,12 @@
 <div class="paper-header">
   <h1>진화하는 AI 기반 사이버 공격에 대한<br>LLM 행동 분석 방어 시스템의 효과성 연구</h1>
   <div class="subtitle">Effectiveness Research of LLM Behavioral Analysis Defense System Against Evolving AI-Based Cyber Attacks</div>
-  <div class="authors">저자 (Author)</div>
-  <div class="affiliation">소속 기관 · 이메일</div>
+  <div class="authors">이종재<sup>1,*</sup></div>
+  <div class="affiliation"><sup>1</sup>정보대학원 AI FINTECH 전공 · <sup>*</sup>교신저자(이종재)</div>
   <div class="badges">
     <span class="badge draft">초안 (Draft)</span>
     <span class="badge year">2026</span>
-    <span class="badge conf">제출 대상: 한국정보보호학회 / IEEE Access</span>
+    <span class="badge conf">투고 전략: 학술대회 발표(서브셋) → 30%+ 확장 → KCI(정보보호학회논문지) 또는 SCIE(IEEE Access) 중 택1</span>
   </div>
 </div>
 
@@ -166,7 +169,8 @@
 
 <!-- Abstract -->
 <div class="abstract-box" id="abstract">
-  <h2>Abstract</h2>
+  <h2>국문초록 (Abstract)</h2>
+  <p style="font-size:0.85em;color:#666;margin:0 0 8px"><em>[형식 주] KCI(정보보호학회논문지)는 국문초록 + 영문 Abstract를 모두 요구한다. 영문 Abstract는 영문화 단계(최종)에서 본 국문초록을 번역·압축해 추가한다. IEEE Access(SCIE) 투고 시에는 전체를 영문화하고 본 섹션을 영문 Abstract로 대체한다.</em></p>
   <p>
     본 연구는 <strong>AI 적응형 공격에 대한 AI(LLM) 방어의 가능성과 효과, 그리고 설계 원칙</strong>을
     로컬·합성 환경에서 실측한다. Windows 로컬 환경(Ollama + Qwen 2.5-Coder 14B / DeepSeek-Coder-v2 16B)에서
@@ -191,13 +195,13 @@
     <strong>AI 탐지가 만능이 아님</strong>을 확인하였다 — 시끄러운 공격은 둘 다 100% 잡았고, 명확한 SQLi 시그니처가 있는
     은밀한 공격에서는 오히려 규칙이 LLM을 앞섰으며(12/12 대 1/12), <strong>탈취된 유효 자격증명 세션은 규칙도 LLM도 전혀
     탐지하지 못해(0/12)</strong> 사다리 L3의 구조적 한계가 실트래픽에서도 재현되었다. 더 자율적인 에이전트(Cochise)와
-    networkx 듀얼 그래프 비교에 더해, 외부 자율 하네스 <strong>Cochise를 격리된 VirtualBox VM(내부 Docker)에서 실제로 구동</strong>하였다(§6.16) — 로컬 소형 모델이 Ollama 네이티브 tool-calling을 안정적으로 수행하지 못한다는 1차 소견을 측정하였다. 또한 tool-calling 호환 모델(llama3.1:8b)로 20분 실구동한 결과, 에이전트는 실제 공격 트래픽(sqlmap 등 332건)을 대량 생성했으나 <strong>인증 우회·크라운주얼 획득에는 실패</strong>하고 성공을 <strong>자기보고(환각)</strong>해(표적 로그 login_ok=0·crown_jewel=0이 반증), 소형 로컬 모델 티어의 한계와 표적측 그라운드 트루스 검증의 중요성을 보였다. 두 번째 외부 하네스 <strong>AutoPenBench</strong>도 같은 격리 VM에서 로컬로 구동해 공격자 실패를 재현했으며, 특히 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(마일스톤 거짓양성 command 86%·stage 80%)함을 결정적 그라운드 트루스로 확인하여 '자기보고를 믿지 말라'는 명제를 평가자에게로 확장하였다(§6.16b). 나아가 최근 금융권의 지배적 위협인 <strong>API 업무로직 공격(BOLA·mass assignment·BFLA·비즈니스플로우 남용·크리덴셜 스터핑)</strong>을 합성 금융 API에서 판단하게 한 결과, 페이로드 시그니처가 없어 <strong>시그니처 규칙은 전부 실패</strong>하고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)만 유효했다(§6.17). 탐지기를 보지 못한 <strong>독립 작성자의 blind holdout</strong>에서 손수 만든 규칙은 과적합으로 하락(맥락 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해 'AI의 일반화 가치'가 독립 데이터에서 확인됐다(§6.19). 단 그 우위는 <strong>모델 의존적</strong>(deepseek-coder-v2는 규칙보다 낮음)이고, 맥락이 없으면 LLM은 정상 접근을 오탐했다(§6.18) — 정밀도 비용 때문에 규칙+LLM 앙상블이 필요하다. <strong>입력·표적·탐지기를 개발자가 작성한 데 따른
+    networkx 듀얼 그래프 비교에 더해, 외부 자율 하네스 <strong>Cochise를 격리된 VirtualBox VM(내부 Docker)에서 실제로 구동</strong>하였다(§6.16) — 로컬 소형 모델이 Ollama 네이티브 tool-calling을 안정적으로 수행하지 못한다는 1차 소견을 측정하였다. 또한 tool-calling 호환 모델(llama3.1:8b)로 20분 실구동한 결과, 에이전트는 실제 공격 트래픽(sqlmap 등 332건)을 대량 생성했으나 <strong>인증 우회·크라운주얼 획득에는 실패</strong>하고 성공을 <strong>자기보고(환각)</strong>해(표적 로그 login_ok=0·crown_jewel=0이 반증), 소형 로컬 모델 티어의 한계와 표적측 그라운드 트루스 검증의 중요성을 보였다. 두 번째 외부 하네스 <strong>AutoPenBench</strong>도 같은 격리 VM에서 로컬로 구동해 공격자 실패를 재현했으며, 특히 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(마일스톤 거짓양성 command 86%·stage 80%)함을 결정적 그라운드 트루스로 확인하여 '자기보고를 믿지 말라'는 명제를 평가자에게로 확장하였다(§6.16b). 나아가 최근 금융권의 지배적 위협인 <strong>API 업무로직 공격(BOLA·mass assignment·BFLA·비즈니스플로우 남용·크리덴셜 스터핑)</strong>을 합성 금융 API에서 판단하게 한 결과, 페이로드 시그니처가 없어 <strong>시그니처 규칙은 전부 실패</strong>하고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)만 유효했다(§6.17). 탐지기를 보지 못한 <strong>독립 작성자의 blind holdout</strong>에서 손수 만든 규칙은 과적합으로 하락(맥락 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해 'AI의 일반화 가치'가 독립 데이터에서 확인됐다(§6.19). 단 그 우위는 <strong>모델 의존적</strong>(deepseek-coder-v2는 규칙보다 낮음)이고, 맥락이 없으면 LLM은 정상 접근을 오탐했다(§6.18) — 정밀도 비용 때문에 규칙+LLM 앙상블이 필요하다. 다만 <strong>강한 모델(GPT-5, 호스티드 API)은 같은 독립 holdout에서 16/18을 오탐 0으로 달성</strong>해, 재현율과 정밀도를 함께 확보함으로써 이 정밀도 비용이 모델 의존적임을 보였다(§6.19; 호스티드·비용·지연 전제). 나아가 저자가 만들지 않은 <strong>외부 공개 벤치마크(CSIC-2010)</strong>에서도 시그니처 규칙(recall 10.2%)보다 LLM이 2.7×(qwen)~3.5×(GPT-5) 높은 recall을 <strong>전부 오탐 0</strong>으로 달성해, "LLM이 비시그니처 이상치에 일반화 가치를 낸다"는 결론이 <strong>합성 밖 독립 데이터에서도 재현</strong>됨을 확인했다(§6.20). <strong>입력·표적·탐지기를 개발자가 작성한 데 따른
     순환성 우려는 ATO 탐지기에 한해 규칙을 보지 못한 별도 에이전트가 작성한 독립 holdout으로 재검증하여 완화하였고(§6.13,
     정확도 유지·주입 취약성 재확인; 저자가 AI 에이전트라는 한계 잔존), 실트래픽 표적의 독립 재작성과 능력 사다리의 동일 모델 계열 한계는 남는다.</strong> 따라서 본 연구는 AI 방어의
     일반적 우월성을 주장하지 않고, "어떤 모델이, 어떤 공격 난이도에, 어떤 비용으로 작동하는가"라는 조건부 결론을 제시한다.
   </p>
   <div class="keywords">
-    <strong>키워드:</strong> 대형 언어 모델, AI 적응형 공격, LLM 방어, 계정 탈취(ATO), 정책 적용 시점(동기/비동기), 능력 사다리, 다중 모델 비교, 기만 방어, API 보안(OWASP), BOLA, 자율 공격 에이전트, Qwen, DeepSeek, Ollama, 사이버 보안
+    <strong>키워드:</strong> 대형 언어 모델, AI 적응형 공격, LLM 방어, 계정 탈취(ATO), 정책 적용 시점(동기/비동기), 능력 사다리, 다중 모델 비교, 기만 방어, API 보안(OWASP), BOLA, 자율 공격 에이전트, Qwen, DeepSeek, llama, GPT-5, Ollama, 사이버 보안
   </div>
 </div>
 
@@ -252,6 +256,17 @@
     <strong>RQ2 (효과·비용):</strong> 그 효과는 공격 능력 단계·방어 모델·적용 시점(동기/비동기)·정상 사용자 마찰에 따라 어떻게 달라지는가?<br><br>
     <strong>RQ3 (설계·대비):</strong> 규칙·LLM·기만(deception) 중 어떤 방어 설계가 유효하며, 자율 공격 에이전트 시대의 사고 대비는 어떻게 해야 하는가?
   </div>
+  <div class="info-box">
+    <strong>본 논문의 기여 (Contributions)</strong><br><br>
+    <strong>C1.</strong> AI 적응형 공격(SQL 인증·계정 탈취·API 업무로직)에 대한 LLM 방어를 로컬·합성 환경에서 조건별로 실측한다 —
+    정책 적용 시점(동기/비동기), 공격자 능력 사다리(L1–L3), 공격자·방어자 교차 모델(Qwen·DeepSeek·llama·GPT-5).<br><br>
+    <strong>C2.</strong> <strong>"공격이 시그니처로 정의되면 규칙, 인가 맥락으로 정의되면 LLM"</strong>이라는 탐지기 선택 원칙을 제시하고,
+    실제로 성공시킨 자율 공격 두 종(SQLi·BOLA+권한상승)에 대해 그 원칙이 성립함을 보인다.<br><br>
+    <strong>C3.</strong> 외부 자율 공격 하네스 3종(Cochise·AutoPenBench·PentAGI)을 격리 환경에서 실제로 구동하여,
+    <strong>"자기보고를 믿지 말고 ground truth로 검증"</strong>의 필요성과 <strong>약한 LLM 평가자의 성공 과대보고(거짓양성)</strong>를 측정한다.<br><br>
+    <strong>C4.</strong> 탐지기 코드를 보지 못한 <strong>제3자 blind 독립 holdout</strong>으로 순환성 우려를 완화하고,
+    LLM의 일반화 우위가 <strong>모델 의존적</strong>임을 보인다. 전체 코드·데이터·시드를 공개하여 재현 가능하게 한다.
+  </div>
   <div class="highlight-box">
     <strong>근거의 구분:</strong> 본 논문은 <strong>실험으로 뒷받침되는 발견</strong>(6장)과 <strong>문헌에 근거한
     대비 권고</strong>(7장 논의)를 명확히 구분한다. 실측하지 않은 수치나 운영 환경 일반화는 주장하지 않는다.
@@ -267,7 +282,8 @@
     Snort, Suricata 등 시그니처 기반 IDS는 알려진 공격 패턴에 대해 높은 탐지율을 보이나,
     패턴 변형 공격과 제로데이 위협에 취약하다. 본 연구의 고정 규칙 조건은 이러한 한계를
     실험적으로 재현한다 — 아포스트로피 계정(O'Reilly)을 정상 차단하고,
-    SQL 주석 변형 공격은 통과시키는 반례를 의도적으로 포함하였다.
+    SQL 주석 변형 공격은 통과시키는 반례를 의도적으로 포함하였다. 국내에서도 SQL 질의 구조 분석을
+    통한 SQL Injection 탐지<span class="cite">[26]</span> 등 시그니처·규칙 기반 접근이 연구되었다.
   </p>
 
   <h3>2.2 ML/LLM 기반 IDS</h3>
@@ -276,7 +292,10 @@
     5개 대표 HIDS 대비 우수한 성능을 달성하였다. EADL-IDS<span class="cite">[6]</span>는 RAG를 활용한
     비지도 학습 기반 LLM-IDS를 제안하였다.
     그러나 두 연구 모두 LLM 추론 지연이 방어 타이밍에 미치는 영향은 분석하지 않았으며,
-    본 연구는 이 측면에 초점을 맞춘다.
+    본 연구는 이 측면에 초점을 맞춘다. 국내에서도 머신러닝 기반 웹 공격 탐지<span class="cite">[27]</span>,
+    LLM·프롬프트 엔지니어링을 이용한 다단계 공격 시나리오 탐지<span class="cite">[28]</span>, 스마트빌딩 환경의
+    LLM 기반 침입탐지<span class="cite">[29]</span> 등이 보고되었으나, 추론 지연·모델 선택·공격 난이도에 따른
+    방어 결과의 변화를 교차 측정한 연구는 드물다 — 본 연구가 이 공백을 겨냥한다.
   </p>
 
   <h3>2.3 적응형 공격 연구</h3>
@@ -287,7 +306,37 @@
     타이밍 효과를 직접 측정한다는 점에서 차별화된다.
   </p>
 
-  <h3>2.4 기존 연구와의 차별점</h3>
+  <h3>2.4 API 보안과 업무로직 공격</h3>
+  <p>
+    OWASP API Security Top 10(2023)<span class="cite">[10]</span>은 <strong>BOLA(Broken Object Level Authorization)</strong>를
+    API1위 위험으로 유지하였다. Kaur<span class="cite">[11]</span>는 100건 이상의 버그바운티 공개를 분석해 BOLA를 여섯 계열로
+    분류하고 기존 문헌이 대부분 개념적 수준에 머물러 있음을 지적하였으며, Wu 등<span class="cite">[12]</span>은 자원 ID의
+    데이터 흐름을 추적해 BOLA 주입 지점을 찾는 Bolaz를 제안하였다. 산업 보고서<span class="cite">[13]</span>는 금융을 API 공격
+    1위 표적으로, BOLA·파라미터 조작을 "시그니처 기반 도구와 거친 rate limit이 놓치는" 벡터로 지목한다. 이들은 공격의 존재와
+    심각성은 다루나 <strong>로컬 LLM 방어자가 시그니처 없는 업무로직 공격을 실시간 판단할 수 있는지</strong>는 다루지 않으며,
+    본 연구 §6.17–6.19가 이 공백을 규칙 대 LLM 축으로 실측한다.
+  </p>
+
+  <h3>2.5 자율 침투 에이전트와 프롬프트 인젝션</h3>
+  <p>
+    PentestGPT<span class="cite">[14]</span>는 LLM의 침투시험 자동화 한계를 HackTheBox·VulnHub 기반 벤치마크(OWASP Top 10
+    포함 182개 서브태스크)로 평가해, 맥락 상실 문제와 서브태스크 성공률을 보고하였다. LLM×사이버보안 서베이<span class="cite">[15]</span>는
+    공격·방어 양면의 활용을 정리한다. 한편 프롬프트 인젝션은 LLM 통합 애플리케이션의 구조적 취약점으로, Greshake 등<span class="cite">[16]</span>은
+    <strong>간접 프롬프트 인젝션</strong>을, Liu 등<span class="cite">[17,18]</span>은 애플리케이션 대상 공격(HouYi)과 그 형식화·벤치마크를
+    제시하였다. 본 연구는 §6.8·§6.16b에서 로컬 방어자·평가자가 주입에 취약함을 재확인한다.
+  </p>
+
+  <h3>2.6 LLM 평가의 신뢰성과 환각</h3>
+  <p>
+    LLM을 판정자로 쓰는 "LLM-as-a-judge"는 널리 쓰이나 신뢰성 문제가 보고된다. 서베이<span class="cite">[19]</span>는 평가를
+    인간일치·편향·적대강건성 세 축으로 정리하고, 신뢰성이 <strong>모델·입력·맥락에 의존</strong>함을 지적한다. 대규모 연구<span class="cite">[20]</span>는
+    판정자가 반복 실행에 일관적이면서도 강한 위치 편향을 보이는 "일관성-편향 역설"을, CALM<span class="cite">[21]</span>은 12종 편향을
+    정량화한다. 환각 서베이<span class="cite">[22]</span>는 자기일관성 기반 탐지의 한계를 논한다. 본 연구 §6.16·§6.16b의
+    <strong>"자기보고를 믿지 말고 ground truth로 검증"·"약한 LLM 평가자의 성공 과대보고(거짓양성)"</strong> 발견은 이 흐름과 맞닿으며,
+    이를 <strong>보안 자율공격 평가</strong>라는 구체적 맥락으로 확장한다.
+  </p>
+
+  <h3>2.7 기존 연구와의 차별점</h3>
   <div class="table-wrap">
     <table>
       <tr>
@@ -458,6 +507,25 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     요청마다 같은 초기 DB를 생성하고 캠페인마다 방어 상태를 초기화하였다.
     재생 실험에서는 AI 공격자를 사용하지 않고 Qwen 방어자만 호출한다.
   </p>
+
+  <h3 id="s5-4">5.4 윤리적 고려와 안전 (Ethics &amp; Safety)</h3>
+  <div class="highlight-box">
+    본 연구의 모든 공격은 <strong>저자가 직접 만든 합성 표적</strong>에 대해, <strong>격리된 환경</strong>에서만 수행하였다.
+    (1) <strong>표적:</strong> 실존 시스템·서비스·개인을 대상으로 하지 않으며, 모든 표적과 데이터는 합성이고 개인정보를 포함하지 않는다.
+    (2) <strong>격리:</strong> 실트래픽 실험은 루프백 전용(127.0.0.1) 또는 egress가 차단된 내부 전용 망(<code>pentest-lab</code>, 외부 도달 0 실측)에서만 구동하였다.
+    (3) <strong>자율 공격 하네스:</strong> 외부 프레임워크는 코드 감사 후 격리 VM 내부에서만 실행하였고, 실제 C2·임플란트 기능이 있는 도구(CyberStrikeAI 등)는 비활성화하였으며, 실제 악용 의혹이 보도된 범용 프레임워크(ARTEX)는 채택하지 않았다.
+    (4) <strong>공개 범위:</strong> 재현에 필요한 방어 측 코드·합성 데이터·시드는 공개하되, 바로 악용 가능한 완성형 공격 페이로드 모음은 배포하지 않는다.
+    본 연구는 <strong>방어 설계 개선</strong>을 목적으로 하며, 공격 기법은 방어 평가에 필요한 최소 범위로 한정한다.
+  </div>
+
+  <h3 id="s5-5">5.5 재현성과 공개 (Reproducibility &amp; Availability)</h3>
+  <p>
+    모든 실험은 <strong>로컬에서 재현 가능</strong>하도록 설계하였다. 로컬 모델(Ollama: Qwen 2.5-Coder 14B, DeepSeek-Coder-v2 16B,
+    llama3.1 8B)은 temperature=0·고정 seed로 결정적 실행을 기본값으로 하며, 비결정성은 다중 시드·반복으로 별도 측정한다(§6.9·§6.11).
+    강한 모델 비교에 사용한 호스티드 모델은 <strong>스냅샷 버전을 고정</strong>(예: <code>gpt-5-2025-08-07</code>, temperature=0, 구조화 출력)하고
+    호출 일자를 결과에 기록하여, 모델 폐기·변경에 따른 재현성 저하를 완화한다. 각 실험의 코드·입력·결과 JSON과 난수 시드,
+    모델·백엔드·실행 시각 메타데이터를 함께 공개한다(저장소 링크는 게재 시 기입; 익명 심사를 위해 심사용 사본 별도 제공).
+  </p>
 </div>
 
 <!-- 6. 실험 결과 -->
@@ -471,6 +539,19 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     • <strong>마찰(friction)</strong> = 정상 사용자 불편의 대리지표. allow=0 · challenge(추가 인증)=1 · lock(잠금)=5 가중치 합 → <strong>낮을수록 정상 사용자에게 편함</strong>.<br>
     • 용어: <strong>탈취(takeover)</strong>=공격자의 계정 장악 성공, <strong>challenge</strong>=추가 인증 요구, <strong>lock</strong>=계정 잠금. 보안(공격 차단)과 사용성(정상 마찰)은 <strong>트레이드오프</strong>이므로 두 지표를 함께 읽어야 한다. (용어 상세는 상단 <strong>표 0 용어 풀이</strong> 참조.)
   </div>
+
+  <div class="info-box">
+    <strong>결과 구성 — 4개 테마로 읽기.</strong> 본 장의 실험들은 다음 네 갈래로 묶인다. 괄호 안이 핵심 소절이며,
+    <em>보조</em>로 표시한 소절(§6.10·§6.14·§6.15)은 핵심 결과를 보강하는 민감도·세부 분석으로, 영문 저널 템플릿 변환 시
+    <strong>부록(Supplementary)</strong>으로 이동할 후보다(번호·교차참조 보존을 위해 현 초안에서는 제자리에 둔다).<br><br>
+    <strong>· 테마 I — 정책 적용 시점(동기/비동기)과 비동기 노출:</strong> §6.1–6.5<br>
+    <strong>· 테마 II — 공격자 능력 사다리와 모델 의존성:</strong> §6.6–6.9, §6.11 &nbsp;(<em>보조</em> §6.10 기만 민감도)<br>
+    <strong>· 테마 III — 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격:</strong> §6.12, §6.16d–e, §6.17–6.19 &nbsp;<span style="color:#1e3a8a;font-weight:700">(핵심 thesis)</span> &nbsp;(<em>보조</em> §6.14 약점교정, §6.15 아키텍처·듀얼그래프)<br>
+    <strong>· 테마 IV — 외부 자율 하네스 실구동과 평가 검증:</strong> §6.16, §6.16b–c<br>
+    <strong>· 테마 V — 외부 공개 벤치마크로 합성 밖 일반화 검증:</strong> §6.20 (CSIC-2010)
+  </div>
+
+  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#1e3a8a,#3b82f6);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 I · 정책 적용 시점(동기/비동기)과 비동기 노출 &nbsp;—&nbsp; §6.1–6.5</div>
 
   <h3 id="s6-1">6.1 실험 A: 수동 AI 공격·방어 캠페인 결과</h3>
 
@@ -632,6 +713,8 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     10 RPS 한 반복의 모델 22 대 실측 20은 캠페인당 요청이 20개로 제한된 데 따른 상한 효과다. 모델은 모든 캠페인에서 첫 호출에 parameterize를 선택하였다.
     <strong>한계:</strong> 도착은 포아송이 아닌 등간격이고, 공격 위치는 순서 셔플에 의존하며(낮은 RPS의 공격 수 0~2건), 사례 10개를 반복 사용하였다.
   </div>
+
+  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#1e3a8a,#3b82f6);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 II · 공격자 능력 사다리와 모델 의존성 &nbsp;—&nbsp; §6.6–6.11 <span style="font-weight:400;font-size:13px">(§6.10 기만 민감도 = 보조)</span></div>
 
   <h3 id="s6-6">6.6 실험 D: 계정 탈취(ATO) 모의 실험</h3>
   <p>
@@ -881,6 +964,8 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     (예: A rules2 L3가 한 번은 6/6, 한 번은 3/6). temperature 0이라도 Ollama 로컬 추론은 비트 단위로 재현되지 않으며,
     공격자 LLM의 이 비결정성이 캠페인 결과까지 흔든다. 단일 실행 수치를 결정적으로 읽어서는 안 된다.
   </div>
+
+  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#065f46,#10b981);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 III · 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격 &nbsp;—&nbsp; §6.12, §6.16d–e, §6.17–6.19 &nbsp;<span style="font-weight:400;font-size:13px">★ 핵심 thesis (§6.14·§6.15 = 보조)</span></div>
 
   <h3 id="s6-12">6.12 실험 I: 실트래픽 탐지 — 규칙 vs LLM (에이전트 공격)</h3>
   <p>
@@ -1132,6 +1217,8 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     내부 Docker 단계</strong>로 분리한다(§7.5). (4) "듀얼그래프 이득"은 이 피벗 과제에서 관측된 것으로, 더
     많은 과제·모델에서의 재현은 후속 과제다.
   </div>
+
+  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#1e3a8a,#3b82f6);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 IV · 외부 자율 하네스 실구동과 평가 검증(ground truth) &nbsp;—&nbsp; §6.16, §6.16b–c</div>
 
   <h3 id="s6-16">6.16 실험 M: 외부 자율 하네스(Cochise) 격리 VM 실구동 — 셋업·호환성 소견·방어 함의</h3>
   <p>
@@ -1419,6 +1506,8 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
 
 <!-- 6.16d constrained autonomous attack succeeds + defense -->
 <div class="section" id="s6-16d">
+  <div style="margin:8px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#065f46,#10b981);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 III (계속) · 성공시킨 자율 공격과 그에 대한 방어 &nbsp;—&nbsp; §6.16d–e, §6.17–6.19 &nbsp;<span style="font-weight:400;font-size:13px">★ 핵심 thesis</span></div>
+
   <h3 id="s6-16d">6.16d 실험 M-4: 제약된 자율 하네스에서 소형 로컬 모델의 자율 공격 성공 — 그리고 그에 대한 방어</h3>
   <p>
     §6.16·§6.16b·§6.16c는 <strong>개방형 외부 하네스</strong>에서 소형 로컬 모델이 자율 공격에 실패함을 보였다. 그 실패가
@@ -1579,6 +1668,12 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     (정상 오탐 0). 즉 시그니처·임계값 규칙이 구조적으로 실패하는 이 공격군에서 <strong>LLM(맥락) 탐지가 실질적 방어가치를
     가짐</strong>을, 작동하는 자율 공격에서까지 확인하였다 — 단 인가 맥락 제공·모델 선택·규칙+LLM 앙상블이 전제다.
   </div>
+  <div class="success-box">
+    <strong>강한 모델(GPT-5) 확인:</strong> 동일 실험을 호스티드 GPT-5(gpt-5-2025-08-07, backend=openai, temp 0, 규칙 n=30/LLM n=20)로
+    재실행한 결과, 다섯 공격 세션 모두 <strong>GPT-5(맥락)·GPT-5(행위) 각각 20/20</strong>, <strong>정상 오탐 0/20</strong>이었다.
+    특히 행위규칙이 0/30으로 놓친 <strong>타깃형 BOLA</strong>를 GPT-5는 맥락 없이(행위만)도 20/20으로 잡았다 — 강한 모델이 로컬
+    오픈모델(§6.17 본표)과 동일한 탐지 프로파일을 더 큰 표본에서 재현. run: research/fin_api_runs/20261126T140007/.
+  </div>
 </div>
 
 <!-- 6.18 holdout -->
@@ -1620,6 +1715,15 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     재검증에서 변동 0</strong>(정상 오탐 0, 공격 전 클래스 5/5 모두 동일)으로 안정적이었다 —
     run: research/fin_api_runs/robust-20261118T030315/.
   </div>
+  <div class="success-box">
+    <strong>강한 모델(GPT-5) 재검증 — 더 큰 n에서 같은 패턴, 정밀도까지 확보:</strong> 동일 홀드아웃을 호스티드 GPT-5
+    (gpt-5-2025-08-07, backend=openai, temp 0, 규칙 n=30/LLM n=20)로 재실행한 결과, <strong>신규 필드 mass assignment는
+    세 규칙(시그니처·맥락·행위) 모두 0/30</strong>으로 놓쳤으나 <strong>GPT-5(맥락)는 20/20</strong>으로 잡아 "규칙 취약성 vs
+    LLM 일반화"가 강한 모델·큰 n에서 재확인됐다. 최소 BOLA·크리덴셜 스터핑도 GPT-5(맥락) 20/20. 결정적으로 <strong>정상 두
+    종(본인 계정 by-id·이메일 수정) 모두 오탐 0/20</strong>이었다 — 로컬 행위모드 LLM이 본인 by-id를 6/6 오탐한 것과 대조.
+    <strong>발견 2(“맥락을 제공하라”)도 강화:</strong> GPT-5도 <em>맥락 없는 행위모드</em>에선 최소 BOLA를 4/20만 잡고
+    본인 by-id를 3/20 오탐해, 소유권·역할 맥락이 없으면 강한 모델도 흔들렸다. run: research/fin_api_runs/holdout-20261126T141557/.
+  </div>
 </div>
 
 <!-- 6.19 blind holdout -->
@@ -1656,18 +1760,22 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
   <div class="warn-box">
     <strong>정직한 트레이드오프·한계:</strong> LLM의 높은 탐지는 <strong>정밀도 비용</strong>을 동반한다 — 맥락 LLM 오탐
     2/12(규칙 1/12), 맥락 없는 행위 LLM은 5/12(§6.18과 일치). 따라서 실무에선 <strong>규칙(저비용·고정밀) + LLM(고일반화·
-    보강)</strong> 앙상블과 오탐 억제가 필요하다. 한계: 독립 작성자가 인간 제3자가 아니라 AI(규칙엔 blind이나 완전 독립은
-    아님), 단일 합성 표적, n=18/12, LLM 지연·비용(§6.11) 미반영.
+    보강)</strong> 앙상블과 오탐 억제가 필요하다. <strong>단 이 정밀도 비용은 모델 의존적이다 — 강한 모델(GPT-5)은 같은 독립
+    holdout에서 맥락모드 공격 16/18을 <span style="color:#16a34a">오탐 0/12</span>로 달성해 정밀도 비용을 제거했다</strong>
+    (아래 교차모델 표 32). 즉 "재현율↑는 정밀도↓를 부른다"는 트레이드오프가 약한 모델의 현상이며, 강한 모델에서는 재현율과
+    정밀도를 함께 얻을 수 있음을 시사한다(단 호스티드·비용·지연 전제). 한계: 독립 작성자가 인간 제3자가 아니라 AI(규칙엔
+    blind이나 완전 독립은 아님), 단일 합성 표적, n=18/12, LLM 지연·비용(§6.11) 미반영.
   </div>
   <h4>교차 모델 — LLM의 우위는 모델 의존적이다</h4>
   <div class="table-wrap">
     <table>
       <tr><th>LLM 모델 (맥락모드)</th><th>공격 탐지 (/18)</th><th>정상 오탐 (/12)</th><th>vs 맥락규칙 13/18</th></tr>
-      <tr class="highlight"><td>qwen2.5-coder:14b</td><td class="good">17/18</td><td class="warn">2/12</td><td class="good">우위</td></tr>
+      <tr class="highlight"><td>gpt-5-2025-08-07 (강한 모델, API · n=20)</td><td class="good">16/18</td><td class="good">0/12</td><td class="good">우위 · 오탐 0</td></tr>
+      <tr><td>qwen2.5-coder:14b</td><td class="good">17/18</td><td class="warn">2/12</td><td class="good">우위</td></tr>
       <tr><td>llama3.1:8b</td><td class="good">15/18</td><td class="good">1/12</td><td class="good">우위</td></tr>
       <tr><td>deepseek-coder-v2:16b</td><td class="bad">6/18</td><td class="good">0/12</td><td class="bad">열위 (규칙보다 낮음)</td></tr>
     </table>
-    <div class="caption">표 32. 동일 독립 holdout에 대한 LLM 모델별 탐지(규칙은 모델 무관: 시그니처 0/18·맥락 13/18·행위 9/18). runs: blind-…030958(qwen)/040306(llama)/040355(deepseek-coder-v2).</div>
+    <div class="caption">표 32. 동일 독립 holdout에 대한 LLM 모델별 탐지(규칙은 모델 무관: 시그니처 0/18·맥락 13/18·행위 9/18). 로컬 모델 runs: blind-…030958(qwen)/040306(llama)/040355(deepseek-coder-v2). <strong>강한 모델(GPT-5, 호스티드 API, backend=openai, 스냅샷 gpt-5-2025-08-07, temp 0, 구조화 출력) run: blind-20261126T143257/</strong> — 로컬 오픈모델이 재현 가능 기준선, GPT-5는 상한선·비교점(§5.5).</div>
   </div>
   <div class="highlight-box">
     <strong>표 32 읽는 법.</strong> 세 행은 <strong>탐지기를 바꾼 게 아니라 LLM 모델만 바꾼 것</strong>이다 — 똑같은 독립 holdout(공격 18·정상 12, §6.19), 똑같은 맥락 제공 모드. 따라서 숫자 차이는 <strong>순수한 모델 역량 차</strong>다. <strong>공격 탐지(/18)는 높을수록 좋고</strong>(18 만점), <strong>정상 오탐(/12)은 낮을수록 좋다</strong>(0이 최선). 맨 오른쪽 칸은 같은 데이터에서 사람이 손으로 짠 <strong>맥락 규칙(13/18)과의 비교</strong>다: <span style="color:#16a34a;font-weight:600">qwen2.5-coder:14b 17/18·llama3.1:8b 15/18은 규칙을 앞섰지만</span>, 더 큰 <span style="color:#dc2626;font-weight:600">deepseek-coder-v2:16b는 6/18로 규칙보다도 못했다</span>(16b인데도 API 업무로직 공격을 거의 못 알아봄; 오탐은 0). <strong>요지:</strong> "LLM을 쓰면 좋다"가 아니라 <strong>"어떤 LLM이냐가 효과를 가른다"</strong> — 좋은 한 모델의 숫자를 LLM 전체로 일반화하면 안 되고, 운영 전 모델별 독립 검증이 필수다.
@@ -1675,9 +1783,53 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
   <div class="warn-box">
     <strong>중요(조건부 결론):</strong> "LLM이 규칙보다 잘 일반화한다"는 <strong>모델 의존적</strong>이다 — qwen2.5-coder:14b
     (17/18)·llama3.1:8b(15/18)는 맥락 규칙(13/18)을 앞섰으나, <strong>deepseek-coder-v2:16b는 6/18로 규칙보다도 못했다</strong>
-    (더 큰 16b인데도 API 업무로직 공격을 거의 알아보지 못함; 오탐은 0). → §6.11과 동일하게 <strong>"LLM을 쓰면 좋다"가
+    (더 큰 16b인데도 API 업무로직 공격을 거의 알아보지 못함; 오탐은 0). <strong>그리고 강한 모델(GPT-5)은 16/18을
+    오탐 0/12로 — 즉 로컬 최고(qwen 17/18)에 근접한 재현율을 더 나은 정밀도로</strong> 달성해, "모델이 강할수록 재현율·정밀도를
+    함께 끌어올린다"는 방향을 독립 데이터에서 보였다. → §6.11과 동일하게 <strong>"LLM을 쓰면 좋다"가
     아니라 "어떤 LLM이냐가 효과를 결정한다"</strong>. 운영 전 <strong>모델별 독립 holdout 검증이 필수</strong>이며, 단일
-    모델의 좋은 숫자를 LLM 일반으로 일반화해서는 안 된다.
+    모델의 좋은 숫자를 LLM 일반으로 일반화해서는 안 된다. (강한 모델의 우위는 호스티드·비용·지연을 전제하므로, 로컬 전제를
+    지키려면 §8의 캐스케이드·증류 경로가 필요하다.)
+  </div>
+</div>
+
+<!-- 6.20 CSIC external benchmark -->
+<div class="section" id="s6-20">
+  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#7c2d12,#ea580c);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 V · 외부 공개 벤치마크로 합성 밖 일반화 검증 &nbsp;—&nbsp; §6.20</div>
+  <h3 id="s6-20b">6.20 실험 Q: 외부 공개 벤치마크(CSIC-2010) — 합성 밖 일반화 검증 (★ 외적 타당성)</h3>
+  <p>
+    §6.1–6.19의 표적·데이터는 모두 <strong>저자가 만든 합성</strong>이었다(외적 타당성의 핵심 한계). 이를 완화하기 위해,
+    <strong>독립 공개 벤치마크 HTTP Dataset CSIC 2010</strong><span class="cite">[24]</span>에서 탐지기를 재평가하였다. CSIC-2010은
+    스페인 CSIC가 전자상거래 웹앱을 대상으로 자동 생성한 정상/이상 HTTP 요청 모음으로, 웹 공격 탐지 연구의 표준 벤치마크다
+    <span class="cite">[25]</span>. 공개 분류 세트(HuggingFace 미러, 정상 10,800·이상 7,738)를 사용하되, 이 미러는 POST 바디가
+    잘려 공격 페이로드가 없으므로 <strong>요청 라인(경로·질의)이 온전한 GET 요청(12,971건)만</strong>을 공정 비교 범위로 삼았다
+    (<em>honest scope</em>). 두 탐지기를 비교한다: <strong>시그니처 규칙</strong>(SQLi/XSS/경로순회/명령주입/CRLF/시간기반
+    정규식)과 <strong>LLM</strong>(단일 요청을 benign/attack 판정; 로컬 qwen2.5-coder:14b 및 강한 모델 GPT-5, temp 0, 구조화 출력).
+    균형 표본으로 채점하였다(규칙 n=1,000=공격500+정상500; LLM n=100=공격50+정상50; seed 고정, Wilson 95% CI).
+  </p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>탐지기</th><th>공격 탐지 recall</th><th>정상 오탐 FP</th><th>정밀도</th><th>vs 규칙</th></tr>
+      <tr><td>rule_signature (시그니처)</td><td class="bad">51/500 = 0.102 [0.078, 0.132]</td><td class="good">0/500 = 0 [0, 0.008]</td><td class="good">1.00</td><td>기준</td></tr>
+      <tr><td>LLM — qwen2.5-coder:14b (로컬)</td><td class="warn">14/50 = 0.28 [0.175, 0.417]</td><td class="good">0/50 = 0 [0, 0.071]</td><td class="good">1.00</td><td class="good">2.7× recall</td></tr>
+      <tr class="highlight"><td>LLM — gpt-5-2025-08-07 (강한 모델, API)</td><td class="good">18/50 = 0.36 [0.241, 0.499]</td><td class="good">0/50 = 0 [0, 0.071]</td><td class="good">1.00</td><td class="good">3.5× recall</td></tr>
+    </table>
+    <div class="caption">표 33. 외부 공개 벤치마크 CSIC-2010(GET-only) 탐지율, Wilson 95% CI. 규칙은 모델 무관(무료라 n=1,000). runs: research/csic_runs/20261126T150234-ollama(규칙+qwen) / 20261126T151204-openai(GPT-5). 데이터: HF bridge4/CSIC2010_dataset_classification, test split.</div>
+  </div>
+  <div class="success-box">
+    <strong>핵심 발견 — 합성 밖 독립 데이터에서도 "LLM이 비시그니처 이상치에 일반화 가치를 낸다":</strong> CSIC-2010 GET
+    이상치는 상당수가 고전적 주입 시그니처가 아니라 <strong>파라미터 변조·경로 이상·취약 경로 탐침</strong>이라, 시그니처
+    규칙은 recall 10.2%에 그쳤다(대신 정밀도 1.00). 반면 LLM은 같은 데이터에서 규칙의 <strong>2.7×(qwen 28%)~3.5×(GPT-5 36%)</strong>
+    recall을 <strong>모두 오탐 0(정밀도 1.00)</strong>으로 달성했고, <strong>강한 모델일수록 recall이 높았다</strong>(규칙→qwen→GPT-5
+    단조 증가). 즉 §6.12·§6.17–6.19의 "시그니처로 정의되지 않는 공격에서 LLM이 보강 탐지가치를 가지며 그 효과는 모델 의존적"이라는
+    결론이 <strong>저자가 만들지 않은 표준 공개 벤치마크에서도 재현</strong>되었다 — 본 연구의 외적 타당성을 뒷받침하는 독립 증거.
+  </div>
+  <div class="warn-box">
+    <strong>정직한 한계:</strong> (1) <strong>절대 recall은 낮다</strong>(10~36%) — CSIC GET 이상치의 다수가 단일 요청만으로는
+    정상과 구분하기 어려운 <strong>미묘한 값 변조</strong>(예: 수량·가격 파라미터의 비정상 값)여서, 행동 기준선 없이 한 요청만 보는
+    본 설정의 구조적 한계다(세션·기준선을 주면 개선 여지; §6.14 상태추적 참조). 핵심은 절대값이 아니라 <strong>동일 조건에서의 상대
+    비교</strong>(LLM > 규칙, 오탐 0)다. (2) <strong>GET-only</strong> — 미러의 POST 바디 잘림 때문이며, 원본 CSIC 전체(POST 바디
+    포함) 재평가는 후속 과제. (3) LLM n=50/50(규칙은 500/500)으로 LLM 표본이 작다. (4) 이는 탐지 이분법의 <strong>시그니처 축을
+    외부 검증</strong>한 것이며, 업무로직(BOLA) 축의 공개 벤치마크는 부재하다(공개 BOLA 데이터셋 희소 — 그 자체가 §6.17의 동기).
   </div>
 </div>
 
@@ -1958,7 +2110,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     구분이 불가능한 구조적 한계다. (3) LLM 방어는 규칙보다 정상 사용자 마찰을 크게 줄였으나 중간 난이도(L2)
     공격을 더 통과시키는 트레이드오프를 보였다. (4) 교차 모델(DeepSeek↔Qwen, n=12)에서 L3를 막은 유일한 설정은
     DeepSeek 방어자+llm_escalate(0/12)였고 Qwen 방어자는 같은 방식으로도 뚫렸다(12/12) — 효과는 방어 방식이
-    아니라 방어자 모델이 결정했으며, 더 강한 판단에는 2~9배 지연 비용이 따랐다. (5) 금융 API 업무로직 공격(BOLA·mass assignment)에서는 시그니처 규칙이 0/12로 완전히 실패한 반면 인가-맥락 규칙과 LLM은 각각 12/12·6/6로 탐지해, 탐지기 선택 기준이 "공격이 시그니처로 정의되는가(→규칙) vs 인가 맥락으로 정의되는가(→맥락 규칙·LLM)"임을 보였다(§6.17). 나아가 <strong>제3자 blind 독립 holdout</strong>(§6.19)에서 손수 만든 규칙은 과적합으로 하락(맥락규칙 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해, "AI의 일반화 가치"가 저자 데이터가 아닌 독립 데이터에서 확인됐다(단 오탐 2/12의 정밀도 비용 동반 → 규칙+LLM 앙상블 권고). 이 LLM 우위는 <strong>모델 의존적</strong>이어서 같은 holdout에서 llama3.1:8b는 15/18로 우위였으나 deepseek-coder-v2:16b는 6/18로 규칙보다도 낮았다(§6.19 교차모델) — "어떤 LLM이냐"가 효과를 결정한다.
+    아니라 방어자 모델이 결정했으며, 더 강한 판단에는 2~9배 지연 비용이 따랐다. (5) 금융 API 업무로직 공격(BOLA·mass assignment)에서는 시그니처 규칙이 0/12로 완전히 실패한 반면 인가-맥락 규칙과 LLM은 각각 12/12·6/6로 탐지해, 탐지기 선택 기준이 "공격이 시그니처로 정의되는가(→규칙) vs 인가 맥락으로 정의되는가(→맥락 규칙·LLM)"임을 보였다(§6.17). 나아가 <strong>제3자 blind 독립 holdout</strong>(§6.19)에서 손수 만든 규칙은 과적합으로 하락(맥락규칙 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해, "AI의 일반화 가치"가 저자 데이터가 아닌 독립 데이터에서 확인됐다(단 오탐 2/12의 정밀도 비용 동반 → 규칙+LLM 앙상블 권고). 이 LLM 우위는 <strong>모델 의존적</strong>이어서 같은 holdout에서 llama3.1:8b는 15/18로 우위였으나 deepseek-coder-v2:16b는 6/18로 규칙보다도 낮았다(§6.19 교차모델) — "어떤 LLM이냐"가 효과를 결정한다. (6) <strong>강한 모델(GPT-5, 호스티드 API)</strong>은 같은 독립 holdout에서 16/18을 <strong>오탐 0</strong>으로 달성해, 로컬 최고(qwen 17/18·오탐 2)에 근접한 재현율을 더 나은 정밀도로 얻었다 — "모델이 강할수록 재현율·정밀도를 함께 올린다"는 방향을 독립 데이터에서 보였고, 금융 API 홀드아웃의 신규 권한 필드 공격(모든 규칙 0/30)도 GPT-5(맥락) 20/20·정상 오탐 0으로 탐지했다(§6.17–6.19). 단 강한 모델은 호스티드·비용·지연을 전제하므로, 로컬 전제를 지키려면 규칙→LLM 캐스케이드·증류가 필요하다. (7) <strong>외부 공개 벤치마크(CSIC-2010)</strong>에서도 시그니처 규칙(recall 10.2%)을 LLM이 2.7×(qwen 28%)~3.5×(GPT-5 36%)로 앞서며 모두 오탐 0을 유지해, "비시그니처 이상치에 대한 LLM의 일반화 가치"가 <strong>저자가 만들지 않은 표준 데이터에서도</strong> 재현되었다(§6.20) — 단 절대 recall은 낮아(단일 요청·행동 기준선 부재) 세션 맥락 보강이 후속 과제다.
   </p>
   <p>
     즉 "AI 방어가 효과적인가"의 답은 단정형이 아니라 <strong>"어떤 모델이, 어떤 공격 난이도에, 어떤
@@ -2027,7 +2179,104 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
       <span class="ref-num">[9]</span>
       <span class="ref-text">Roh, S., Ryu, S., Park, S., Choi, D. (2026). "A Gingerbread House for LLM Agents: Source-Planned Honeypots That Lure Autonomous Attackers into an Isolated Shadow." <em>arXiv:2611.07611</em></span>
     </div>
+
+    <!-- API 보안 / OWASP 업무로직 공격 (§6.17–6.19) -->
+    <div class="ref-item">
+      <span class="ref-num">[10]</span>
+      <span class="ref-text">OWASP Foundation (2023). "OWASP API Security Top 10 — 2023." <em>https://owasp.org/API-Security/</em> (API1: Broken Object Level Authorization).</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[11]</span>
+      <span class="ref-text">Kaur, B. (2026). "Broken Object Level Authorization in the Wild: An Empirical Taxonomy from 100+ Bug Bounty Disclosures." <em>arXiv:2605.25865</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[12]</span>
+      <span class="ref-text">Wu, Y., et al. (2025). "Rethinking Broken Object Level Authorization Attacks Under Zero Trust Principle (Bolaz)." <em>arXiv:2507.02309</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[13]</span>
+      <span class="ref-text">Thales/Imperva (2025). "2025 Imperva Bad Bot / API Threat Report." <em>Thales Group</em> (금융을 API 공격 1위 표적, BOLA·파라미터 조작을 시그니처·rate-limit 회피 벡터로 보고).</span>
+    </div>
+
+    <!-- 자율 침투 에이전트 / LLM×사이버보안 서베이 (§6.16) -->
+    <div class="ref-item">
+      <span class="ref-num">[14]</span>
+      <span class="ref-text">Deng, G., Liu, Y., Mayoral-Vilches, V., et al. (2024). "PentestGPT: Evaluating and Harnessing Large Language Models for Automated Penetration Testing." <em>USENIX Security Symposium 2024</em>. arXiv:2308.06782</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[15]</span>
+      <span class="ref-text">"A Survey of Large Language Models in Cybersecurity." (2024). <em>arXiv:2402.16968</em></span>
+    </div>
+
+    <!-- 프롬프트 인젝션 (§6.8) -->
+    <div class="ref-item">
+      <span class="ref-num">[16]</span>
+      <span class="ref-text">Greshake, K., Abdelnabi, S., Mishra, S., Endres, C., Holz, T., Fritz, M. (2023). "Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection." <em>ACM Workshop on Artificial Intelligence and Security (AISec '23)</em>. arXiv:2302.12173</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[17]</span>
+      <span class="ref-text">Liu, Y., et al. (2023). "Prompt Injection Attack against LLM-Integrated Applications (HouYi)." <em>arXiv:2306.05499</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[18]</span>
+      <span class="ref-text">Liu, Y., Jia, Y., Geng, R., Jia, J., Gong, N. Z. (2024). "Formalizing and Benchmarking Prompt Injection Attacks and Defenses." <em>USENIX Security Symposium 2024</em>. arXiv:2310.12815</span>
+    </div>
+
+    <!-- LLM-as-a-judge / 평가 신뢰성 (§6.16b 평가자 거짓양성) -->
+    <div class="ref-item">
+      <span class="ref-num">[19]</span>
+      <span class="ref-text">Gu, J., et al. (2024). "A Survey on LLM-as-a-Judge." <em>arXiv:2411.15594</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[20]</span>
+      <span class="ref-text">"Reliability without Validity: A Systematic, Large-Scale Evaluation of LLM-as-a-Judge Models Across Agreement, Consistency, and Bias." (2026). <em>arXiv:2606.19544</em></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[21]</span>
+      <span class="ref-text">Ye, J., et al. (2024). "Justice or Prejudice? Quantifying Biases in LLM-as-a-Judge (CALM)." <em>arXiv:2410.02736</em></span>
+    </div>
+
+    <!-- LLM 환각 (§6.16 자기보고 불신) -->
+    <div class="ref-item">
+      <span class="ref-num">[22]</span>
+      <span class="ref-text">Huang, L., et al. (2023). "A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions." <em>arXiv:2311.05232</em></span>
+    </div>
+
+    <!-- 계정 탈취 / 크리덴셜 스터핑 (§6.6–6.9) -->
+    <div class="ref-item">
+      <span class="ref-num">[23]</span>
+      <span class="ref-text">Wang, K. C., Reiter, M. K. (2019). "Detecting Stuffing of a User's Credentials at Her Own Accounts." <em>arXiv:1912.11118</em></span>
+    </div>
+
+    <!-- 웹 공격 탐지 공개 벤치마크 (실험 Phase 2 / 외적 타당성) -->
+    <div class="ref-item">
+      <span class="ref-num">[24]</span>
+      <span class="ref-text">Torrano-Giménez, C., Pérez-Villegas, A., Álvarez, G. (2010). "The HTTP Dataset CSIC 2010." <em>Information Security Institute, Spanish National Research Council (CSIC)</em>.</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[25]</span>
+      <span class="ref-text">Gniewkowski, M., Maciejewski, H., Surmacz, T., Walentynowicz, W. (2021). "HTTP2vec: Embedding of HTTP Requests for Detection of Anomalous Traffic." <em>arXiv:2108.01763</em></span>
+    </div>
+
+    <!-- 국내 선행연구 (KCI 투고 대비) -->
+    <div class="ref-item">
+      <span class="ref-num">[26]</span>
+      <span class="ref-text">이인용, 조재익, 조규형, 문종섭 (2008). "SQL 질의 애트리뷰트 값 제거 방법을 이용한 효과적인 SQL Injection 공격 탐지 방법 연구." <em>정보보호학회논문지(JKIISC)</em>, 18(5), 135–148.</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[27]</span>
+      <span class="ref-text">류호균, 김광용 (2020). "머신러닝을 이용한 웹 공격 탐지 방안에 관한 연구." <em>한국통신학회논문지(J-KICS)</em>, 45(9).</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[28]</span>
+      <span class="ref-text">김동훈, 이수진 (2025). "거대 언어 모델과 프롬프트 엔지니어링을 기반으로 한 다단계 공격의 시나리오 탐지 기법." <em>융합보안논문지</em>, 25(3).</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">[29]</span>
+      <span class="ref-text">안석현 외 (2024). "스마트빌딩 환경을 위한 LLM 기반 침입탐지 모델." <em>소프트웨어 평가와 가치(JSAV)</em>, 20(4), 303–314. DOI: 10.29056/jsav.2024.12.30</span>
+    </div>
   </div>
+  <p class="caption" style="margin-top:10px">참고문헌 표기 주의: arXiv 식별자가 붙은 항목은 전부 2026-11-26 실검색으로 실재를 확인하였으나, 일부 2025–2026 프리프린트는 동료심사 전 단계이며(피어리뷰 게재본으로 교체 권장), 저자가 일부만 확인된 항목은 "et al."로 두었다. 국내 선행연구 [26]–[29]는 KCI 투고 대비로 추가하였다(정보보호학회논문지·한국통신학회논문지·융합보안논문지·JSAV); 권·호·면 등 정확한 서지는 투고 단계에서 KCI/DBpia 원문으로 최종 확인 권장.</p>
 </div>
 
 </main>

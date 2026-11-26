@@ -52,6 +52,8 @@ def main():
     ap.add_argument('--n-rules', type=int, default=12)
     ap.add_argument('--n-llm', type=int, default=6)
     ap.add_argument('--model', default='qwen2.5-coder:14b')
+    ap.add_argument('--backend', choices=('ollama', 'openai'), default='ollama',
+                    help="LLM backend: 'ollama' (local open model) or 'openai' (hosted strong model)")
     args = ap.parse_args()
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -94,14 +96,16 @@ def main():
                 r['n_llm'] += 1
                 for key, reveal in (('llm_ctx', True), ('llm_beh', False)):
                     try:
-                        v, _ = dfn.llm_detect(tr, args.model, reveal_owner=reveal)
+                        v, _ = dfn.llm_detect(tr, args.model, reveal_owner=reveal,
+                                              backend=args.backend)
                         r[key] += int(v == 'attack')
                     except Exception as e:  # noqa: BLE001
                         r['llm_err'] += 1
                         print(f'  [llm err {sid} {key}] {type(e).__name__}: {e}', file=sys.stderr)
 
     # report
-    print(f'\n=== Financial-API detection (OWASP business-logic) — model={args.model} ===')
+    print(f'\n=== Financial-API detection (OWASP business-logic) — model={args.model} '
+          f'backend={args.backend} ===')
     cols = ('session type', 'syntactic', 'context', 'behavioral', 'llm(ctx)', 'llm(beh)')
     print(f'{cols[0]:16} | {cols[1]:>9} | {cols[2]:>9} | {cols[3]:>11} | {cols[4]:>9} | {cols[5]:>9}')
     print('-' * 80)
@@ -111,7 +115,10 @@ def main():
         print(f"{tag:16} | {r['syntactic']}/{n:<7} | {r['context']}/{n:<7} | "
               f"{r['behavioral']}/{n:<9} | {r['llm_ctx']}/{nl:<7} | {r['llm_beh']}/{nl:<7}")
 
-    out = dict(model=args.model, n_rules=args.n_rules, n_llm=args.n_llm, types=TYPES,
+    out = dict(model=args.model, backend=args.backend,
+               run_utc=datetime.now(timezone.utc).isoformat(),
+               temperature=dfn.OPTIONS.get('temperature'), seed=dfn.OPTIONS.get('seed'),
+               n_rules=args.n_rules, n_llm=args.n_llm, types=TYPES,
                results=res, wilson={t: dict(
                    syntactic=wilson(res[t]['syntactic'], res[t]['n_rules']),
                    context=wilson(res[t]['context'], res[t]['n_rules']),

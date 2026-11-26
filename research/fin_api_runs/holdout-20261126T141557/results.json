@@ -1,0 +1,187 @@
+{
+  "model": "gpt-5-2025-08-07",
+  "backend": "openai",
+  "run_utc": "2026-11-26T14:32:57.711585+00:00",
+  "temperature": 0,
+  "seed": 20261116,
+  "n_rules": 30,
+  "n_llm": 20,
+  "types": [
+    "minimal_bola",
+    "cred_stuffing",
+    "novel_mass_assignment",
+    "benign_own_by_id",
+    "benign_email_update"
+  ],
+  "results": {
+    "minimal_bola": {
+      "label": "attack",
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 30,
+      "behavioral": 0,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 4,
+      "llm_err": 0
+    },
+    "cred_stuffing": {
+      "label": "attack",
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 0,
+      "behavioral": 30,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    },
+    "novel_mass_assignment": {
+      "label": "attack",
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 0,
+      "behavioral": 0,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    },
+    "benign_own_by_id": {
+      "label": "benign",
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 0,
+      "behavioral": 0,
+      "n_llm": 20,
+      "llm_ctx": 0,
+      "llm_beh": 3,
+      "llm_err": 0
+    },
+    "benign_email_update": {
+      "label": "benign",
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 0,
+      "behavioral": 0,
+      "n_llm": 20,
+      "llm_ctx": 0,
+      "llm_beh": 0,
+      "llm_err": 0
+    }
+  },
+  "wilson": {
+    "minimal_bola": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.89,
+        1.0
+      ],
+      "behavioral": [
+        0.0,
+        0.11
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.08,
+        0.42
+      ]
+    },
+    "cred_stuffing": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.0,
+        0.11
+      ],
+      "behavioral": [
+        0.89,
+        1.0
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    },
+    "novel_mass_assignment": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.0,
+        0.11
+      ],
+      "behavioral": [
+        0.0,
+        0.11
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    },
+    "benign_own_by_id": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.0,
+        0.11
+      ],
+      "behavioral": [
+        0.0,
+        0.11
+      ],
+      "llm_ctx": [
+        0.0,
+        0.16
+      ],
+      "llm_beh": [
+        0.05,
+        0.36
+      ]
+    },
+    "benign_email_update": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.0,
+        0.11
+      ],
+      "behavioral": [
+        0.0,
+        0.11
+      ],
+      "llm_ctx": [
+        0.0,
+        0.16
+      ],
+      "llm_beh": [
+        0.0,
+        0.16
+      ]
+    }
+  },
+  "run_dir": "C:\\codex_qwen_pentest\\research\\fin_api_runs\\holdout-20261126T141557",
+  "note": "scored vs KNOWN labels; benign rows are false positives"
+}

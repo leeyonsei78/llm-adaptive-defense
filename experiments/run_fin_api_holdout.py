@@ -49,6 +49,8 @@ def main():
     ap.add_argument('--n-rules', type=int, default=12)
     ap.add_argument('--n-llm', type=int, default=6)
     ap.add_argument('--model', default='qwen2.5-coder:14b')
+    ap.add_argument('--backend', choices=('ollama', 'openai'), default='ollama',
+                    help="LLM backend: 'ollama' (local open model) or 'openai' (hosted strong model)")
     args = ap.parse_args()
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -89,7 +91,8 @@ def main():
                 r['n_llm'] += 1
                 for key, reveal in (('llm_ctx', True), ('llm_beh', False)):
                     try:
-                        v, _ = dfn.llm_detect(tr, args.model, reveal_owner=reveal)
+                        v, _ = dfn.llm_detect(tr, args.model, reveal_owner=reveal,
+                                              backend=args.backend)
                         r[key] += int(v == 'attack')
                     except Exception as e:  # noqa: BLE001
                         r['llm_err'] += 1
@@ -105,7 +108,10 @@ def main():
         print(f"{t:22} | {r['label']:7} | {r['syntactic']}/{n:<7} | {r['context']}/{n:<7} | "
               f"{r['behavioral']}/{n:<9} | {r['llm_ctx']}/{nl:<7} | {r['llm_beh']}/{nl:<7}")
 
-    out = dict(model=args.model, n_rules=args.n_rules, n_llm=args.n_llm, types=TYPES, results=res,
+    out = dict(model=args.model, backend=args.backend,
+               run_utc=datetime.now(timezone.utc).isoformat(),
+               temperature=dfn.OPTIONS.get('temperature'), seed=dfn.OPTIONS.get('seed'),
+               n_rules=args.n_rules, n_llm=args.n_llm, types=TYPES, results=res,
                wilson={t: {k: wilson(res[t][k], res[t]['n_llm' if k.startswith('llm') else 'n_rules'])
                            for k in ('syntactic', 'context', 'behavioral', 'llm_ctx', 'llm_beh')} for t in TYPES},
                run_dir=str(run_dir), note='scored vs KNOWN labels; benign rows are false positives')

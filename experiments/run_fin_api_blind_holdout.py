@@ -65,6 +65,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--cases', default='research/fin_api_blind_holdout.json')
     ap.add_argument('--model', default='qwen2.5-coder:14b')
+    ap.add_argument('--backend', choices=('ollama', 'openai'), default='ollama',
+                    help="LLM backend: 'ollama' (local open model) or 'openai' (hosted strong model)")
     ap.add_argument('--no-llm', action='store_true')
     args = ap.parse_args()
     try:
@@ -120,7 +122,8 @@ def main():
         if not args.no_llm:
             for key, reveal in (('llm_ctx', True), ('llm_beh', False)):
                 try:
-                    v, _ = dfn.llm_detect(tr, args.model, reveal_owner=reveal)
+                    v, _ = dfn.llm_detect(tr, args.model, reveal_owner=reveal,
+                                          backend=args.backend)
                     fired[key] = (v == 'attack')
                 except Exception as e:  # noqa: BLE001
                     llm_err += 1
@@ -145,7 +148,10 @@ def main():
         b, bt = tally[d]['benign']
         print(f'{d:12} | {a}/{at} {wilson(a, at)!s:>14} | {b}/{bt} {wilson(b, bt)!s:>12}')
 
-    out = dict(model=args.model, author_note=spec.get('author_note', ''),
+    out = dict(model=args.model, backend=args.backend,
+               run_utc=datetime.now(timezone.utc).isoformat(),
+               temperature=dfn.OPTIONS.get('temperature'), seed=dfn.OPTIONS.get('seed'),
+               author_note=spec.get('author_note', ''),
                n_attack=n_attack, n_benign=n_benign, tally=tally,
                by_class={k: v for k, v in by_class.items()}, llm_err=llm_err, run_dir=str(run_dir))
     (run_dir / 'results.json').write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding='utf-8')

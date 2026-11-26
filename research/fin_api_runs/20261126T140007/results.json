@@ -1,0 +1,215 @@
+{
+  "model": "gpt-5-2025-08-07",
+  "backend": "openai",
+  "run_utc": "2026-11-26T14:15:57.711574+00:00",
+  "temperature": 0,
+  "seed": 20261116,
+  "n_rules": 30,
+  "n_llm": 20,
+  "types": [
+    "benign",
+    "bola",
+    "scraping_bola",
+    "mass_assignment",
+    "bfla",
+    "transfer_abuse"
+  ],
+  "results": {
+    "benign": {
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 0,
+      "behavioral": 0,
+      "n_llm": 20,
+      "llm_ctx": 0,
+      "llm_beh": 0,
+      "llm_err": 0
+    },
+    "bola": {
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 30,
+      "behavioral": 0,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    },
+    "scraping_bola": {
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 30,
+      "behavioral": 30,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    },
+    "mass_assignment": {
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 30,
+      "behavioral": 30,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    },
+    "bfla": {
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 30,
+      "behavioral": 30,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    },
+    "transfer_abuse": {
+      "n_rules": 30,
+      "syntactic": 0,
+      "context": 30,
+      "behavioral": 30,
+      "n_llm": 20,
+      "llm_ctx": 20,
+      "llm_beh": 20,
+      "llm_err": 0
+    }
+  },
+  "wilson": {
+    "benign": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.0,
+        0.11
+      ],
+      "behavioral": [
+        0.0,
+        0.11
+      ],
+      "llm_ctx": [
+        0.0,
+        0.16
+      ],
+      "llm_beh": [
+        0.0,
+        0.16
+      ]
+    },
+    "bola": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.89,
+        1.0
+      ],
+      "behavioral": [
+        0.0,
+        0.11
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    },
+    "scraping_bola": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.89,
+        1.0
+      ],
+      "behavioral": [
+        0.89,
+        1.0
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    },
+    "mass_assignment": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.89,
+        1.0
+      ],
+      "behavioral": [
+        0.89,
+        1.0
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    },
+    "bfla": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.89,
+        1.0
+      ],
+      "behavioral": [
+        0.89,
+        1.0
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    },
+    "transfer_abuse": {
+      "syntactic": [
+        0.0,
+        0.11
+      ],
+      "context": [
+        0.89,
+        1.0
+      ],
+      "behavioral": [
+        0.89,
+        1.0
+      ],
+      "llm_ctx": [
+        0.84,
+        1.0
+      ],
+      "llm_beh": [
+        0.84,
+        1.0
+      ]
+    }
+  },
+  "run_dir": "C:\\codex_qwen_pentest\\research\\fin_api_runs\\20261126T140007",
+  "note": "detection=attack verdict; benign row is false positives"
+}

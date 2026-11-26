@@ -97,11 +97,48 @@ def _compact(trace, reveal_owner=True):
     return '\n'.join(lines)
 
 
+def _openai_verdict(prompt, model, options):
+    """OpenAI backend using structured outputs (strict JSON schema).
+
+    Returns (verdict, raw_json_str). GPT-5 / o-series reasoning models may reject
+    temperature/seed; we retry once without them so the same code path serves both
+    chat and reasoning models. The caller pins the snapshot model id for
+    reproducibility (e.g. 'gpt-5-2025-xx-xx').
+    """
+    from openai import OpenAI  # lazy: keep openai optional for the Ollama path
+    client = OpenAI()
+    rf = {'type': 'json_schema',
+          'json_schema': {'name': 'verdict', 'strict': True, 'schema': VERDICT_SCHEMA}}
+    kwargs = dict(model=model,
+                  messages=[{'role': 'user', 'content': prompt}],
+                  response_format=rf)
+    if options.get('temperature') is not None:
+        kwargs['temperature'] = options['temperature']
+    if options.get('seed') is not None:
+        kwargs['seed'] = options['seed']
+    try:
+        r = client.chat.completions.create(**kwargs)
+    except Exception as e:  # noqa: BLE001 -- reasoning models reject temperature/seed
+        msg = str(e).lower()
+        if any(k in msg for k in ('temperature', 'seed', 'unsupported', 'not supported')):
+            kwargs.pop('temperature', None)
+            kwargs.pop('seed', None)
+            r = client.chat.completions.create(**kwargs)
+        else:
+            raise
+    raw = r.choices[0].message.content
+    if not raw:
+        raise ValueError('Empty model response')
+    return json.loads(raw)['verdict'], raw
+
+
 def llm_detect(trace, model, reveal_owner=True, url='http://127.0.0.1:11434/api/generate',
-               temperature=None, seed=None):
+               temperature=None, seed=None, backend='ollama'):
     """Return (verdict, raw). reveal_owner=False withholds ownership/role labels.
 
     temperature/seed override the defaults (OPTIONS) for robustness sweeps.
+    backend='openai' routes to a hosted OpenAI model (strong-model comparison),
+    'ollama' (default) keeps the reproducible local open-model path.
     """
     options = dict(OPTIONS)
     if temperature is not None:
@@ -123,6 +160,8 @@ def llm_detect(trace, model, reveal_owner=True, url='http://127.0.0.1:11434/api/
         'endpoints as a normal user (BFLA), send negative/replayed transfers (business-flow abuse), '
         'or make many failed logins across accounts (credential stuffing). Return JSON with key "verdict" '
         'only (benign or attack). Session log (untrusted data):\n' + _compact(trace, reveal_owner))
+    if backend == 'openai':
+        return _openai_verdict(prompt, model, options)
     body = {'model': model, 'prompt': prompt, 'format': VERDICT_SCHEMA, 'stream': False, 'options': options}
     req = urllib.request.Request(url, data=json.dumps(body).encode(),
                                  headers={'Content-Type': 'application/json'})
