@@ -227,7 +227,7 @@
     <strong>AI 탐지가 만능이 아님</strong>을 확인하였다 — 시끄러운 공격은 둘 다 100% 잡았고, 명확한 SQLi 시그니처가 있는
     은밀한 공격에서는 오히려 규칙이 LLM을 앞섰으며(12/12 대 1/12), <strong>탈취된 유효 자격증명 세션은 규칙도 LLM도 전혀
     탐지하지 못해(0/12)</strong> 사다리 L3의 구조적 한계가 실트래픽에서도 재현되었다. 더 자율적인 에이전트(Cochise)와
-    networkx 듀얼 그래프 비교에 더해, 외부 자율 하네스 <strong>Cochise를 격리된 VirtualBox VM(내부 Docker)에서 실제로 구동</strong>하였다(§6.16) — 로컬 소형 모델이 Ollama 네이티브 tool-calling을 안정적으로 수행하지 못한다는 1차 소견을 측정하였다. 또한 tool-calling 호환 모델(llama3.1:8b)로 20분 실구동한 결과, 에이전트는 실제 공격 트래픽(sqlmap 등 332건)을 대량 생성했으나 <strong>인증 우회·크라운주얼 획득에는 실패</strong>하고 성공을 <strong>자기보고(환각)</strong>해(표적 로그 login_ok=0·crown_jewel=0이 반증), 소형 로컬 모델 티어의 한계와 표적측 그라운드 트루스 검증의 중요성을 보였다. 두 번째 외부 하네스 <strong>AutoPenBench</strong>도 같은 격리 VM에서 로컬로 구동해 공격자 실패를 재현했으며, 특히 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(마일스톤 거짓양성 command 86%·stage 80%)함을 결정적 그라운드 트루스로 확인하여 '자기보고를 믿지 말라'는 명제를 평가자에게로 확장하였다(§6.16b). 나아가 최근 금융권의 지배적 위협인 <strong>API 업무로직 공격(BOLA·mass assignment·BFLA·비즈니스플로우 남용·크리덴셜 스터핑)</strong>을 합성 금융 API에서 판단하게 한 결과, 페이로드 시그니처가 없어 <strong>시그니처 규칙은 전부 실패</strong>하고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)만 유효했다(§6.17). 탐지기를 보지 못한 <strong>독립 작성자의 blind holdout</strong>에서 손수 만든 규칙은 과적합으로 하락(맥락 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해 'AI의 일반화 가치'가 독립 데이터에서 확인됐다(§6.19). 단 그 우위는 <strong>모델 의존적</strong>(deepseek-coder-v2는 규칙보다 낮음)이고, 맥락이 없으면 LLM은 정상 접근을 오탐했다(§6.18) — 정밀도 비용 때문에 규칙+LLM 앙상블이 필요하다. 다만 <strong>강한 모델(GPT-5, 호스티드 API)은 같은 독립 holdout에서 16/18을 오탐 0으로 달성</strong>해, 재현율과 정밀도를 함께 확보함으로써 이 정밀도 비용이 모델 의존적임을 보였다(§6.19; 호스티드·비용·지연 전제). 나아가 저자가 만들지 않은 <strong>외부 공개 벤치마크(CSIC-2010)</strong>에서도 시그니처 규칙(recall 10.2%)보다 LLM이 2.7×(qwen)~3.5×(GPT-5) 높은 recall을 <strong>전부 오탐 0</strong>으로 달성해, "LLM이 비시그니처 이상치에 일반화 가치를 낸다"는 결론이 <strong>합성 밖 독립 데이터에서도 재현</strong>됨을 확인했다(§6.20). <strong>입력·표적·탐지기를 개발자가 작성한 데 따른
+    networkx 듀얼 그래프 비교에 더해, 외부 자율 하네스 <strong>Cochise를 격리된 VirtualBox VM(내부 Docker)에서 실제로 구동</strong>하였다(§6.16) — 로컬 소형 모델이 Ollama 네이티브 tool-calling을 안정적으로 수행하지 못한다는 1차 소견을 측정하였다. 또한 tool-calling 호환 모델(llama3.1:8b)로 20분 실구동한 결과, 에이전트는 실제 공격 트래픽(sqlmap 등 332건)을 대량 생성했으나 <strong>인증 우회·크라운주얼 획득에는 실패</strong>하고 성공을 <strong>자기보고(환각)</strong>해(표적 로그 login_ok=0·crown_jewel=0이 반증), 소형 로컬 모델 티어의 한계와 표적측 그라운드 트루스 검증의 중요성을 보였다. 두 번째 외부 하네스 <strong>AutoPenBench</strong>도 같은 격리 VM에서 로컬로 구동해 공격자 실패를 재현했으며, 특히 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(마일스톤 거짓양성 command 86%·stage 80%)함을 결정적 그라운드 트루스로 확인하여 '자기보고를 믿지 말라'는 명제를 평가자에게로 확장하였다(§6.16b). 다만 이 개방형 하네스의 실패는 모델의 무능이 아니라 하네스·실행의 문제였다 — 행동 공간을 제약한 자율 하네스에서는 <strong>동일 소형 모델이 자율 SQL 주입(~73%)과 세 가지 API 업무로직 공격(BOLA·권한상승, BFLA, 업무플로우 남용; 각 10/10)에 스스로 성공</strong>했고(표적 ground truth 검증), 그 방어가 공격 정의에 따라 정확히 갈렸다 — 시그니처가 있으면 규칙이, 없으면 인가-맥락 규칙·LLM이 탐지하였다(§6.16d–f). 나아가 최근 금융권의 지배적 위협인 <strong>API 업무로직 공격(BOLA·mass assignment·BFLA·비즈니스플로우 남용·크리덴셜 스터핑)</strong>을 합성 금융 API에서 판단하게 한 결과, 페이로드 시그니처가 없어 <strong>시그니처 규칙은 전부 실패</strong>하고 인가 맥락을 쓰는 탐지(맥락 규칙·LLM)만 유효했다(§6.17). 탐지기를 보지 못한 <strong>독립 작성자의 blind holdout</strong>에서 손수 만든 규칙은 과적합으로 하락(맥락 12/12→13/18)한 반면 <strong>LLM(맥락)은 17/18로 가장 잘 일반화</strong>해 'AI의 일반화 가치'가 독립 데이터에서 확인됐다(§6.19). 단 그 우위는 <strong>모델 의존적</strong>(deepseek-coder-v2는 규칙보다 낮음)이고, 맥락이 없으면 LLM은 정상 접근을 오탐했다(§6.18) — 정밀도 비용 때문에 규칙+LLM 앙상블이 필요하다. 다만 <strong>강한 모델(GPT-5, 호스티드 API)은 같은 독립 holdout에서 16/18을 오탐 0으로 달성</strong>해, 재현율과 정밀도를 함께 확보함으로써 이 정밀도 비용이 모델 의존적임을 보였다(§6.19; 호스티드·비용·지연 전제). 나아가 저자가 만들지 않은 <strong>외부 공개 벤치마크(CSIC-2010)</strong>에서도 시그니처 규칙(recall 10.2%)보다 LLM이 2.7×(qwen)~3.5×(GPT-5) 높은 recall을 <strong>전부 오탐 0</strong>으로 달성해, "LLM이 비시그니처 이상치에 일반화 가치를 낸다"는 결론이 <strong>합성 밖 독립 데이터에서도 재현</strong>됨을 확인했다(§6.20). <strong>입력·표적·탐지기를 개발자가 작성한 데 따른
     순환성 우려는 ATO 탐지기에 한해 규칙을 보지 못한 별도 에이전트가 작성한 독립 holdout으로 재검증하여 완화하였고(§6.13,
     정확도 유지·주입 취약성 재확인; 저자가 AI 에이전트라는 한계 잔존), 실트래픽 표적의 독립 재작성과 능력 사다리의 동일 모델 계열 한계는 남는다.</strong> 따라서 본 연구는 AI 방어의
     일반적 우월성을 주장하지 않고, "어떤 모델이, 어떤 공격 난이도에, 어떤 비용으로 작동하는가"라는 조건부 결론을 제시한다.
@@ -293,7 +293,7 @@
     <strong>C1.</strong> AI 적응형 공격(SQL 인증·계정 탈취·API 업무로직)에 대한 LLM 방어를 로컬·합성 환경에서 조건별로 실측한다 —
     정책 적용 시점(동기/비동기), 공격자 능력 사다리(L1–L3), 공격자·방어자 교차 모델(Qwen·DeepSeek·llama·GPT-5).<br><br>
     <strong>C2.</strong> <strong>"공격이 시그니처로 정의되면 규칙, 인가 맥락으로 정의되면 LLM"</strong>이라는 탐지기 선택 원칙을 제시하고,
-    실제로 성공시킨 자율 공격 두 종(SQLi·BOLA+권한상승)에 대해 그 원칙이 성립함을 보인다.<br><br>
+    실제로 성공시킨 자율 공격들(SQLi, BOLA·권한상승, BFLA·업무플로우 남용)에 대해 그 원칙이 성립함을 보인다.<br><br>
     <strong>C3.</strong> 외부 자율 공격 하네스 3종(Cochise·AutoPenBench·PentAGI)을 격리 환경에서 실제로 구동하여,
     <strong>"자기보고를 믿지 말고 ground truth로 검증"</strong>의 필요성과 <strong>약한 LLM 평가자의 성공 과대보고(거짓양성)</strong>를 측정한다.<br><br>
     <strong>C4.</strong> 탐지기 코드를 보지 못한 <strong>제3자 blind 독립 holdout</strong>으로 순환성 우려를 완화하고,
@@ -577,7 +577,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     <em>보조</em>로 표시한 소절(§6.10·§6.14·§6.15)은 핵심 결과를 보강하는 민감도·세부 분석이다.<br><br>
     <strong>· 테마 I — 정책 적용 시점(동기/비동기)과 비동기 노출:</strong> §6.1–6.5<br>
     <strong>· 테마 II — 공격자 능력 사다리와 모델 의존성:</strong> §6.6–6.9, §6.11 &nbsp;(<em>보조</em> §6.10 기만 민감도)<br>
-    <strong>· 테마 III — 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격:</strong> §6.12, §6.16d–e, §6.17–6.19 &nbsp;<span style="color:#1e3a8a;font-weight:700">(핵심 thesis)</span> &nbsp;(<em>보조</em> §6.14 약점교정, §6.15 아키텍처·듀얼그래프)<br>
+    <strong>· 테마 III — 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격:</strong> §6.12, §6.16d–f, §6.17–6.19 &nbsp;<span style="color:#1e3a8a;font-weight:700">(핵심 thesis)</span> &nbsp;(<em>보조</em> §6.14 약점교정, §6.15 아키텍처·듀얼그래프)<br>
     <strong>· 테마 IV — 외부 자율 하네스 실구동과 평가 검증:</strong> §6.16, §6.16b–c<br>
     <strong>· 테마 V — 외부 공개 벤치마크로 합성 밖 일반화 검증:</strong> §6.20 (CSIC-2010)
   </div>
@@ -996,7 +996,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     공격자 LLM의 이 비결정성이 캠페인 결과까지 흔든다. 단일 실행 수치를 결정적으로 읽어서는 안 된다.
   </div>
 
-  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#065f46,#10b981);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 III · 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격 &nbsp;—&nbsp; §6.12, §6.16d–e, §6.17–6.19 &nbsp;<span style="font-weight:400;font-size:13px">★ 핵심 thesis (§6.14·§6.15 = 보조)</span></div>
+  <div style="margin:26px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#065f46,#10b981);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 III · 탐지 이분법(시그니처 vs 인가맥락)과 성공한 자율 공격 &nbsp;—&nbsp; §6.12, §6.16d–f, §6.17–6.19 &nbsp;<span style="font-weight:400;font-size:13px">★ 핵심 thesis (§6.14·§6.15 = 보조)</span></div>
 
   <h3 id="s6-12">6.12 실험 I: 실트래픽 탐지 — 규칙 vs LLM (에이전트 공격)</h3>
   <p>
@@ -1537,7 +1537,7 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
 
 <!-- 6.16d constrained autonomous attack succeeds + defense -->
 <div class="section" id="s6-16d">
-  <div style="margin:8px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#065f46,#10b981);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 III (계속) · 성공시킨 자율 공격과 그에 대한 방어 &nbsp;—&nbsp; §6.16d–e, §6.17–6.19 &nbsp;<span style="font-weight:400;font-size:13px">★ 핵심 thesis</span></div>
+  <div style="margin:8px 0 10px;padding:10px 16px;background:linear-gradient(90deg,#065f46,#10b981);color:#fff;border-radius:8px;font-weight:700;font-size:15px">결과 테마 III (계속) · 성공시킨 자율 공격과 그에 대한 방어 &nbsp;—&nbsp; §6.16d–f, §6.17–6.19 &nbsp;<span style="font-weight:400;font-size:13px">★ 핵심 thesis</span></div>
 
   <h3 id="s6-16d">6.16d 실험 M-4: 제약된 자율 하네스에서 소형 로컬 모델의 자율 공격 성공 — 그리고 그에 대한 방어</h3>
   <p>
@@ -1692,6 +1692,39 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     소형 모델 1종. (3) 방어 측정은 세션당 1회 판정이며, 공격 성공은 에피소드 단위(여기서는 10/10). (4) 맥락 규칙·LLM은 소유권·역할·금액을
     관측값으로 계산하며(표적의 위반 플래그를 직접 쓰지 않음), §6.17–6.19의 독립 holdout·교차 모델 결과와 함께 해석해야 한다.
   </div>
+
+  <h4>종합: 성공한 자율 공격 4종과 그 방어 (§6.16d–f)</h4>
+  <div class="table-wrap">
+    <table>
+      <tr><th>성공한 자율 공격</th><th>절</th><th>공격의 정의</th><th>성공률 (표적 GT)</th><th>시그니처 규칙</th><th>맥락 규칙</th><th>소형 LLM</th><th>정상 오탐</th></tr>
+      <tr><td>SQL 인젝션</td><td>§6.16d</td><td>페이로드 <strong>시그니처 있음</strong></td><td class="good">0.73 (11/15)</td><td class="good">✓ 탐지</td><td>—</td><td class="bad">✗ 놓침</td><td>0</td></tr>
+      <tr><td>BOLA + 권한 상승</td><td>§6.16e</td><td>인가 <strong>맥락으로 정의</strong></td><td class="good">10/10</td><td class="bad">✗ 놓침</td><td class="good">✓ 탐지</td><td class="good">✓ 탐지</td><td>0</td></tr>
+      <tr><td>BFLA + 업무플로우 남용</td><td>§6.16f</td><td>인가 <strong>맥락으로 정의</strong></td><td class="good">10/10</td><td class="bad">✗ 놓침</td><td class="good">✓ 탐지</td><td class="good">✓ 탐지<sup>†</sup></td><td>0</td></tr>
+    </table>
+    <div class="caption">표 28-K. 성공한 자율 공격 4종(SQLi·BOLA·권한상승·BFLA·업무플로우 남용)의 공격 성공률과 방어기별 탐지 결과 종합. 모든 공격은 llama3.1:8b가 제약된 자율 하네스에서 스스로 수행했고 표적 ground truth로 검증했다(개방형 하네스 대조=0). <sup>†</sup>BFLA+업무플로우의 LLM 탐지는 금액·역할 등 인가 맥락을 관측값으로 함께 제공했을 때 성립한다(정보 대등성, §6.9·6.16f).</div>
+  </div>
+
+  <h4>탐지 이분법: 공격의 정의가 방어기 선택을 가른다</h4>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin:14px 0">
+    <div style="flex:1;min-width:260px;border:2px solid #dc2626;border-radius:10px;padding:14px 16px;background:#fff">
+      <div style="font-weight:700;color:#991b1b;font-family:'Noto Sans KR',sans-serif;margin-bottom:6px">공격이 <u>페이로드 시그니처</u>로 정의</div>
+      <div style="font-size:12.5px;color:#555;margin-bottom:10px">예: SQL 인젝션 (<code>' OR 1=1 --</code>)</div>
+      <div style="font-size:13px;line-height:1.9">
+        시그니처 규칙 &nbsp;→&nbsp; <span style="color:#16a34a;font-weight:700">✓ 저비용·결정적 탐지</span><br>
+        소형 LLM &nbsp;→&nbsp; <span style="color:#dc2626;font-weight:700">✗ 놓칠 수 있음</span>
+      </div>
+    </div>
+    <div style="flex:1;min-width:260px;border:2px solid #1a56db;border-radius:10px;padding:14px 16px;background:#fff">
+      <div style="font-weight:700;color:#1e3a8a;font-family:'Noto Sans KR',sans-serif;margin-bottom:6px">공격이 <u>인가 맥락</u>으로 정의</div>
+      <div style="font-size:12.5px;color:#555;margin-bottom:10px">예: BOLA · BFLA · 업무플로우 남용 (요청은 정상 모양)</div>
+      <div style="font-size:13px;line-height:1.9">
+        시그니처 규칙 &nbsp;→&nbsp; <span style="color:#dc2626;font-weight:700">✗ 무력</span><br>
+        맥락 규칙·LLM &nbsp;→&nbsp; <span style="color:#16a34a;font-weight:700">✓ 탐지</span> <span style="color:#777;font-size:12px">(인가 맥락 입력 필요)</span>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;font-size:13px;color:#1e3a8a;font-weight:600;font-family:'Noto Sans KR',sans-serif;margin:4px 0 2px">↓ 어느 쪽도 단독으로 두 유형을 모두 막지 못함 &nbsp;→&nbsp; 규칙 + LLM 앙상블 필요</div>
+  <div class="caption">그림 5. 탐지 이분법 — 공격이 무엇으로 "정의"되느냐(페이로드 시그니처 vs 인가 맥락)가 어떤 방어기가 작동하는지를 가른다. 성공시킨 자율 공격 4종(§6.16d–f)이 이 이분법을 실증한다.</div>
 </div>
 
 <!-- 6.17 financial API -->
@@ -2201,14 +2234,14 @@ model = <span class="string">"qwen2.5-coder:14b"</span>  <span class="comment">#
     방어와 자율 공격 에이전트 검증을 위해 <strong>외부 하네스 Cochise를 격리된 VirtualBox VM에서 실제로 구동하는 단계에 진입</strong>하였고(§6.16; 로컬 모델 tool-calling·비용 로깅 호환성 소견 확보), Cochise는 20분 실구동까지 완료하였고(§6.16 측정 3: 실제 공격 트래픽 332건을 생성했으나 인증 우회·크라운주얼 미달성, 성공을 자기보고하는 환각 관측), 두 번째 외부 하네스 AutoPenBench도 로컬로 구동하여(§6.16b) 같은 공격자 실패를 재현하였고, 나아가 <strong>약한 LLM 평가자가 성공을 과대보고(실패를 성공으로 잘못 판정)</strong>(command 거짓양성 86%·stage 80%)함을 결정적 그라운드 트루스로 드러내 "자기보고를 믿지 말라"는 명제를 <strong>평가자에게까지 확장</strong>하였다.
   </p>
   <p>
-    <strong>★ 그러나 이 "자율 공격 실패"는 모델의 무능이 아니라 개방형 하네스·실행 불안정의 산물이었다(§6.16d·e).</strong>
+    <strong>★ 그러나 이 "자율 공격 실패"는 모델의 무능이 아니라 개방형 하네스·실행 불안정의 산물이었다(§6.16d–f).</strong>
     행동 공간을 실제 공격 동작으로 제약하고 실행 오류를 바로잡자, 동일한 소형 로컬 모델(llama3.1:8b)이 <strong>행동과
-    페이로드를 스스로 작성하며 자율적으로 공격에 성공</strong>했다 — SQL 주입 ~73%(11/15), 금융 API 업무로직(BOLA+권한상승)
-    <strong>10/10</strong>, 모두 표적측 ground truth로 확정. 더 중요한 것은 <strong>이렇게 성공한 자율 공격에 대한 방어가
+    페이로드를 스스로 작성하며 자율적으로 공격에 성공</strong>했다 — SQL 주입 ~73%(11/15), 금융 API 업무로직(BOLA+권한상승,
+    그리고 BFLA+업무플로우 남용) <strong>각 10/10</strong>, 모두 표적측 ground truth로 확정. 더 중요한 것은 <strong>이렇게 성공한 자율 공격에 대한 방어가
     공격의 정의에 따라 정확히 갈렸다</strong>는 점이다: 시그니처가 있는 SQLi는 <strong>규칙이 잡고 소형 LLM이 놓쳤으나</strong>,
     시그니처가 없는 금융 API 업무로직 공격은 <strong>시그니처가 놓치고 인가-맥락 LLM이 포착</strong>했다(정상 오탐 0). 이는
     §6.12·§6.17의 "공격이 시그니처로 정의되면 규칙, 인가 맥락으로 정의되면 LLM"이라는 결론이 <strong>실제로 성공한 자율 AI
-    공격 두 종</strong>에 대해서도 성립함을 뜻하며, 특히 <strong>최근 금융권의 지배적 위협인 시그니처 없는 API 공격(BOLA 등)에
+    공격 네 종(SQLi·BOLA·BFLA·업무플로우 남용)</strong>에 대해서도 성립함을 뜻하며, 특히 <strong>최근 금융권의 지배적 위협인 시그니처 없는 API 공격(BOLA 등)에
     대해 LLM(맥락) 기반 탐지가 실질적 방어가치를 가짐</strong>을 — 작동하는 자율 공격에서까지 — 시사한다(전제: 인가 맥락 제공,
     모델 선택, 규칙+LLM 앙상블).
   </p>
